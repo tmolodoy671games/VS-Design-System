@@ -1,45 +1,45 @@
 // ReSharper disable CheckNamespace
 
+using SharpExtensions;
 using UnityCompose;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
+using VS.UiToolkit.Packages.VsDesignSystem.Runtime.Impl.Extensions;
 
 namespace VS.UiToolkit;
 
 public static partial class ModifierExtensions
 {
+    [Composable]
     public static IModifier DsHoverIndication(
         this IModifier modifier,
+        IMutableInteractionSource? interactionSource = null,
         bool enabled = true
     )
     {
         if (!enabled)
             return modifier;
-        return modifier + new DsHoverIndicationModifierImpl();
-    }
-}
-
-internal partial class DsHoverIndicationModifierImpl : BaseComposableModifier<DsHoverIndicationModifierImpl>
-{
-    [Composable]
-    public override void DrawAfter()
-    {
-        Spacer(
-            modifier: Modifier
-                .Size(20.Dp())
-                .Border(10.Dp())
-                .Background(Color.cornflowerBlue)
-                .Alpha(0.5f)
-                .Float()
-                .Offset(x: -50.Percent(), y: -50.Percent())
-                .Position(
-                    top: 50.Percent(),
-                    left: 50.Percent()
-                )
-        );
-    }
-
-    protected override bool Equals(DsHoverIndicationModifierImpl other)
-    {
-        return true;
+        interactionSource ??= Remember(MutableInteractionSource);
+        return modifier
+            .Clip()
+            .Hoverable(interactionSource, enabled)
+            .DrawAfter(() =>
+            {
+                var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                var visibilityProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
+                Spacer(
+                    modifier: Modifier
+                        .Size(100.Percent())
+                        .Border(10.Dp())
+                        .Background(Color.cornflowerBlue.With(a: visibilityProgress * 0.5f))
+                        .Scale(0.76f + 0.25f * visibilityProgress)
+                        .Float()
+                        .Offset(x: -50.Percent(), y: -50.Percent())
+                        .Position(
+                            top: 50.Percent(),
+                            left: 50.Percent()
+                        )
+                );
+            });
     }
 }

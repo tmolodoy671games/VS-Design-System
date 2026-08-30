@@ -19,14 +19,19 @@ namespace Samples.Samples.Behaviors
                     Box(
                         alignment: Alignment.Center,
                         modifier: Modifier
-                            .Width(100.Dp())
-                            .Height(40.Dp())
-                            .Border(16.Dp())
+                            .Padding(
+                                horizontal: 32.Dp(),
+                                vertical: 8.Dp()
+                            )
+                            .Border(32.Dp())
                             .Background(Color.forestGreen)
-                            .DsHoverIndication(),
+                            .DsClickIndication(() => { }),
                         content: () =>
                         {
-                            Text("Click me!");
+                            Text(
+                                text: "Click me!",
+                                fontSize: 64.Sp()
+                            );
                         }
                     );
                 }
