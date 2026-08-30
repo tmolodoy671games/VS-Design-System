@@ -16,6 +16,7 @@ public static partial class ModifierExtensions
         this IModifier modifier,
         Action onClick,
         IMutableInteractionSource? interactionSource = null,
+        Optional<AnimationSpec> animationSpec = default,
         bool enabled = true
     )
     {
@@ -33,8 +34,8 @@ public static partial class ModifierExtensions
             {
                 var isHovered = interactionSource.CollectIsHoveredAsState().Value;
                 var isPressed = interactionSource.CollectIsPressedAsState().Value;
-                var hoveredVisibilityProgress = AnimateFloatAsState(isHovered.ToInt()).Value;
-                var hoveredAlphaProgress = AnimateFloatAsState((isHovered && !isPressed).ToInt()).Value;
+                var hoveredVisibilityProgress = AnimateFloatAsState(isHovered.ToInt(), animationSpec).Value;
+                var hoveredAlphaProgress = AnimateFloatAsState((isHovered && !isPressed).ToInt(), animationSpec).Value;
                 Spacer(
                     modifier: Modifier
                         .Size(100.Percent())
@@ -59,7 +60,20 @@ public static partial class ModifierExtensions
                         });
                     return scope.OnDispose(disposable.Dispose);
                 });
-                var pressedVisibilityProgress = AnimateFloatAsState(isPressed.ToInt()).Value;
+                var pressAnimation = RememberSingleAnimationPlayer(animationSpec);
+                var releaseAnimation = RememberSingleAnimationPlayer(animationSpec);
+                SideEffect(isPressed, () =>
+                {
+                    if (isPressed)
+                    {
+                        releaseAnimation.Reset();
+                        pressAnimation.Play();
+                    }
+                    else
+                    {
+                        releaseAnimation.Play();
+                    }
+                });
                 var maxPressIndicatorSize = Remember((containerSize.Value, pressPosition.Value), () =>
                 {
                     var containerSizeValue = containerSize.Value;
@@ -72,13 +86,13 @@ public static partial class ModifierExtensions
                     );
                     return Mathf.Sqrt(maxDistance) * 2;
                 });
-                var pressedIndicationSize = maxPressIndicatorSize.Dp() * pressedVisibilityProgress;
+                var pressedIndicationSize = maxPressIndicatorSize.Dp() * pressAnimation.Progress;
+                var pressedVisibilityProgress = pressAnimation.Progress * (1 - releaseAnimation.Progress);
                 Spacer(
                     modifier: Modifier
                         .Size(pressedIndicationSize)
                         .Border(pressedIndicationSize / 2)
                         .Background(Color.black.With(a: pressedVisibilityProgress * 0.5f))
-                        .Scale(pressedVisibilityProgress)
                         .Offset(
                             x: -pressedIndicationSize / 2,
                             y: -pressedIndicationSize / 2

@@ -17,19 +17,20 @@ public interface ISingleAnimationPlayer
         bool sticky = true,
         bool backward = false
     );
+
+    void Reset();
 }
 
 public static partial class UiToolkitComposeFunctions
 {
     [Composable]
     public static ISingleAnimationPlayer RememberSingleAnimationPlayer(
-        Optional<AnimationSpec> animationSpec
+        Optional<AnimationSpec> animationSpec = default
     )
     {
         var coroutineScope = RememberCoroutineScope();
         var result = Remember(coroutineScope, () => new SingleAnimationPlayerImpl(
-            coroutineScope,
-            animationSpec.GetOrDefault()
+            coroutineScope
         ));
         SideEffect(animationSpec, () => result.SetAnimationSpec(animationSpec.GetOrDefault()));
         return result;
@@ -41,14 +42,12 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
     private readonly IComposeCoroutineScope _coroutineScope;
     private readonly IMutableState<float> _progress = MutableStateOf(0f);
     private IDisposable? _coroutine;
-    private AnimationSpec _animationSpec;
+    private AnimationSpec _animationSpec = AnimationSpec.Default;
 
     public SingleAnimationPlayerImpl(
-        IComposeCoroutineScope coroutineScope,
-        AnimationSpec animationSpec
+        IComposeCoroutineScope coroutineScope
     )
     {
-        _animationSpec = animationSpec;
         _coroutineScope = coroutineScope;
     }
 
@@ -68,6 +67,11 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
         ));
     }
 
+    public void Reset()
+    {
+        _progress.Value = 0f;
+    }
+
     public void SetAnimationSpec(AnimationSpec animationSpec)
     {
         _animationSpec = animationSpec;
@@ -79,8 +83,8 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
         var duration = _animationSpec.TotalDuration;
         while (Time.time - startTime < duration)
         {
-            var progress = (Time.time - startTime) / duration;
-            progress = _animationSpec.GetProgress(progress);
+            var timeElapsed = Time.time - startTime;
+            var progress = _animationSpec.GetProgress(timeElapsed);
             _progress.Value = backward ? 1 - progress : progress;
             yield return null;
         }
