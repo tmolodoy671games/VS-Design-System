@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.github-glitchenzo.nugetforunity": {
+      "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "acc1c7bc9ea34c33b830e40316fca52553878d29"
+    },
     "com.unity.burst": {
       "version": "1.8.29",
       "depth": 2,
@@ -137,6 +144,13 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "t.molodoy.unitycompose": {
+      "version": "https://github.com/tmolodoy671games/Unity-Compose.git?path=/Assets/Packages/UnityCompose",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "aaa3322128f56eaa59c79bfa7f357503d05faadb"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
