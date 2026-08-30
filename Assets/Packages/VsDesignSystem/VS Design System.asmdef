@@ -1,7 +1,0 @@
-﻿{
-  "name": "VS Design System",
-  "rootNamespace": "VS.DesignSystem",
-  "references": [
-    "UnityCompose"
-  ]
-}

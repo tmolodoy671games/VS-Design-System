@@ -2,7 +2,7 @@
 
 using UnityCompose;
 
-namespace VS.DesignSystem;
+namespace VS.UiToolkit;
 
 public readonly record struct RoundedCornerShape(
     Dp TopLeft,

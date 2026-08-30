@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109173144}
   - component: {fileID: 109173143}
+  - component: {fileID: 109173145}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a717e0c7e19b0e34da5254048d03c557, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a19f34031f8a3484594361245ec819a4, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -174,6 +175,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &109173145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109173142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dac3b7b584d4d9a9f01ee990b16a114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Samples::Samples.Samples.Behaviors.IndicationSample
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

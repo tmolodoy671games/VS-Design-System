@@ -1,0 +1,53 @@
+#nullable enable
+// ReSharper disable ArrangeNamespaceBody
+
+using UnityCompose;
+using UnityEngine;
+using VS.UiToolkit;
+using System;
+using SharpExtensions;
+using static UnityCompose.ComposeFunctions;
+
+namespace Samples.Samples.Behaviors
+{
+    internal partial class IndicationSample
+    {
+        protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(322475881);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                {
+                    __Box(alignment: Alignment.Center, modifier: Modifier.Width(100.Dp()).Height(40.Dp()).Border(16.Dp()).Background(Color.forestGreen).DsHoverIndication(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    {
+                        __Text("Click me!", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01);
+                    })), __composer: __composer, __changed: 0b_00_00_00);
+                })), __composer: __composer, __changed: 0b_00_00_00);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(322475881, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+        }
+
+        protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(927498862);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __Content(__composer: __composer, __changed: 0b_00);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(927498862, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+        }
+    }
+}

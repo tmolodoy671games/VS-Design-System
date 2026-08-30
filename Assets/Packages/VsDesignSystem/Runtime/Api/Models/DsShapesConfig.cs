@@ -1,5 +1,5 @@
 // ReSharper disable CheckNamespace
 
-namespace VS.DesignSystem;
+namespace VS.UiToolkit;
 
 public record DsShapesConfig();

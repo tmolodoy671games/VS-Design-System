@@ -2,6 +2,7 @@
   "name": "Samples",
   "rootNamespace": "Samples",
   "references": [
-    "UnityCompose"
+    "UnityCompose",
+    "VS UI Toolkit"
   ]
 }

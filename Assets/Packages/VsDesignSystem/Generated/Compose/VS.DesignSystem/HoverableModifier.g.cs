@@ -8,7 +8,7 @@ using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine.UIElements;
 using static UnityCompose.ComposeFunctions;
 
-namespace VS.DesignSystem;
+namespace VS.UiToolkit;
 public static partial class ModifierExtensions
 {
     public static IModifier __Hoverable(this IModifier modifier, IMutableInteractionSource interactionSource, bool enabled = true, global::UnityCompose.Composer __composer = null !, int __changed = -1)

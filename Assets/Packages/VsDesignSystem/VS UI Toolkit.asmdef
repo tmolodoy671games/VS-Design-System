@@ -1,0 +1,7 @@
+﻿{
+  "name": "VS UI Toolkit",
+  "rootNamespace": "VS.UiToolkit",
+  "references": [
+    "UnityCompose"
+  ]
+}
