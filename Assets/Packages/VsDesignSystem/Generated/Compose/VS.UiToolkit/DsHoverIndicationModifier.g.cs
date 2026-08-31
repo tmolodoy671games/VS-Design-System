@@ -35,7 +35,7 @@ public static partial class ModifierExtensions
         {
             var isHovered = interactionSource.__CollectIsHoveredAsState(__composer: __composer, __changed: 0b_00).Value;
             var visibilityProgress = __AnimateFloatAsState(isHovered.ToInt(), __composer: __composer, __changed: 0b_01_01_00).Value;
-            __Spacer(modifier: Modifier.Size(100.Percent()).Border(10.Dp()).Background(Color.cornflowerBlue.With(a: visibilityProgress * 0.5f)).Scale(0.76f + 0.25f * visibilityProgress).Float().Offset(x: -50.Percent(), y: -50.Percent()).Position(top: 50.Percent(), left: 50.Percent()), __composer: __composer, __changed: 0b_00);
+            __Spacer(modifier: Modifier.Size(100.Percent()).Clip(RoundedCornerShape(10.Dp())).Background(Color.cornflowerBlue.With(a: visibilityProgress * 0.5f)).Scale(0.76f + 0.25f * visibilityProgress).Float().Offset(x: -50.Percent(), y: -50.Percent()).Position(top: 50.Percent(), left: 50.Percent()), __composer: __composer, __changed: 0b_00);
         })));
     }
 }

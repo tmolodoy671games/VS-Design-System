@@ -30,7 +30,7 @@ public static partial class ModifierExtensions
                 Spacer(
                     modifier: Modifier
                         .Size(100.Percent())
-                        .Border(10.Dp())
+                        .Clip(RoundedCornerShape(10.Dp()))
                         .Background(Color.cornflowerBlue.With(a: visibilityProgress * 0.5f))
                         .Scale(0.76f + 0.25f * visibilityProgress)
                         .Float()

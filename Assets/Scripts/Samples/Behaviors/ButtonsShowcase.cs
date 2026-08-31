@@ -23,8 +23,8 @@ namespace Samples.Samples.Behaviors
                         Column(
                             modifier: Modifier
                                 .Background(DsTheme.ColorScheme.Surface)
-                                .Padding(16.Dp())
-                                .Border(16.Dp()),
+                                .Padding(all: 16.Dp())
+                                .Clip(RoundedCornerShape(16.Dp())),
                             content: () =>
                             {
                                 Button(
@@ -36,6 +36,18 @@ namespace Samples.Samples.Behaviors
                                     enabled: false,
                                     onClick: () => { },
                                     content: () => Text("Disabled Button")
+                                );
+
+                                Spacer(Modifier.Height(12.Dp()));
+                                TextButton(
+                                    onClick: () => { },
+                                    content: () => Text("TextButton")
+                                );
+                                Spacer(Modifier.Height(12.Dp()));
+                                TextButton(
+                                    enabled: false,
+                                    onClick: () => { },
+                                    content: () => Text("Disabled TextButton")
                                 );
                             }
                         );

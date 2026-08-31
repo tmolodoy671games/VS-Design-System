@@ -11,7 +11,7 @@ public readonly record struct DsThemeConfig(
 {
     public static readonly DsThemeConfig LightTheme = new(
         ColorScheme: ColorSchemeConfig.LightColorScheme,
-        Typography: new TypographyConfig(),
+        Typography: TypographyConfig.Default,
         Shapes: new ShapesConfig(),
         Icons: new IconsConfig()
     );

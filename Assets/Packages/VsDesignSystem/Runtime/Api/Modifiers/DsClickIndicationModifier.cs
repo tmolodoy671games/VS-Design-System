@@ -39,7 +39,7 @@ public static partial class ModifierExtensions
                 Spacer(
                     modifier: Modifier
                         .Size(100.Percent())
-                        .Border(4.Dp())
+                        .Clip(RoundedCornerShape(4.Dp()))
                         .Background(Color.white.With(a: hoveredAlphaProgress * 0.25f))
                         .Scale(0.76f + 0.25f * hoveredVisibilityProgress)
                         .Float()
@@ -91,7 +91,7 @@ public static partial class ModifierExtensions
                 Spacer(
                     modifier: Modifier
                         .Size(pressedIndicationSize)
-                        .Border(pressedIndicationSize / 2)
+                        .Clip(RoundedCornerShape(pressedIndicationSize / 2))
                         .Background(Color.black.With(a: pressedVisibilityProgress * 0.5f))
                         .Offset(
                             x: -pressedIndicationSize / 2,
