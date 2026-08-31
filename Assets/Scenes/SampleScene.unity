@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 109173143}
   - component: {fileID: 109173145}
   m_Layer: 0
-  m_Name: UI
+  m_Name: Buttons Showcase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -459,5 +459,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 109173144}
   - {fileID: 1714608060}
+  - {fileID: 109173144}
