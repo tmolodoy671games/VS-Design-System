@@ -3,8 +3,8 @@
 namespace VS.UiToolkit;
 
 public readonly record struct DsThemeConfig(
-    DsColorSchemeConfig ColorScheme,
-    DsTypographyConfig Typography,
-    DsShapesConfig Shapes,
-    DsIconsConfig Icons
+    ColorSchemeConfig ColorScheme,
+    TypographyConfig Typography,
+    ShapesConfig Shapes,
+    IconsConfig Icons
 );

@@ -2,4 +2,4 @@
 
 namespace VS.UiToolkit;
 
-public record DsShapesConfig();
+public record ShapesConfig();
