@@ -18,9 +18,9 @@ namespace VS.UiToolkit
         [SerializeField] private SerializableDsShapesConfig shapes = new();
         [SerializeField] private SerializableDsIconsConfig icons = new();
 
-        public DsThemeConfig ToDsThemeConfig()
+        public ThemeConfig ToDsThemeConfig()
         {
-            return new DsThemeConfig(
+            return new ThemeConfig(
                 ColorScheme: colorScheme.ToDsColorSchemeConfig(),
                 Typography: typography.ToDsTypographyConfig(),
                 Shapes: shapes.ToDsShapesConfig(),

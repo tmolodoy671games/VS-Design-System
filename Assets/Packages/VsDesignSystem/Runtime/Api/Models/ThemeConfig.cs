@@ -2,17 +2,17 @@
 
 namespace VS.UiToolkit;
 
-public readonly record struct DsThemeConfig(
+public readonly record struct ThemeConfig(
     ColorSchemeConfig ColorScheme,
     TypographyConfig Typography,
     ShapesConfig Shapes,
     IconsConfig Icons
 )
 {
-    public static readonly DsThemeConfig LightTheme = new(
+    public static readonly ThemeConfig LightTheme = new(
         ColorScheme: ColorSchemeConfig.LightColorScheme,
         Typography: TypographyConfig.Default,
-        Shapes: new ShapesConfig(),
+        Shapes: ShapesConfig.Default,
         Icons: new IconsConfig()
     );
 }

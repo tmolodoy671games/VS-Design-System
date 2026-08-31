@@ -25,13 +25,13 @@ public static partial class UiToolkitComposeFunctions
         IModifier? modifier = null
     )
     {
-        var typography = DsTheme.Typography;
+        var typography = Theme.Typography;
         var resolvedColors = colors.GetOrDefault(ButtonDefaults.ButtonColors());
         var resolvedContentPadding = contentPadding.GetOrDefault(ButtonDefaults.ContentPadding);
 
         interactionSource ??= Remember(MutableInteractionSource);
         var isHovered = interactionSource.CollectIsHoveredAsState().Value;
-        var resolvedShape = shapes.GetOrDefault(ButtonDefaults.Shapes).GetShape(false);
+        var resolvedShape = shapes.GetOrDefault(ButtonDefaults.Shapes).GetShape(isHovered);
         var isPressed = interactionSource.CollectIsPressedAsState().Value;
         var contentBackground = AnimateColorAsState(resolvedColors.GetContainerColor(enabled)).Value;
         Box(
@@ -39,7 +39,7 @@ public static partial class UiToolkitComposeFunctions
             modifier: modifier.OrEmpty()
                 .Padding(resolvedContentPadding)
                 .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f).Value)
-                .Clip(resolvedShape)
+                .Clip(AnimateRoundedCornerShapeAsState(resolvedShape).Value)
                 .Background(contentBackground)
                 .DsClickIndication(
                     enabled: enabled,
@@ -97,15 +97,12 @@ internal static partial class ButtonDefaults
 {
     private const float DisabledAlpha = 0.38f;
 
-    public static readonly ButtonShapes Shapes = new(
-        Shape: new RoundedCornerShape(16.Dp()),
-        HoveredShape: new RoundedCornerShape(24.Dp())
+    [Composable]
+    public static ButtonShapes Shapes => new(
+        Shape: Theme.Shapes.Medium,
+        HoveredShape: Theme.Shapes.Large
     );
-
-    public static readonly RoundedCornerShape HoveredShape = new(
-        All: 24.Dp()
-    );
-
+    
     public static readonly PaddingValues ContentPadding = new(
         Horizontal: 24.Dp(),
         Vertical: 8.Dp()
@@ -114,7 +111,7 @@ internal static partial class ButtonDefaults
     [Composable]
     public static ButtonColors TextButtonColors()
     {
-        var colors = DsTheme.ColorScheme;
+        var colors = Theme.ColorScheme;
         return new ButtonColors(
             ContainerColor: new Color(),
             ContentColor: colors.Primary,
@@ -126,7 +123,7 @@ internal static partial class ButtonDefaults
     [Composable]
     public static ButtonColors ButtonColors()
     {
-        var colors = DsTheme.ColorScheme;
+        var colors = Theme.ColorScheme;
         return new ButtonColors(
             ContainerColor: colors.Primary,
             ContentColor: colors.OnPrimary,

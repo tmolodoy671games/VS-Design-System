@@ -22,7 +22,7 @@ namespace Samples.Samples.Behaviors
                     {
                         Column(
                             modifier: Modifier
-                                .Background(DsTheme.ColorScheme.Surface)
+                                .Background(Theme.ColorScheme.Surface)
                                 .Padding(all: 16.Dp())
                                 .Clip(RoundedCornerShape(16.Dp())),
                             content: () =>
