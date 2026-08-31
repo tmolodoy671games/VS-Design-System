@@ -1,8 +1,10 @@
 #nullable enable
 // ReSharper disable ArrangeNamespaceBody
 
+using System.Reflection.Emit;
 using Sirenix.OdinInspector;
 using UnityCompose;
+using Label = UnityEngine.UIElements.Label;
 using System;
 using SharpExtensions;
 using static UnityCompose.ComposeFunctions;
@@ -13,7 +15,7 @@ namespace Samples.Samples.Behaviors
     {
         protected override void __Content(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(948608294);
+            var __isCreated = __composer.StartRestartGroup(1145274008);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -39,12 +41,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(948608294, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
+            __composer.EndRestartGroup(1145274008, __isRestarted)?.UpdateScope(() => __Content(__composer, 0));
         }
 
         protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(2115703257);
+            var __isCreated = __composer.StartRestartGroup(200443589);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -55,7 +57,7 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2115703257, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+            __composer.EndRestartGroup(200443589, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
     }
 }

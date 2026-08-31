@@ -6,7 +6,7 @@ namespace VS.UiToolkit;
 
 public static class DsThemeHolder
 {
-    private static readonly IMutableState<DsThemeConfig> ThemeState = MutableStateOf<DsThemeConfig>(new());
+    private static readonly IMutableState<DsThemeConfig> ThemeState = MutableStateOf(DsThemeConfig.LightTheme);
     
     internal static DsThemeConfig CurrentTheme => ThemeState.Value;
     

@@ -2,7 +2,7 @@
   "dependencies": {
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.unity.ide.rider": "3.0.40",
-    "com.unity.inputsystem": "1.19.0",
+    "com.unity.inputsystem": "1.20.0",
     "com.unity.render-pipelines.universal": "17.3.0",
     "com.unity.ugui": "2.0.0",
     "t.molodoy.unitycompose": "https://github.com/tmolodoy671games/Unity-Compose.git?path=/Assets/Packages/UnityCompose",

@@ -7,4 +7,12 @@ public readonly record struct DsThemeConfig(
     TypographyConfig Typography,
     ShapesConfig Shapes,
     IconsConfig Icons
-);
+)
+{
+    public static readonly DsThemeConfig LightTheme = new(
+        ColorScheme: ColorSchemeConfig.LightColorScheme,
+        Typography: new TypographyConfig(),
+        Shapes: new ShapesConfig(),
+        Icons: new IconsConfig()
+    );
+}

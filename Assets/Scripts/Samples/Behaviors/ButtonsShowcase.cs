@@ -1,7 +1,9 @@
 // ReSharper disable ArrangeNamespaceBody
 
+using System.Reflection.Emit;
 using Sirenix.OdinInspector;
 using UnityCompose;
+using Label = UnityEngine.UIElements.Label;
 
 namespace Samples.Samples.Behaviors
 {
