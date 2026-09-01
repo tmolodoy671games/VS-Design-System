@@ -13,7 +13,7 @@ public static partial class UiToolkitComposeFunctions
     [Composable] public static ThemeConfig Theme => LocalTheme.Current;
 
     [Composable]
-    public static void WithDsTheme(ComposableContent content)
+    public static void WithTheme(ComposableContent content)
     {
         CompositionLocalProvider(
             LocalTheme.Provides(DsThemeHolder.CurrentTheme),

@@ -17,6 +17,7 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
+        float scale = 1.1f,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
@@ -33,18 +34,24 @@ public static partial class UiToolkitComposeFunctions
         var isPressed = interactionSource.CollectIsPressedAsState().Value;
         var contentBackground = AnimateColorAsState(resolvedColors.GetContainerColor(enabled)).Value;
         var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
+        var buttonModifier = modifier.OrEmpty()
+            .Padding(resolvedContentPadding)
+            .Margin(all: 4.Dp())
+            .Clip(AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec).Value)
+            .Background(contentBackground)
+            .ClickIndication(
+                enabled: enabled,
+                onClick: onClick,
+                interactionSource: interactionSource
+            );
+        if (scale > 0)
+        {
+            buttonModifier = buttonModifier
+                .Scale(AnimateFloatAsState(isHovered ? scale : 1f, bounceAnimationSpec).Value);
+        }
         Box(
             alignment: Alignment.Center,
-            modifier: modifier.OrEmpty()
-                .Padding(resolvedContentPadding)
-                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec).Value)
-                .Clip(AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec).Value)
-                .Background(contentBackground)
-                .DsClickIndication(
-                    enabled: enabled,
-                    onClick: onClick,
-                    interactionSource: interactionSource
-                ),
+            modifier: buttonModifier,
             content: () =>
             {
                 var contentTint = AnimateColorAsState(resolvedColors.GetContentColor(enabled)).Value;
@@ -72,6 +79,7 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
+        float scale = 1.1f,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
@@ -83,6 +91,7 @@ public static partial class UiToolkitComposeFunctions
             content: content,
             interactionSource: interactionSource,
             enabled: enabled,
+            scale: scale,
             shapes: shapes,
             colors: colors.GetOrDefault(ButtonDefaults.SecondaryButtonColors()),
             contentPadding: contentPadding,
@@ -96,6 +105,7 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
+        float scale = 1.1f,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
@@ -108,6 +118,7 @@ public static partial class UiToolkitComposeFunctions
             content: content,
             interactionSource: interactionSource,
             enabled: enabled,
+            scale: scale,
             shapes: shapes,
             colors: resolvedColors,
             contentPadding: contentPadding,

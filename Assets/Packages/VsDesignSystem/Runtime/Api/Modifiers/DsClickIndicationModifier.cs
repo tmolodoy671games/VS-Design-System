@@ -12,7 +12,7 @@ namespace VS.UiToolkit;
 public static partial class ModifierExtensions
 {
     [Composable]
-    public static IModifier DsClickIndication(
+    public static IModifier ClickIndication(
         this IModifier modifier,
         Action onClick,
         IMutableInteractionSource? interactionSource = null,
@@ -39,9 +39,9 @@ public static partial class ModifierExtensions
                 Spacer(
                     modifier: Modifier
                         .Size(100.Percent())
-                        .Clip(RoundedCornerShape(4.Dp()))
+                        .Clip(RoundedCornerShape(16.Dp()))
                         .Background(Color.white.With(a: hoveredAlphaProgress * 0.25f))
-                        .Scale(0.76f + 0.25f * hoveredVisibilityProgress)
+                        .Scale(0.7f + 0.5f * hoveredVisibilityProgress)
                         .Float()
                         .Offset(x: -50.Percent(), y: -50.Percent())
                         .Position(

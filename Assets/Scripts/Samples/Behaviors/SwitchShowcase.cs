@@ -10,7 +10,7 @@ namespace Samples.Samples.Behaviors
         [Composable]
         protected override void Content()
         {
-            WithDsTheme(() =>
+            WithTheme(() =>
             {
                 Box(
                     alignment: Alignment.Center,
@@ -24,28 +24,7 @@ namespace Samples.Samples.Behaviors
                                 .Clip(RoundedCornerShape(16.Dp())),
                             content: () =>
                             {
-                                var isChecked = Remember(() => MutableStateOf(true));
-                                Switch(
-                                    isChecked: isChecked.Value,
-                                    onCheckedChange: it => isChecked.Value = it
-                                );
-                                Spacer(Modifier.Height(12.Dp()));
-                                Switch(
-                                    isChecked: false,
-                                    onCheckedChange: _ => { }
-                                );
-                                Spacer(Modifier.Height(12.Dp()));
-                                Switch(
-                                    isChecked: true,
-                                    onCheckedChange: _ => { },
-                                    enabled: false
-                                );
-                                Spacer(Modifier.Height(12.Dp()));
-                                Switch(
-                                    isChecked: false,
-                                    onCheckedChange: _ => { },
-                                    enabled: false
-                                );
+                      
                             }
                         );
                     }

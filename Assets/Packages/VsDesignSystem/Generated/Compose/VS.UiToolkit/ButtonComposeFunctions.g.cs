@@ -12,29 +12,31 @@ using static UnityCompose.ComposeFunctions;
 namespace VS.UiToolkit;
 public static partial class UiToolkitComposeFunctions
 {
-    public static void __Button(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static void __Button(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, float scale = 1.1f, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, shapes, colors, contentPadding, modifier);
+        var(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, scale, shapes, colors, contentPadding, modifier);
         var __isCreated = __composer.StartRestartGroup(1289672150);
         var __dirty = __changed;
-        if ((__changed & 0b_00_00_00_00_00_00_00_11) == 0)
-            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
-        if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
-            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
-        if ((__changed & 0b_00_00_00_00_00_11_00_00) == 0)
-            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
-        if ((__changed & 0b_00_00_00_00_11_00_00_00) == 0)
-            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
-        if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
-        if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
-        if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
-        if ((__changed & 0b_11_00_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
+            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
+        if ((__changed & 0b_00_00_00_00_00_00_00_11_00) == 0)
+            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
+        if ((__changed & 0b_00_00_00_00_00_00_11_00_00) == 0)
+            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
+        if ((__changed & 0b_00_00_00_00_00_11_00_00_00) == 0)
+            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
+        if ((__changed & 0b_00_00_00_00_11_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(scale) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
+        if ((__changed & 0b_00_00_00_11_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
+        if ((__changed & 0b_00_00_11_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
+        if ((__changed & 0b_00_11_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_11_00_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
-        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01)
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01_01)
         {
             var typography = Theme.Typography;
             var resolvedColors = colors.GetOrDefault(ButtonDefaults.__PrimaryButtonColors(__composer: __composer, __changed: 0b_00));
@@ -45,10 +47,18 @@ public static partial class UiToolkitComposeFunctions
             var isPressed = interactionSource.__CollectIsPressedAsState(__composer: __composer, __changed: 0b_00).Value;
             var contentBackground = __AnimateColorAsState(resolvedColors.GetContainerColor(enabled), __composer: __composer, __changed: 0b_01_00).Value;
             var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
-            __Box(alignment: Alignment.Center, modifier: modifier.OrEmpty().Padding(resolvedContentPadding).Scale(__AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value).Clip(__AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value).Background(contentBackground).__DsClickIndication(enabled: enabled, onClick: onClick, interactionSource: interactionSource, __composer: __composer, __changed: 0b_01_00_00 | (__dirty & 0b_00_00_11) | (__dirty & 0b_11_00_00_00)), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_11_00) == 0b_00_00_00_00_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_10_00_00_00).Changed<global::VS.UiToolkit.TypographyConfig>(typography!).Changed<global::VS.UiToolkit.ButtonColors>(resolvedColors!).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounceAnimationSpec!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            var buttonModifier = modifier.OrEmpty().Padding(resolvedContentPadding).Margin(all: 4.Dp()).Clip(__AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value).Background(contentBackground).__ClickIndication(enabled: enabled, onClick: onClick, interactionSource: interactionSource, __composer: __composer, __changed: 0b_01_00_00 | (__dirty & 0b_00_00_11) | (__dirty & 0b_11_00_00_00));
+            __composer.StartReplaceGroup(1714623680);
+            if (scale > 0)
+            {
+                buttonModifier = buttonModifier.Scale(__AnimateFloatAsState(isHovered ? scale : 1f, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value);
+            }
+
+            __composer.EndReplaceGroup(1714623680);
+            __Box(alignment: Alignment.Center, modifier: buttonModifier, content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_00_11_00) == 0b_00_00_00_00_00_00_00_10_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_00_10_00_00_00).Changed<global::VS.UiToolkit.TypographyConfig>(typography!).Changed<global::VS.UiToolkit.ButtonColors>(resolvedColors!).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounceAnimationSpec!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
             {
                 var contentTint = __AnimateColorAsState(resolvedColors.GetContentColor(enabled), __composer: __composer, __changed: 0b_01_00).Value;
-                __CompositionLocalProvider(LocalTextStyle.Provides(typography.Control), LocalContentColor.Provides(contentTint), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_11_00) == 0b_00_00_00_00_00_00_10_00).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounceAnimationSpec!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __CompositionLocalProvider(LocalTextStyle.Provides(typography.Control), LocalContentColor.Provides(contentTint), (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_00_00_11_00) == 0b_00_00_00_00_00_00_00_10_00).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounceAnimationSpec!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
                     __Row(verticalAlignment: Alignment.CenterVertically, horizontalArrangement: Arrangement.Center, modifier: Modifier.Scale(__AnimateFloatAsState(isPressed ? 0.75f : 1f, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value), content: content, __composer: __composer, __changed: ((__dirty & 0b_00_00_11_00) >> 2));
                 })), __composer: __composer, __changed: 0b_00_00_00);
@@ -59,79 +69,83 @@ public static partial class UiToolkitComposeFunctions
             __composer.SkipToGroupEnd();
         }
 
-        __dirty = 0b_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(1289672150, __isRestarted)?.UpdateScope(() => __Button(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
+        __composer.EndRestartGroup(1289672150, __isRestarted)?.UpdateScope(() => __Button(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
-    public static void __SecondaryButton(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static void __SecondaryButton(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, float scale = 1.1f, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, shapes, colors, contentPadding, modifier);
-        var __isCreated = __composer.StartRestartGroup(293940656);
+        var(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, scale, shapes, colors, contentPadding, modifier);
+        var __isCreated = __composer.StartRestartGroup(1228586580);
         var __dirty = __changed;
-        if ((__changed & 0b_00_00_00_00_00_00_00_11) == 0)
-            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
-        if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
-            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
-        if ((__changed & 0b_00_00_00_00_00_11_00_00) == 0)
-            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
-        if ((__changed & 0b_00_00_00_00_11_00_00_00) == 0)
-            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
-        if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
-        if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
-        if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
-        if ((__changed & 0b_11_00_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
+            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
+        if ((__changed & 0b_00_00_00_00_00_00_00_11_00) == 0)
+            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
+        if ((__changed & 0b_00_00_00_00_00_00_11_00_00) == 0)
+            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
+        if ((__changed & 0b_00_00_00_00_00_11_00_00_00) == 0)
+            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
+        if ((__changed & 0b_00_00_00_00_11_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(scale) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
+        if ((__changed & 0b_00_00_00_11_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
+        if ((__changed & 0b_00_00_11_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
+        if ((__changed & 0b_00_11_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_11_00_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
-        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01)
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01_01)
         {
-            __Button(onClick: onClick, content: content, interactionSource: interactionSource, enabled: enabled, shapes: shapes, colors: colors.GetOrDefault(ButtonDefaults.__SecondaryButtonColors(__composer: __composer, __changed: 0b_00)), contentPadding: contentPadding, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_00_11_00) | (__dirty & 0b_00_00_00_00_00_11_00_00) | (__dirty & 0b_00_00_00_00_11_00_00_00) | (__dirty & 0b_00_00_00_11_00_00_00_00) | (__dirty & 0b_00_11_00_00_00_00_00_00) | (__dirty & 0b_11_00_00_00_00_00_00_00));
+            __Button(onClick: onClick, content: content, interactionSource: interactionSource, enabled: enabled, scale: scale, shapes: shapes, colors: colors.GetOrDefault(ButtonDefaults.__SecondaryButtonColors(__composer: __composer, __changed: 0b_00)), contentPadding: contentPadding, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_00_00_11_00) | (__dirty & 0b_00_00_00_00_00_00_11_00_00) | (__dirty & 0b_00_00_00_00_00_11_00_00_00) | (__dirty & 0b_00_00_00_00_11_00_00_00_00) | (__dirty & 0b_00_00_00_11_00_00_00_00_00) | (__dirty & 0b_00_11_00_00_00_00_00_00_00) | (__dirty & 0b_11_00_00_00_00_00_00_00_00));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __dirty = 0b_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(293940656, __isRestarted)?.UpdateScope(() => __SecondaryButton(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
+        __composer.EndRestartGroup(1228586580, __isRestarted)?.UpdateScope(() => __SecondaryButton(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
-    public static void __TextButton(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static void __TextButton(Action onClick, ComposableContent content, IMutableInteractionSource? interactionSource = null, bool enabled = true, float scale = 1.1f, Optional<ButtonShapes> shapes = default, Optional<ButtonColors> colors = default, Optional<PaddingValues> contentPadding = default, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
-        var(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, shapes, colors, contentPadding, modifier);
-        var __isCreated = __composer.StartRestartGroup(371257038);
+        var(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier) = (onClick, content, interactionSource, enabled, scale, shapes, colors, contentPadding, modifier);
+        var __isCreated = __composer.StartRestartGroup(865857060);
         var __dirty = __changed;
-        if ((__changed & 0b_00_00_00_00_00_00_00_11) == 0)
-            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_01;
-        if ((__changed & 0b_00_00_00_00_00_00_11_00) == 0)
-            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_01_00;
-        if ((__changed & 0b_00_00_00_00_00_11_00_00) == 0)
-            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_01_00_00;
-        if ((__changed & 0b_00_00_00_00_11_00_00_00) == 0)
-            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_01_00_00_00;
-        if ((__changed & 0b_00_00_00_11_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00 : 0b_00_00_00_01_00_00_00_00;
-        if ((__changed & 0b_00_00_11_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00;
-        if ((__changed & 0b_00_11_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00;
-        if ((__changed & 0b_11_00_00_00_00_00_00_00) == 0)
-            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_00_00_00_00_00_00_00_00_11) == 0)
+            __dirty |= __composer.Changed(onClick) ? 0b_00_00_00_00_00_00_00_00_10 : 0b_00_00_00_00_00_00_00_00_01;
+        if ((__changed & 0b_00_00_00_00_00_00_00_11_00) == 0)
+            __dirty |= __composer.Changed(content) ? 0b_00_00_00_00_00_00_00_10_00 : 0b_00_00_00_00_00_00_00_01_00;
+        if ((__changed & 0b_00_00_00_00_00_00_11_00_00) == 0)
+            __dirty |= __composer.Changed(interactionSource) ? 0b_00_00_00_00_00_00_10_00_00 : 0b_00_00_00_00_00_00_01_00_00;
+        if ((__changed & 0b_00_00_00_00_00_11_00_00_00) == 0)
+            __dirty |= __composer.Changed(enabled) ? 0b_00_00_00_00_00_10_00_00_00 : 0b_00_00_00_00_00_01_00_00_00;
+        if ((__changed & 0b_00_00_00_00_11_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(scale) ? 0b_00_00_00_00_10_00_00_00_00 : 0b_00_00_00_00_01_00_00_00_00;
+        if ((__changed & 0b_00_00_00_11_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(shapes) ? 0b_00_00_00_10_00_00_00_00_00 : 0b_00_00_00_01_00_00_00_00_00;
+        if ((__changed & 0b_00_00_11_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(colors) ? 0b_00_00_10_00_00_00_00_00_00 : 0b_00_00_01_00_00_00_00_00_00;
+        if ((__changed & 0b_00_11_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(contentPadding) ? 0b_00_10_00_00_00_00_00_00_00 : 0b_00_01_00_00_00_00_00_00_00;
+        if ((__changed & 0b_11_00_00_00_00_00_00_00_00) == 0)
+            __dirty |= __composer.Changed(modifier) ? 0b_10_00_00_00_00_00_00_00_00 : 0b_01_00_00_00_00_00_00_00_00;
         var __isRestarted = __composer.IsRestarted();
-        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01)
+        if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01_01)
         {
             var resolvedColors = colors.GetOrDefault(ButtonDefaults.__TextButtonColors(__composer: __composer, __changed: 0b_00));
-            __Button(onClick: onClick, content: content, interactionSource: interactionSource, enabled: enabled, shapes: shapes, colors: resolvedColors, contentPadding: contentPadding, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_00_11_00) | (__dirty & 0b_00_00_00_00_00_11_00_00) | (__dirty & 0b_00_00_00_00_11_00_00_00) | (__dirty & 0b_00_00_00_11_00_00_00_00) | (__dirty & 0b_00_11_00_00_00_00_00_00) | (__dirty & 0b_11_00_00_00_00_00_00_00));
+            __Button(onClick: onClick, content: content, interactionSource: interactionSource, enabled: enabled, scale: scale, shapes: shapes, colors: resolvedColors, contentPadding: contentPadding, modifier: modifier, __composer: __composer, __changed: (__dirty & 0b_00_00_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_00_00_11_00) | (__dirty & 0b_00_00_00_00_00_00_11_00_00) | (__dirty & 0b_00_00_00_00_00_11_00_00_00) | (__dirty & 0b_00_00_00_00_11_00_00_00_00) | (__dirty & 0b_00_00_00_11_00_00_00_00_00) | (__dirty & 0b_00_11_00_00_00_00_00_00_00) | (__dirty & 0b_11_00_00_00_00_00_00_00_00));
         }
         else
         {
             __composer.SkipToGroupEnd();
         }
 
-        __dirty = 0b_01_01_01_01_01_01_01_01;
-        __composer.EndRestartGroup(371257038, __isRestarted)?.UpdateScope(() => __TextButton(__onClick, __content, __interactionSource, __enabled, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __dirty = 0b_01_01_01_01_01_01_01_01_01;
+        __composer.EndRestartGroup(865857060, __isRestarted)?.UpdateScope(() => __TextButton(__onClick, __content, __interactionSource, __enabled, __scale, __shapes, __colors, __contentPadding, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }
 

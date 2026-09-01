@@ -12,7 +12,7 @@ using static UnityCompose.ComposeFunctions;
 namespace VS.UiToolkit;
 public static partial class ModifierExtensions
 {
-    public static IModifier __DsClickIndication(this IModifier modifier, Action onClick, IMutableInteractionSource? interactionSource = null, Optional<AnimationSpec> animationSpec = default, bool enabled = true, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static IModifier __ClickIndication(this IModifier modifier, Action onClick, IMutableInteractionSource? interactionSource = null, Optional<AnimationSpec> animationSpec = default, bool enabled = true, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__modifier, __onClick, __interactionSource, __animationSpec, __enabled) = (modifier, onClick, interactionSource, animationSpec, enabled);
         __composer.StartReplaceGroup(2090165684);
@@ -42,7 +42,7 @@ public static partial class ModifierExtensions
             var isPressed = interactionSource.__CollectIsPressedAsState(__composer: __composer, __changed: 0b_00).Value;
             var hoveredVisibilityProgress = __AnimateFloatAsState(isHovered.ToInt(), animationSpec, __composer: __composer, __changed: ((__dirty & 0b_11_00_00_00) >> 4)).Value;
             var hoveredAlphaProgress = __AnimateFloatAsState((isHovered && !isPressed).ToInt(), animationSpec, __composer: __composer, __changed: ((__dirty & 0b_11_00_00_00) >> 4)).Value;
-            __Spacer(modifier: Modifier.Size(100.Percent()).Clip(RoundedCornerShape(4.Dp())).Background(Color.white.With(a: hoveredAlphaProgress * 0.25f)).Scale(0.76f + 0.25f * hoveredVisibilityProgress).Float().Offset(x: -50.Percent(), y: -50.Percent()).Position(top: 50.Percent(), left: 50.Percent()), __composer: __composer, __changed: 0b_00);
+            __Spacer(modifier: Modifier.Size(100.Percent()).Clip(RoundedCornerShape(16.Dp())).Background(Color.white.With(a: hoveredAlphaProgress * 0.25f)).Scale(0.7f + 0.5f * hoveredVisibilityProgress).Float().Offset(x: -50.Percent(), y: -50.Percent()).Position(top: 50.Percent(), left: 50.Percent()), __composer: __composer, __changed: 0b_00);
             var pressPosition = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(MutableStateOf(Vector2.zero)));
             __DisposableEffect(interactionSource, (!__composer.BuildChanged().Changed<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.IMutableInteractionSource>(interactionSource!).Changed<global::UnityCompose.IMutableState<global::UnityEngine.Vector2>>(pressPosition!).Get() ? __composer.RememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityCompose.IDisposableEffectScope, global::UnityCompose.IDisposableEffectResult>>(scope =>
             {

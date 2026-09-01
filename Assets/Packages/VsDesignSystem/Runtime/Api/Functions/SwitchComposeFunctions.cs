@@ -44,6 +44,7 @@ public static partial class UiToolkitComposeFunctions
         var isHovered = interactionSource.CollectIsHoveredAsState().Value;
         Box(
             modifier: modifier.OrEmpty()
+                .Margin(all: 4.Dp())
                 .Background(resolvedColors.GetTrackColor(enabled, isChecked))
                 .Size(
                     width: trackWidth.Dp(),
@@ -54,7 +55,7 @@ public static partial class UiToolkitComposeFunctions
                     RoundedCornerShape(trackHeight.Dp() / 2)
                 )
                 .Padding(all: padding.Dp())
-                .DsClickIndication(
+                .ClickIndication(
                     onClick: () => onCheckedChange?.Invoke(!isChecked),
                     interactionSource: interactionSource,
                     enabled: enabled
