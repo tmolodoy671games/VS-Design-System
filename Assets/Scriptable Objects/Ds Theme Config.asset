@@ -13,7 +13,80 @@ MonoBehaviour:
   m_Name: Ds Theme Config
   m_EditorClassIdentifier: VS UI Toolkit::VS.UiToolkit.SerializableDsThemeConfig
   colorScheme:
-    primary: {r: 0.404, g: 0.314, b: 0.643, a: 1}
-    onPrimary: {r: 1, g: 1, b: 1, a: 1}
+    primary: {r: 0.23598003, g: 0.39233327, b: 0.54, a: 1}
+    primaryContainer: {r: 0.5590245, g: 0.66945994, b: 0.7735849, a: 1}
+    secondary: {r: 0.24920999, g: 0.54700536, b: 0.585, a: 1}
+    secondaryContainer: {r: 0.370172, g: 0.6753143, b: 0.71599996, a: 1}
     surface: {r: 1, g: 0.984, b: 0.996, a: 1}
-    onSurface: {r: 0.11, g: 0.106, b: 0.122, a: 1}
+    surfaceVariant: {r: 1, g: 1, b: 1, a: 1}
+    outline: {r: 1, g: 1, b: 1, a: 1}
+    onLight: {r: 0, g: 0, b: 0, a: 1}
+    onDark: {r: 1, g: 1, b: 1, a: 1}
+    hover: {r: 1, g: 1, b: 1, a: 1}
+    press: {r: 1, g: 1, b: 1, a: 1}
+  typography:
+    title:
+      fontSize: 48
+      hasColor: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+      fontWeight: 0
+      fontStyle: 0
+    control:
+      fontSize: 24
+      hasColor: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+      fontWeight: 0
+      fontStyle: 0
+    body:
+      fontSize: 14
+      hasColor: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+      fontWeight: 0
+      fontStyle: 0
+    label:
+      fontSize: 8
+      hasColor: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+      fontWeight: 0
+      fontStyle: 0
+  shapes:
+    medium:
+      topLeft: 16
+      topRight: 16
+      bottomLeft: 16
+      bottomRight: 16
+    large:
+      topLeft: 32
+      topRight: 32
+      bottomLeft: 32
+      bottomRight: 32
+  icons:
+    arrowSmall: {fileID: 0}
+  animationSpecs:
+    bounce:
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 3.706887
+          outSlope: 3.706887
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.079010665
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: -2.5405798
+          outSlope: -2.5405798
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.15482616
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      duration: 0.25
+      delay: 0

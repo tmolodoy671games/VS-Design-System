@@ -3,10 +3,8 @@
 using System;
 using SharpExtensions;
 using UnityCompose;
-using UnityCompose.Packages.UnityCompose.Runtime.Api.Models;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
-using UnityEngine.UIElements;
 using VS.UiToolkit.Packages.VsDesignSystem.Runtime.Impl.Extensions;
 
 namespace VS.UiToolkit;
@@ -26,7 +24,7 @@ public static partial class UiToolkitComposeFunctions
     )
     {
         var typography = Theme.Typography;
-        var resolvedColors = colors.GetOrDefault(ButtonDefaults.ButtonColors());
+        var resolvedColors = colors.GetOrDefault(ButtonDefaults.PrimaryButtonColors());
         var resolvedContentPadding = contentPadding.GetOrDefault(ButtonDefaults.ContentPadding);
 
         interactionSource ??= Remember(MutableInteractionSource);
@@ -34,12 +32,13 @@ public static partial class UiToolkitComposeFunctions
         var resolvedShape = shapes.GetOrDefault(ButtonDefaults.Shapes).GetShape(isHovered);
         var isPressed = interactionSource.CollectIsPressedAsState().Value;
         var contentBackground = AnimateColorAsState(resolvedColors.GetContainerColor(enabled)).Value;
+        var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
         Box(
             alignment: Alignment.Center,
             modifier: modifier.OrEmpty()
                 .Padding(resolvedContentPadding)
-                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f).Value)
-                .Clip(AnimateRoundedCornerShapeAsState(resolvedShape).Value)
+                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec).Value)
+                .Clip(AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec).Value)
                 .Background(contentBackground)
                 .DsClickIndication(
                     enabled: enabled,
@@ -50,7 +49,7 @@ public static partial class UiToolkitComposeFunctions
             {
                 var contentTint = AnimateColorAsState(resolvedColors.GetContentColor(enabled)).Value;
                 CompositionLocalProvider(
-                    LocalTextStyle.Provides(typography.LabelLarge),
+                    LocalTextStyle.Provides(typography.Control),
                     LocalContentColor.Provides(contentTint),
                     () =>
                     {
@@ -58,12 +57,36 @@ public static partial class UiToolkitComposeFunctions
                             verticalAlignment: Alignment.CenterVertically,
                             horizontalArrangement: Arrangement.Center,
                             modifier: Modifier
-                                .Scale(AnimateFloatAsState(isPressed ? 0.75f : 1f).Value),
+                                .Scale(AnimateFloatAsState(isPressed ? 0.75f : 1f, bounceAnimationSpec).Value),
                             content: content
                         );
                     }
                 );
             }
+        );
+    }
+
+    [Composable]
+    public static void SecondaryButton(
+        Action onClick,
+        ComposableContent content,
+        IMutableInteractionSource? interactionSource = null,
+        bool enabled = true,
+        Optional<ButtonShapes> shapes = default,
+        Optional<ButtonColors> colors = default,
+        Optional<PaddingValues> contentPadding = default,
+        IModifier? modifier = null
+    )
+    {
+        Button(
+            onClick: onClick,
+            content: content,
+            interactionSource: interactionSource,
+            enabled: enabled,
+            shapes: shapes,
+            colors: colors.GetOrDefault(ButtonDefaults.SecondaryButtonColors()),
+            contentPadding: contentPadding,
+            modifier: modifier
         );
     }
 
@@ -95,14 +118,12 @@ public static partial class UiToolkitComposeFunctions
 
 internal static partial class ButtonDefaults
 {
-    private const float DisabledAlpha = 0.38f;
-
     [Composable]
     public static ButtonShapes Shapes => new(
-        Shape: Theme.Shapes.Medium,
-        HoveredShape: Theme.Shapes.Large
+        Shape: RoundedCornerShape(16.Dp()),
+        HoveredShape: RoundedCornerShape(24.Dp())
     );
-    
+
     public static readonly PaddingValues ContentPadding = new(
         Horizontal: 24.Dp(),
         Vertical: 8.Dp()
@@ -116,19 +137,31 @@ internal static partial class ButtonDefaults
             ContainerColor: new Color(),
             ContentColor: colors.Primary,
             DisabledContainerColor: new Color(),
-            DisabledContentColor: colors.OnSurface.With(a: DisabledAlpha)
+            DisabledContentColor: colors.OnSurface.Disabled()
         );
     }
 
     [Composable]
-    public static ButtonColors ButtonColors()
+    public static ButtonColors PrimaryButtonColors()
     {
         var colors = Theme.ColorScheme;
         return new ButtonColors(
             ContainerColor: colors.Primary,
             ContentColor: colors.OnPrimary,
-            DisabledContainerColor: colors.OnSurface.With(a: DisabledAlpha),
-            DisabledContentColor: colors.OnSurface.With(a: DisabledAlpha)
+            DisabledContainerColor: colors.Primary.Disabled(),
+            DisabledContentColor: colors.OnPrimary.DisabledContent()
+        );
+    }
+
+    [Composable]
+    public static ButtonColors SecondaryButtonColors()
+    {
+        var colors = Theme.ColorScheme;
+        return new ButtonColors(
+            ContainerColor: colors.Secondary,
+            ContentColor: colors.OnSecondary,
+            DisabledContainerColor: colors.Secondary.Disabled(),
+            DisabledContentColor: colors.OnSecondary.DisabledContent()
         );
     }
 }

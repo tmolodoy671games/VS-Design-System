@@ -4,17 +4,7 @@ using UnityCompose;
 
 namespace VS.UiToolkit;
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="Medium">Buttons</param>
-public record ShapesConfig(
+public readonly record struct ShapesConfig(
     RoundedCornerShape Medium,
     RoundedCornerShape Large
-)
-{
-    public static readonly ShapesConfig Default = new(
-        Medium: new RoundedCornerShape(16.Dp()),
-        Large: new RoundedCornerShape(64.Dp())
-    );
-}
+);

@@ -5,6 +5,7 @@ using SharpExtensions;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
+using UnityEngine.UIElements;
 using VS.UiToolkit.Packages.VsDesignSystem.Runtime.Impl.Extensions;
 
 namespace VS.UiToolkit;
@@ -22,9 +23,10 @@ public static partial class UiToolkitComposeFunctions
         IMutableInteractionSource? interactionSource = null
     )
     {
-        const float trackWidth = 80;
-        const float trackHeight = 32;
-        const float thumbWidth = 60;
+        const float trackWidth = 120;
+        const float trackHeight = 48;
+        const float thumbWidth = trackWidth * 0.6f;
+        const float padding = 8;
 
         var resolvedColors = colors.GetOrDefault(SwitchDefaults.Colors);
         interactionSource ??= Remember(MutableInteractionSource);
@@ -38,24 +40,8 @@ public static partial class UiToolkitComposeFunctions
                 });
             return scope.OnDispose(disposable.Dispose);
         });
-
-        thumbContent ??= () =>
-        {
-            Spacer(
-                Modifier
-                    .Size(
-                        width: thumbWidth.Dp(),
-                        height: trackHeight.Dp()
-                    )
-                    .Background(
-                        resolvedColors.GetThumbColor(enabled, isChecked),
-                        Theme.Shapes.Medium
-                    )
-                    .Margin(
-                        left: AnimateFloatAsState((trackWidth - thumbWidth + 1) * isChecked.ToInt()).Value.Dp()
-                    )
-            );
-        };
+        var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
+        var isHovered = interactionSource.CollectIsHoveredAsState().Value;
         Box(
             modifier: modifier.OrEmpty()
                 .Background(resolvedColors.GetTrackColor(enabled, isChecked))
@@ -63,13 +49,38 @@ public static partial class UiToolkitComposeFunctions
                     width: trackWidth.Dp(),
                     height: trackHeight.Dp()
                 )
-                .Clip(Theme.Shapes.Medium)
+                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec).Value)
+                .Clip(
+                    RoundedCornerShape(trackHeight.Dp() / 2)
+                )
+                .Padding(all: padding.Dp())
                 .DsClickIndication(
                     onClick: () => onCheckedChange?.Invoke(!isChecked),
                     interactionSource: interactionSource,
                     enabled: enabled
                 ),
-            content: () => { thumbContent(); }
+            content: () =>
+            {
+                var currentTrackDistance = (trackWidth - thumbWidth - padding * 2) * isChecked.ToInt() +
+                                           padding * (!isChecked).ToInt();
+                Box(
+                    alignment: Alignment.Center,
+                    modifier: Modifier
+                        .Size(width: thumbWidth.Dp())
+                        .FillMaxHeight()
+                        .Background(
+                            resolvedColors.GetThumbColor(enabled, isChecked),
+                            RoundedCornerShape((trackHeight - 2 * padding).Dp() / 2)
+                        )
+                        .Margin(left: AnimateFloatAsState(currentTrackDistance, bounceAnimationSpec).Value.Dp())
+                        .TransformOrigin(
+                            originX: 0.Percent(),
+                            originY: 50.Percent()
+                        )
+                        .Scale(AnimateFloatAsState(isChecked ? 1f : 0.7f, bounceAnimationSpec).Value),
+                    content: () => { thumbContent?.Invoke(); }
+                );
+            }
         );
     }
 }
@@ -84,36 +95,28 @@ internal static partial class SwitchDefaults
             var colorScheme = Theme.ColorScheme;
             return new SwitchColors(
                 // Checked
-                CheckedThumbColor: colorScheme.OnPrimary,
-                CheckedTrackColor: colorScheme.Primary,
-                CheckedBorderColor: colorScheme.Primary,
+                CheckedThumbColor: colorScheme.Primary,
+                CheckedTrackColor: colorScheme.PrimaryContainer,
+                CheckedBorderColor: colorScheme.PrimaryContainer,
                 CheckedIconColor: colorScheme.OnPrimary,
 
                 // Unchecked
-                UncheckedThumbColor: colorScheme.Outline,
-                UncheckedTrackColor: colorScheme.SurfaceContainerHighest,
-                UncheckedBorderColor: colorScheme.Outline,
-                UncheckedIconColor: colorScheme.OnSurfaceVariant,
+                UncheckedThumbColor: colorScheme.PrimaryContainer,
+                UncheckedTrackColor: colorScheme.Primary,
+                UncheckedBorderColor: colorScheme.Primary,
+                UncheckedIconColor: colorScheme.OnPrimary,
 
                 // Disabled + checked
-                DisabledCheckedThumbColor: colorScheme.Surface
-                    .With(a: 0.38f),
-                DisabledCheckedTrackColor: colorScheme.OnSurface
-                    .With(a: 0.12f),
-                DisabledCheckedBorderColor: colorScheme.OnSurface
-                    .With(a: 0.12f),
-                DisabledCheckedIconColor: colorScheme.Surface
-                    .With(a: 0.38f),
+                DisabledCheckedThumbColor: colorScheme.Primary.Disabled(),
+                DisabledCheckedTrackColor: colorScheme.PrimaryContainer.Disabled(),
+                DisabledCheckedBorderColor: colorScheme.PrimaryContainer.Disabled(),
+                DisabledCheckedIconColor: colorScheme.OnPrimary.Disabled(),
 
                 // Disabled + unchecked
-                DisabledUncheckedThumbColor: colorScheme.OnSurface
-                    .With(a: 0.38f),
-                DisabledUncheckedTrackColor: colorScheme.SurfaceVariant
-                    .With(a: 0.12f),
-                DisabledUncheckedBorderColor: colorScheme.OnSurface
-                    .With(a: 0.12f),
-                DisabledUncheckedIconColor: colorScheme.OnSurface
-                    .With(a: 0.38f)
+                DisabledUncheckedThumbColor: colorScheme.PrimaryContainer.Disabled(),
+                DisabledUncheckedTrackColor: colorScheme.Primary.Disabled(),
+                DisabledUncheckedBorderColor: colorScheme.Primary.Disabled(),
+                DisabledUncheckedIconColor: colorScheme.OnPrimary.Disabled()
             );
         }
     }

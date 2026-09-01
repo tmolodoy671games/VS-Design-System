@@ -20,7 +20,7 @@ namespace Samples.Samples.Behaviors
                 {
                     __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Column(modifier: Modifier.Background(Color.grey).Padding(all: 16.Dp()).Clip(RoundedCornerShape(16.Dp())), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                        __Column(modifier: Modifier.Background(Theme.ColorScheme.Surface).Padding(all: 16.Dp()).Clip(RoundedCornerShape(16.Dp())), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
                             var isChecked = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(true)));
                             __Switch(isChecked: isChecked.Value, onCheckedChange: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isChecked!) ? __composer.RememberedValue<global::System.Action<bool>>() : __composer.UpdateRememberedValue<global::System.Action<bool>>(it => isChecked.Value = it)), __composer: __composer, __changed: 0b_01_01_01_01_01_00_00);

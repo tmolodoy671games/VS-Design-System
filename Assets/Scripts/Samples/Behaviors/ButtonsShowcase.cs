@@ -39,6 +39,18 @@ namespace Samples.Samples.Behaviors
                                 );
 
                                 Spacer(Modifier.Height(12.Dp()));
+                                SecondaryButton(
+                                    onClick: () => { },
+                                    content: () => Text("SecondaryButton")
+                                );
+                                Spacer(Modifier.Height(12.Dp()));
+                                SecondaryButton(
+                                    enabled: false,
+                                    onClick: () => { },
+                                    content: () => Text("Disabled SecondaryButton")
+                                );
+
+                                Spacer(Modifier.Height(12.Dp()));
                                 TextButton(
                                     onClick: () => { },
                                     content: () => Text("TextButton")

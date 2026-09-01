@@ -16,7 +16,8 @@ namespace VS.UiToolkit
         [SerializeField] private SerializableColorSchemeConfig colorScheme = new();
         [SerializeField] private SerializableDsTypographyConfig typography = new();
         [SerializeField] private SerializableDsShapesConfig shapes = new();
-        [SerializeField] private SerializableDsIconsConfig icons = new();
+        [SerializeField] private SerializableIconsConfig icons = new();
+        [SerializeField] private SerializableAnimationSpecConfig animationSpecs = new();
 
         public ThemeConfig ToDsThemeConfig()
         {
@@ -24,7 +25,8 @@ namespace VS.UiToolkit
                 ColorScheme: colorScheme.ToDsColorSchemeConfig(),
                 Typography: typography.ToDsTypographyConfig(),
                 Shapes: shapes.ToDsShapesConfig(),
-                Icons: icons.ToDsIconsConfig()
+                Icons: icons.ToDsIconsConfig(),
+                AnimationSpecs: animationSpecs.ToAnimationSpecConfig()
             );
         }
     }

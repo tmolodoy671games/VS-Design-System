@@ -33,6 +33,14 @@ namespace Samples.Samples.Behaviors
                             {
                             })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Disabled Button", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
                             __Spacer(Modifier.Height(12.Dp()), __composer: __composer, __changed: 0b_00);
+                            __SecondaryButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                            {
+                            })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("SecondaryButton", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                            __Spacer(Modifier.Height(12.Dp()), __composer: __composer, __changed: 0b_00);
+                            __SecondaryButton(enabled: false, onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                            {
+                            })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Disabled SecondaryButton", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
+                            __Spacer(Modifier.Height(12.Dp()), __composer: __composer, __changed: 0b_00);
                             __TextButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                             {
                             })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("TextButton", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_00_00);
@@ -54,7 +62,7 @@ namespace Samples.Samples.Behaviors
 
         protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(82490600);
+            var __isCreated = __composer.StartRestartGroup(1347031218);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -65,7 +73,7 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(82490600, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+            __composer.EndRestartGroup(1347031218, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
     }
 }

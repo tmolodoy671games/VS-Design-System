@@ -19,7 +19,7 @@ namespace Samples.Samples.Behaviors
                     {
                         Column(
                             modifier: Modifier
-                                .Background(Color.grey)
+                                .Background(Theme.ColorScheme.Surface)
                                 .Padding(all: 16.Dp())
                                 .Clip(RoundedCornerShape(16.Dp())),
                             content: () =>
