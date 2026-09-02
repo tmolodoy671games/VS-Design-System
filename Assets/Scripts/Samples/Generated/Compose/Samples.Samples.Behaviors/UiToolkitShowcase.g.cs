@@ -37,12 +37,8 @@ namespace Samples.Samples.Behaviors
                                 {
                                     __Sliders(__composer: __composer, __changed: 0b_00);
                                     __Selection(__composer: __composer, __changed: 0b_00);
-                                    var alertDialogVisibility = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                                    __Button(onClick: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => alertDialogVisibility.Value = true)), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Show AlertDialog", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00_00);
-                                    __composer.StartReplaceGroup(1926181811);
-                                    if (alertDialogVisibility.Value)
-                                        __AlertDialogSample((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => alertDialogVisibility.Value = false)), __composer: __composer, __changed: 0b_00);
-                                    __composer.EndReplaceGroup(1926181811);
+                                    __AlertDialogSample(__composer: __composer, __changed: 0b_00);
+                                    __DropdownSample(__composer: __composer, __changed: 0b_00);
                                 })), __composer: __composer, __changed: 0b_01_01_01_00);
                             })), __composer: __composer, __changed: 0b_01_01_00_00);
                         })), __composer: __composer, __changed: 0b_01_00_01_00);
@@ -59,7 +55,7 @@ namespace Samples.Samples.Behaviors
 
         protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(397027097);
+            var __isCreated = __composer.StartRestartGroup(452502114);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -70,12 +66,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(397027097, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+            __composer.EndRestartGroup(452502114, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private static void __Buttons(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1191757088);
+            var __isCreated = __composer.StartRestartGroup(1432834659);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -106,12 +102,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1191757088, __isRestarted)?.UpdateScope(() => __Buttons(__composer, 0));
+            __composer.EndRestartGroup(1432834659, __isRestarted)?.UpdateScope(() => __Buttons(__composer, 0));
         }
 
         private static void __Switches(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(2012597030);
+            var __isCreated = __composer.StartRestartGroup(107688370);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -135,12 +131,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2012597030, __isRestarted)?.UpdateScope(() => __Switches(__composer, 0));
+            __composer.EndRestartGroup(107688370, __isRestarted)?.UpdateScope(() => __Switches(__composer, 0));
         }
 
         private static void __Sliders(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(983766314);
+            var __isCreated = __composer.StartRestartGroup(2136478715);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -158,12 +154,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(983766314, __isRestarted)?.UpdateScope(() => __Sliders(__composer, 0));
+            __composer.EndRestartGroup(2136478715, __isRestarted)?.UpdateScope(() => __Sliders(__composer, 0));
         }
 
         private static void __Selection(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(600361203);
+            var __isCreated = __composer.StartRestartGroup(1669558311);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -213,45 +209,48 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(600361203, __isRestarted)?.UpdateScope(() => __Selection(__composer, 0));
+            __composer.EndRestartGroup(1669558311, __isRestarted)?.UpdateScope(() => __Selection(__composer, 0));
         }
 
-        private static void __AlertDialogSample(Action onDismiss, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        private static void __AlertDialogSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __onDismiss = (onDismiss);
-            var __isCreated = __composer.StartRestartGroup(1013477686);
-            var __dirty = __changed;
-            if ((__changed & 0b_11) == 0)
-                __dirty |= __composer.Changed(onDismiss) ? 0b_10 : 0b_01;
+            var __isCreated = __composer.StartRestartGroup(929855255);
             var __isRestarted = __composer.IsRestarted();
-            if (__isCreated || __isRestarted || __dirty != 0b_01)
+            if (__isCreated || __isRestarted || __changed != 0b_00)
             {
-                __ModalMenu((!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                var alertDialogVisibility = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
+                __composer.StartReplaceGroup(1135512664);
+                if (alertDialogVisibility.Value)
                 {
-                    __WithTheme((!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_11) == 0b_10).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    __ModalMenu((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __AlertDialog(onDismiss: onDismiss, title: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Alert Dialog Title", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), text: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Alert Dialog Text", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), confirmButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                        __WithTheme((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
-                        })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Confirm", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), actionButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
-                        {
-                        })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Action", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), dismissButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
-                        {
-                        })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Dismiss", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), __composer: __composer, __changed: 0b_01_01_00_00_00_00_00_00 | (__dirty & 0b_00_00_00_00_00_11));
-                    })), __composer: __composer, __changed: 0b_00);
-                })), __composer: __composer, __changed: 0b_01_00);
+                            __AlertDialog(onDismiss: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => alertDialogVisibility.Value = false)), title: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Alert Dialog Title", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), text: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Alert Dialog Text", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), confirmButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                            {
+                            })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Confirm", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), actionButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                            {
+                            })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Action", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), dismissButton: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __AlertDialogButton(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                            {
+                            })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Dismiss", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_00_00))), __composer: __composer, __changed: 0b_01_01_00_00_00_00_00_00);
+                        })), __composer: __composer, __changed: 0b_00);
+                    })), __composer: __composer, __changed: 0b_01_00);
+                }
+
+                __composer.EndReplaceGroup(1135512664);
+                __Button(onClick: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => alertDialogVisibility.Value = true)), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Show AlertDialog", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00_00);
             }
             else
             {
                 __composer.SkipToGroupEnd();
             }
 
-            __dirty = 0b_01;
-            __composer.EndRestartGroup(1013477686, __isRestarted)?.UpdateScope(() => __AlertDialogSample(__onDismiss, __composer, __composer.UpdateChangedFlags(__changed)));
+            __composer.EndRestartGroup(929855255, __isRestarted)?.UpdateScope(() => __AlertDialogSample(__composer, 0));
         }
 
         private static void __TabsSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(2110078085);
+            var __isCreated = __composer.StartRestartGroup(1294453841);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -268,7 +267,35 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2110078085, __isRestarted)?.UpdateScope(() => __TabsSample(__composer, 0));
+            __composer.EndRestartGroup(1294453841, __isRestarted)?.UpdateScope(() => __TabsSample(__composer, 0));
+        }
+
+        private static void __DropdownSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(159246542);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                var state = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<string>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<string>>(MutableStateOf("Item 1")));
+                var isExpanded = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
+                __Dropdown(expanded: isExpanded.Value, onClick: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isExpanded!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isExpanded.Value = true)), onDismiss: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isExpanded!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isExpanded.Value = false)), content: (!__composer.Changed<global::UnityCompose.IMutableState<string>>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text(state.Value, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00))), sizeContent: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Item 1000", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), dropdownContent: (!__composer.Changed<global::UnityCompose.IMutableState<string>>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                {
+                    __composer.StartReplaceGroup(1120475281);
+                    for (var i = 0; i < 20; i++)
+                    {
+                        var currentI = i;
+                        __DropdownItem(onClick: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<string>>(state!).Changed<int>(currentI!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.Value = $"Item {currentI}")), content: (!__composer.Changed<int>(currentI!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text($"Item {currentI}", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00))), __composer: __composer, __changed: 0b_01_00_00);
+                    }
+
+                    __composer.EndReplaceGroup(1120475281);
+                })), __composer: __composer, __changed: 0b_01_01_00_00_00_00_00_00);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(159246542, __isRestarted)?.UpdateScope(() => __DropdownSample(__composer, 0));
         }
     }
 }

@@ -42,13 +42,8 @@ namespace Samples.Samples.Behaviors
                                         {
                                             Sliders();
                                             Selection();
-                                            var alertDialogVisibility = Remember(() => MutableStateOf(false));
-                                            Button(
-                                                onClick: () => alertDialogVisibility.Value = true,
-                                                content: () => Text("Show AlertDialog")
-                                            );
-                                            if (alertDialogVisibility.Value)
-                                                AlertDialogSample(() => alertDialogVisibility.Value = false);
+                                            AlertDialogSample();
+                                            DropdownSample();
                                         });
                                     }
                                 );
@@ -216,31 +211,40 @@ namespace Samples.Samples.Behaviors
         }
 
         [Composable]
-        private static void AlertDialogSample(Action onDismiss)
+        private static void AlertDialogSample()
         {
-            ModalMenu(() =>
+            var alertDialogVisibility = Remember(() => MutableStateOf(false));
+            if (alertDialogVisibility.Value)
             {
-                WithTheme(() =>
+                ModalMenu(() =>
                 {
-                    AlertDialog(
-                        onDismiss: onDismiss,
-                        title: () => Text("Alert Dialog Title"),
-                        text: () => Text("Alert Dialog Text"),
-                        confirmButton: () => AlertDialogButton(
-                            onClick: () => { },
-                            content: () => Text("Confirm")
-                        ),
-                        actionButton: () => AlertDialogButton(
-                            onClick: () => { },
-                            content: () => Text("Action")
-                        ),
-                        dismissButton: () => AlertDialogButton(
-                            onClick: () => { },
-                            content: () => Text("Dismiss")
-                        )
-                    );
+                    WithTheme(() =>
+                    {
+                        AlertDialog(
+                            onDismiss: () => alertDialogVisibility.Value = false,
+                            title: () => Text("Alert Dialog Title"),
+                            text: () => Text("Alert Dialog Text"),
+                            confirmButton: () => AlertDialogButton(
+                                onClick: () => { },
+                                content: () => Text("Confirm")
+                            ),
+                            actionButton: () => AlertDialogButton(
+                                onClick: () => { },
+                                content: () => Text("Action")
+                            ),
+                            dismissButton: () => AlertDialogButton(
+                                onClick: () => { },
+                                content: () => Text("Dismiss")
+                            )
+                        );
+                    });
                 });
-            });
+            }
+
+            Button(
+                onClick: () => alertDialogVisibility.Value = true,
+                content: () => Text("Show AlertDialog")
+            );
         }
 
         [Composable]
@@ -265,6 +269,31 @@ namespace Samples.Samples.Behaviors
                     content: () => Text("System")
                 );
             });
+        }
+
+        [Composable]
+        private static void DropdownSample()
+        {
+            var state = Remember(() => MutableStateOf("Item 1"));
+            var isExpanded = Remember(() => MutableStateOf(false));
+            Dropdown(
+                expanded: isExpanded.Value,
+                onClick: () => isExpanded.Value = true,
+                onDismiss: () => isExpanded.Value = false,
+                content: () => Text(state.Value),
+                sizeContent: () => Text("Item 1000"),
+                dropdownContent: () =>
+                {
+                    for (var i = 0; i < 20; i++)
+                    {
+                        var currentI = i;
+                        DropdownItem(
+                            onClick: () => state.Value = $"Item {currentI}",
+                            content: () => Text($"Item {currentI}")
+                        );
+                    }
+                }
+            );
         }
     }
 }
