@@ -33,6 +33,33 @@ public static partial class UiToolkitComposeFunctions
         var __isRestarted = __composer.IsRestarted();
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01_01_01_01_01)
         {
+            var resolvedProperties = properties.GetOrDefault(new DialogProperties(DismissOnBackPress: true, DismissOnClickOutside: true));
+            var theme = LocalTheme.Current;
+            var colors = theme.ColorScheme;
+            var typography = theme.Typography;
+            __Box(modifier: Modifier.FillMaxSize().OnClick(enabled: resolvedProperties.DismissOnClickOutside, onClick: onDismiss), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_11_00_00) == 0b_00_00_00_00_00_10_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_10_00_00_00).ChangedAsFlag((__dirty & 0b_00_11_00_00_00_00_00_00) == 0b_00_10_00_00_00_00_00_00).Changed<global::VS.UiToolkit.TypographyConfig>(typography!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+            {
+                __Surface(modifier: modifier.OrEmpty().Clip(RoundedCornerShape(16.Dp())).Padding(all: 16.Dp()), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_11_00_00) == 0b_00_00_00_00_00_10_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_10_00_00_00).Changed<global::VS.UiToolkit.TypographyConfig>(typography!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                {
+                    __Column(horizontalAlignment: Alignment.CenterHorizontally, content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_00_00_00_00_11_00_00) == 0b_00_00_00_00_00_10_00_00).ChangedAsFlag((__dirty & 0b_00_00_00_00_11_00_00_00) == 0b_00_00_00_00_10_00_00_00).Changed<global::VS.UiToolkit.TypographyConfig>(typography!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                    {
+                        __composer.StartReplaceGroup(441302578);
+                        if (title != null)
+                        {
+                            __CompositionLocalProvider(LocalTextStyle.Provides(typography.Title), content: title, __composer: __composer, __changed: ((__dirty & 0b_11_00_00) >> 2));
+                        }
+
+                        __composer.EndReplaceGroup(441302578);
+                        __composer.StartReplaceGroup(1833131831);
+                        if (text != null)
+                        {
+                            __CompositionLocalProvider(LocalTextStyle.Provides(typography.Body), content: text, __composer: __composer, __changed: ((__dirty & 0b_11_00_00_00) >> 4));
+                        }
+
+                        __composer.EndReplaceGroup(1833131831);
+                    })), __composer: __composer, __changed: 0b_01_00_01_00);
+                })), __composer: __composer, __changed: 0b_01_01_00);
+            })), __composer: __composer, __changed: 0b_01_00_00);
         }
         else
         {

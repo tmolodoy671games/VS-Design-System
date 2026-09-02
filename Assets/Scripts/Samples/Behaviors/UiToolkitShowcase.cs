@@ -3,6 +3,7 @@
 using System.Reflection.Emit;
 using Sirenix.OdinInspector;
 using UnityCompose;
+using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
 using Label = UnityEngine.UIElements.Label;
 
@@ -32,7 +33,11 @@ namespace Samples.Samples.Behaviors
                                 Spacer(Modifier.Width(16.Dp()));
                                 Switches();
                                 Spacer(Modifier.Width(16.Dp()));
-                                Sliders();
+                                Column(() =>
+                                {
+                                    Sliders();
+                                    Selection();
+                                });
                             }
                         );
                     }
@@ -108,7 +113,6 @@ namespace Samples.Samples.Behaviors
             });
         }
 
-
         [Composable]
         private static void Sliders()
         {
@@ -122,9 +126,76 @@ namespace Samples.Samples.Behaviors
                 );
                 Slider(
                     value: 0.5f,
-                    onValueChange: _ => {},
+                    onValueChange: _ => { },
                     steps: 4,
                     enabled: false
+                );
+            });
+        }
+
+        [Composable]
+        private static void Selection()
+        {
+            Row(() =>
+            {
+                ListSelection(
+                    animationSpec: Theme.AnimationSpecs.Bounce,
+                    content: () =>
+                    {
+                        ListSelectionItem(scope =>
+                        {
+                            var interactionSource = Remember(MutableInteractionSource);
+                            var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                            SideEffect(isHovered, () =>
+                            {
+                                if (isHovered)
+                                    scope.Select();
+                            });
+                            Spacer(
+                                Modifier
+                                    .Hoverable(interactionSource)
+                                    .Background(Color.indianRed)
+                                    .Height(40.Dp())
+                                    .Width(80.Dp() + scope.SelectionProgress * 120.Dp())
+                            );
+                        });
+
+                        ListSelectionItem(scope =>
+                        {
+                            var interactionSource = Remember(MutableInteractionSource);
+                            var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                            SideEffect(isHovered, () =>
+                            {
+                                if (isHovered)
+                                    scope.Select();
+                            });
+                            Spacer(
+                                Modifier
+                                    .Hoverable(interactionSource)
+                                    .Background(Color.lightGreen)
+                                    .Height(40.Dp())
+                                    .Width(80.Dp() + scope.SelectionProgress * 120.Dp())
+                            );
+                        });
+
+                        ListSelectionItem(scope =>
+                        {
+                            var interactionSource = Remember(MutableInteractionSource);
+                            var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+                            SideEffect(isHovered, () =>
+                            {
+                                if (isHovered)
+                                    scope.Select();
+                            });
+                            Spacer(
+                                Modifier
+                                    .Hoverable(interactionSource)
+                                    .Background(Color.cornflowerBlue)
+                                    .Height(40.Dp())
+                                    .Width(80.Dp() + scope.SelectionProgress * 120.Dp())
+                            );
+                        });
+                    }
                 );
             });
         }

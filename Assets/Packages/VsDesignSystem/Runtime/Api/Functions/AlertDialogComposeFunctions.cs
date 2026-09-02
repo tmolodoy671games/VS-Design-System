@@ -20,6 +20,50 @@ public static partial class UiToolkitComposeFunctions
         Optional<DialogProperties> properties = default
     )
     {
+        var resolvedProperties = properties.GetOrDefault(new DialogProperties(
+            DismissOnBackPress: true,
+            DismissOnClickOutside: true
+        ));
+        var theme = LocalTheme.Current;
+        var colors = theme.ColorScheme;
+        var typography = theme.Typography;
+
+        Box(
+            modifier: Modifier.FillMaxSize()
+                .OnClick(enabled: resolvedProperties.DismissOnClickOutside, onClick: onDismiss),
+            content: () =>
+            {
+                Surface(
+                    modifier: modifier.OrEmpty()
+                        .Clip(RoundedCornerShape(16.Dp()))
+                        .Padding(all: 16.Dp()),
+                    content: () =>
+                    {
+                        Column(
+                            horizontalAlignment: Alignment.CenterHorizontally,
+                            content: () =>
+                            {
+                                if (title != null)
+                                {
+                                    CompositionLocalProvider(
+                                        LocalTextStyle.Provides(typography.Title),
+                                        content: title
+                                    );
+                                }
+                                
+                                if (text != null)
+                                {
+                                    CompositionLocalProvider(
+                                        LocalTextStyle.Provides(typography.Body),
+                                        content: text
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+            }
+        );
     }
 }
 
