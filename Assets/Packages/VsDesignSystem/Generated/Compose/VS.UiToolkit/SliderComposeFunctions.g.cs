@@ -176,7 +176,7 @@ public static partial class UiToolkitComposeFunctions
         if (__isCreated || __isRestarted || __dirty != 0b_01_01_01_01)
         {
             var interactionSource = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.IMutableInteractionSource>() : __composer.UpdateRememberedValue<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.IMutableInteractionSource>(MutableInteractionSource));
-            __SecondaryButton(onClick: onClick, interactionSource: interactionSource, enabled: enabled, contentPadding: PaddingValues(horizontal: 4.Dp(), vertical: 2.Dp()), shapes: new ButtonShapes(Shape: RoundedCornerShape(8.Dp()), HoveredShape: RoundedCornerShape(8.Dp())), modifier: modifier.OrEmpty(), content: content, __composer: __composer, __changed: 0b_01_00_01_00_00_00_00 | (__dirty & 0b_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_11_00) | ((__dirty & 0b_00_00_00_00_11_00_00) << 2));
+            __SecondaryButton(onClick: onClick, interactionSource: interactionSource, enabled: enabled, contentPadding: PaddingValues(horizontal: 4.Dp(), vertical: 2.Dp()), shapes: new ButtonShapes(Shape: RoundedCornerShape(8.Dp()), HoveredShape: RoundedCornerShape(8.Dp())), modifier: modifier.OrEmpty(), content: content, __composer: __composer, __changed: 0b_01_00_01_00_01_00_00_00_00 | (__dirty & 0b_00_00_00_00_00_00_11) | (__dirty & 0b_00_00_00_00_00_11_00) | ((__dirty & 0b_00_00_00_00_11_00_00) << 2));
         }
         else
         {

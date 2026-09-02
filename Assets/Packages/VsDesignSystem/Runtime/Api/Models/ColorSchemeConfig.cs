@@ -20,6 +20,10 @@ public readonly record struct ColorSchemeConfig(
     Color SurfaceVariant,
     Color OnSurface,
 
+    // Scrim
+    Color Scrim,
+    Color ScrimDark,
+    
     // Outline
     Color Outline,
     

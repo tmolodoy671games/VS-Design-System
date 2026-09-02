@@ -13,25 +13,41 @@ public static partial class UiToolkitComposeFunctions
             throw new InvalidOperationException("LocalListSelection is not provided!")
         );
 
+    private static readonly ICompositionLocal<IListSelectionItem> LocalListSelectionItem =
+        CompositionLocalOf<IListSelectionItem>(() =>
+            throw new InvalidOperationException("LocalListSelectionItem is not provided!")
+        );
+
+    [Composable]
+    public static IListSelection RememberListSelection(
+        Optional<AnimationSpec> animationSpec = default
+    )
+
+    {
+        var coroutineScope = RememberCoroutineScope();
+        return Remember(() => new ListSelectionImpl(coroutineScope, animationSpec.GetOrDefault()));
+    }
+
     [Composable]
     public static void ListSelection(
         ComposableContent content,
-        Optional<AnimationSpec> animationSpec = default
+        IListSelection? selection = null
     )
     {
-        var coroutineScope = RememberCoroutineScope();
-        var listSelection = Remember(() => new ListSelectionImpl(coroutineScope, animationSpec.GetOrDefault()));
         CompositionLocalProvider(
-            LocalListSelection.Provides(listSelection),
+            LocalListSelection.Provides(selection ?? RememberListSelection()),
             content
         );
     }
 
     [Composable]
-    public static void ListSelectionItem(ComposableContent<IListSelectionScope> content)
+    public static void ListSelectionItem(ComposableContent<IListSelectionItem> content)
     {
         var selection = LocalListSelection.Current;
         var item = Remember(selection, selection.CreateItem);
-        content(item);
+        CompositionLocalProvider(
+            LocalListSelectionItem.Provides(item),
+            content: () => content(item)
+        );
     }
 }

@@ -24,6 +24,7 @@ public static partial class ModifierExtensions
             return modifier;
         interactionSource ??= Remember(MutableInteractionSource);
         var containerSize = Remember(() => MutableStateOf(Vector2.zero));
+        var colors = Theme.ColorScheme;
         return modifier
             .Clip()
             .Hoverable(interactionSource, enabled: enabled)
@@ -36,11 +37,13 @@ public static partial class ModifierExtensions
                 var isPressed = interactionSource.CollectIsPressedAsState().Value;
                 var hoveredVisibilityProgress = AnimateFloatAsState(isHovered.ToInt(), animationSpec).Value;
                 var hoveredAlphaProgress = AnimateFloatAsState((isHovered && !isPressed).ToInt(), animationSpec).Value;
+                
                 Spacer(
                     modifier: Modifier
                         .Size(100.Percent())
                         .Clip(RoundedCornerShape(16.Dp()))
-                        .Background(Color.white.With(a: hoveredAlphaProgress * 0.25f))
+                        .Background(colors.Hover)
+                        .Alpha(hoveredAlphaProgress)
                         .Scale(0.7f + 0.5f * hoveredVisibilityProgress)
                         .Float()
                         .Offset(x: -50.Percent(), y: -50.Percent())
@@ -92,7 +95,8 @@ public static partial class ModifierExtensions
                     modifier: Modifier
                         .Size(pressedIndicationSize)
                         .Clip(RoundedCornerShape(pressedIndicationSize / 2))
-                        .Background(Color.black.With(a: pressedVisibilityProgress * 0.5f))
+                        .Background(colors.Press)
+                        .Alpha(pressedVisibilityProgress)
                         .Offset(
                             x: -pressedIndicationSize / 2,
                             y: -pressedIndicationSize / 2

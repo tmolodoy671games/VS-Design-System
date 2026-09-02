@@ -11,6 +11,7 @@ public static partial class UiToolkitComposeFunctions
     [Composable]
     public static void Surface(
         ComposableContent content,
+        Alignment? alignment = null,
         Optional<Color> color = default,
         Optional<Color> contentColor = default,
         IModifier? modifier = null
@@ -19,6 +20,7 @@ public static partial class UiToolkitComposeFunctions
         var resolvedColor = color.GetOrDefault(Theme.ColorScheme.Surface);
         var resolvedContentColor = contentColor.GetOrDefault(ContentColorFor(resolvedColor));
         Box(
+            alignment: alignment,
             modifier: modifier.OrEmpty()
                 .Background(resolvedColor),
             content: () =>

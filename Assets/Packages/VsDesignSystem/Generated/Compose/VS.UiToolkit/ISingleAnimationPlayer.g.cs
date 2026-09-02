@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using SharpExtensions;
+using StableCollections;
 using UnityCompose;
 using UnityEngine;
 using static UnityCompose.ComposeFunctions;

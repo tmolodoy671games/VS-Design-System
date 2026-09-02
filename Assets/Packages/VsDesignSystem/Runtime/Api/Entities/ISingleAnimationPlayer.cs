@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using SharpExtensions;
+using StableCollections;
 using UnityCompose;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ public interface ISingleAnimationPlayer
         bool sticky = true,
         bool backward = false
     );
+
+    IDisposable Subscribe(Action<float> onProgressChanged);
 
     void Reset();
 }
@@ -43,6 +46,7 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
     private readonly IMutableState<float> _progress = MutableStateOf(0f);
     private IDisposable? _coroutine;
     private AnimationSpec _animationSpec = AnimationSpec.Default;
+    private readonly IMutableStableList<Action<float>> _onProgressChanged = MutableStableListOf<Action<float>>();
 
     public SingleAnimationPlayerImpl(
         IComposeCoroutineScope coroutineScope
@@ -67,6 +71,12 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
         ));
     }
 
+    public IDisposable Subscribe(Action<float> onProgressChanged)
+    {
+        _onProgressChanged.Add(onProgressChanged);
+        return new CustomDisposable(() => _onProgressChanged.Remove(onProgressChanged));
+    }
+
     public void Reset()
     {
         _progress.Value = 0f;
@@ -86,6 +96,7 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
             var timeElapsed = Time.time - startTime;
             var progress = _animationSpec.GetProgress(timeElapsed);
             _progress.Value = backward ? 1 - progress : progress;
+            OnProgressChanged();
             yield return null;
         }
 
@@ -93,5 +104,13 @@ internal class SingleAnimationPlayerImpl : ISingleAnimationPlayer
         if (backward)
             finalProgress = 1 - finalProgress;
         _progress.Value = finalProgress;
+        OnProgressChanged();
+    }
+
+    private void OnProgressChanged()
+    {
+        var value = _progress.Value;
+        foreach (var subscriber in _onProgressChanged)
+            subscriber(value);
     }
 }

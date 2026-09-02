@@ -1,11 +1,10 @@
 // ReSharper disable ArrangeNamespaceBody
 
-using System.Reflection.Emit;
+using System;
 using Sirenix.OdinInspector;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
 using UnityEngine;
-using Label = UnityEngine.UIElements.Label;
 
 namespace Samples.Samples.Behaviors
 {
@@ -22,22 +21,37 @@ namespace Samples.Samples.Behaviors
                     modifier: Modifier.FillMaxSize(),
                     content: () =>
                     {
-                        Row(
-                            modifier: Modifier
-                                .Background(Theme.ColorScheme.Surface)
-                                .Padding(all: 16.Dp())
-                                .Clip(RoundedCornerShape(16.Dp())),
+                        Column(
+                            horizontalAlignment: Alignment.CenterHorizontally,
                             content: () =>
                             {
-                                Buttons();
-                                Spacer(Modifier.Width(16.Dp()));
-                                Switches();
-                                Spacer(Modifier.Width(16.Dp()));
-                                Column(() =>
-                                {
-                                    Sliders();
-                                    Selection();
-                                });
+                                TabsSample();
+                                Spacer(Modifier.Height(64.Dp()));
+                                Row(
+                                    modifier: Modifier
+                                        .Background(Theme.ColorScheme.Surface)
+                                        .Padding(all: 16.Dp())
+                                        .Clip(RoundedCornerShape(16.Dp())),
+                                    content: () =>
+                                    {
+                                        Buttons();
+                                        Spacer(Modifier.Width(16.Dp()));
+                                        Switches();
+                                        Spacer(Modifier.Width(16.Dp()));
+                                        Column(() =>
+                                        {
+                                            Sliders();
+                                            Selection();
+                                            var alertDialogVisibility = Remember(() => MutableStateOf(false));
+                                            Button(
+                                                onClick: () => alertDialogVisibility.Value = true,
+                                                content: () => Text("Show AlertDialog")
+                                            );
+                                            if (alertDialogVisibility.Value)
+                                                AlertDialogSample(() => alertDialogVisibility.Value = false);
+                                        });
+                                    }
+                                );
                             }
                         );
                     }
@@ -136,10 +150,11 @@ namespace Samples.Samples.Behaviors
         [Composable]
         private static void Selection()
         {
+            var bounce = Theme.AnimationSpecs.Bounce;
             Row(() =>
             {
                 ListSelection(
-                    animationSpec: Theme.AnimationSpecs.Bounce,
+                    selection: RememberListSelection(bounce),
                     content: () =>
                     {
                         ListSelectionItem(scope =>
@@ -196,6 +211,58 @@ namespace Samples.Samples.Behaviors
                             );
                         });
                     }
+                );
+            });
+        }
+
+        [Composable]
+        private static void AlertDialogSample(Action onDismiss)
+        {
+            ModalMenu(() =>
+            {
+                WithTheme(() =>
+                {
+                    AlertDialog(
+                        onDismiss: onDismiss,
+                        title: () => Text("Alert Dialog Title"),
+                        text: () => Text("Alert Dialog Text"),
+                        confirmButton: () => AlertDialogButton(
+                            onClick: () => { },
+                            content: () => Text("Confirm")
+                        ),
+                        actionButton: () => AlertDialogButton(
+                            onClick: () => { },
+                            content: () => Text("Action")
+                        ),
+                        dismissButton: () => AlertDialogButton(
+                            onClick: () => { },
+                            content: () => Text("Dismiss")
+                        )
+                    );
+                });
+            });
+        }
+
+        [Composable]
+        private static void TabsSample()
+        {
+            var currentTab = MutableStateOf(0);
+            Tabs(() =>
+            {
+                Tab(
+                    selected: currentTab.Value == 0,
+                    onClick: () => currentTab.Value = 0,
+                    content: () => Text("Inventory")
+                );
+                Tab(
+                    selected: currentTab.Value == 1,
+                    onClick: () => currentTab.Value = 1,
+                    content: () => Text("Map")
+                );
+                Tab(
+                    selected: currentTab.Value == 2,
+                    onClick: () => currentTab.Value = 2,
+                    content: () => Text("System")
                 );
             });
         }

@@ -3,6 +3,7 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using VS.UiToolkit.Packages.VsDesignSystem.Runtime.Impl.Extensions;
 
 namespace VS.UiToolkit;
 
@@ -22,6 +23,9 @@ public class SerializableColorSchemeConfig
 
     [SerializeField, BoxGroup("Content")] private Color onLight = Color.black;
     [SerializeField, BoxGroup("Content")] private Color onDark = Color.white;
+    
+    [SerializeField, BoxGroup("Content")] private Color scrim = Color.black.With(a: 0.5f);
+    [SerializeField, BoxGroup("Content")] private Color scrimDark = Color.black.With(a: 0.9f);
     
     [SerializeField, BoxGroup("Interaction")] private Color hover = Color.white;
     [SerializeField, BoxGroup("Interaction")] private Color press = Color.white;
@@ -43,6 +47,9 @@ public class SerializableColorSchemeConfig
             OnSurface: onLight,
             // Outline
             Outline: outline,
+            // Scrim
+            Scrim: scrim,
+            ScrimDark: scrimDark,
             // Interaction
             Hover: hover,
             Press: press

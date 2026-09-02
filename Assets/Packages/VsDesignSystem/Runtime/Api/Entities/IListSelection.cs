@@ -10,7 +10,8 @@ namespace VS.UiToolkit;
 
 public interface IListSelection
 {
-    IListSelectionScope CreateItem();
+    int SelectedId { get; }
+    IListSelectionItem CreateItem();
 
     void Select(ListSelectionChange change);
 }
@@ -21,33 +22,33 @@ public enum ListSelectionChange
     Next,
 }
 
-public interface IListSelectionScope
+public interface IListSelectionItem
 {
+    int Id { get; }
     bool IsSelected { get; }
     float SelectionProgress { get; }
     void Select();
+    void Deselect();
 }
 
-internal class ListSelectionScopeImpl : IListSelectionScope
+internal class ListSelectionItemImpl : IListSelectionItem
 {
-    private readonly Func<bool> _isSelected;
-    private readonly Func<float> _selectionProgress;
-    private readonly Action _select;
+    private readonly ListSelectionImpl _selection;
 
-    public ListSelectionScopeImpl(
-        Func<bool> isSelected,
-        Func<float> selectionProgress,
-        Action select
+    public ListSelectionItemImpl(
+        ListSelectionImpl selection,
+        int id
     )
     {
-        _isSelected = isSelected;
-        _selectionProgress = selectionProgress;
-        _select = select;
+        Id = id;
+        _selection = selection;
     }
 
-    public bool IsSelected => _isSelected();
-    public float SelectionProgress => _selectionProgress();
-    public void Select() => _select();
+    public int Id { get; }
+    public bool IsSelected => _selection.IsSelected(Id);
+    public float SelectionProgress => _selection.SelectionProgress(Id);
+    public void Select() => _selection.Select(Id);
+    public void Deselect() => _selection.Select(0);
 }
 
 internal class ListSelectionImpl : IListSelection
@@ -64,13 +65,14 @@ internal class ListSelectionImpl : IListSelection
         _animationSpec = animationSpec;
     }
 
-    public IListSelectionScope CreateItem()
+    public int SelectedId => _selection.Value;
+
+    public IListSelectionItem CreateItem()
     {
         var index = _items.Count;
-        var newItem = new ListSelectionScopeImpl(
-            isSelected: () => _selection.Value == index,
-            selectionProgress: () => _items[index],
-            select: () => Select(index)
+        var newItem = new ListSelectionItemImpl(
+            selection: this,
+            id: index
         );
         _items.Add(index == 0 ? 1 : 0);
         return newItem;
@@ -80,7 +82,10 @@ internal class ListSelectionImpl : IListSelection
     {
     }
 
-    private void Select(int index)
+    public bool IsSelected(int id) => _selection.Value == id;
+    public float SelectionProgress(int id) => _items[id];
+
+    public void Select(int index)
     {
         if (_selection.Value == index)
             return;

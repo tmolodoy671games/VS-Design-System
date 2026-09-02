@@ -17,16 +17,18 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
-        float scale = 1.1f,
+        bool scale = true,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
+        Optional<PaddingValues> margins = default,
         IModifier? modifier = null
     )
     {
         var typography = Theme.Typography;
         var resolvedColors = colors.GetOrDefault(ButtonDefaults.PrimaryButtonColors());
         var resolvedContentPadding = contentPadding.GetOrDefault(ButtonDefaults.ContentPadding);
+        var resolvedMargins = margins.GetOrDefault(PaddingValues(4.Dp()));
 
         interactionSource ??= Remember(MutableInteractionSource);
         var isHovered = interactionSource.CollectIsHoveredAsState().Value;
@@ -36,7 +38,12 @@ public static partial class UiToolkitComposeFunctions
         var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
         var buttonModifier = modifier.OrEmpty()
             .Padding(resolvedContentPadding)
-            .Margin(all: 4.Dp())
+            .Margin(
+                top: resolvedMargins.Top,
+                bottom: resolvedMargins.Bottom,
+                left: resolvedMargins.Left,
+                right: resolvedMargins.Right
+            )
             .Clip(AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec).Value)
             .Background(contentBackground)
             .ClickIndication(
@@ -44,11 +51,12 @@ public static partial class UiToolkitComposeFunctions
                 onClick: onClick,
                 interactionSource: interactionSource
             );
-        if (scale > 0)
+        if (scale)
         {
             buttonModifier = buttonModifier
-                .Scale(AnimateFloatAsState(isHovered ? scale : 1f, bounceAnimationSpec).Value);
+                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec).Value);
         }
+
         Box(
             alignment: Alignment.Center,
             modifier: buttonModifier,
@@ -79,10 +87,11 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
-        float scale = 1.1f,
+        bool scale = true,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
+        Optional<PaddingValues> margins = default,
         IModifier? modifier = null
     )
     {
@@ -95,6 +104,7 @@ public static partial class UiToolkitComposeFunctions
             shapes: shapes,
             colors: colors.GetOrDefault(ButtonDefaults.SecondaryButtonColors()),
             contentPadding: contentPadding,
+            margins: margins,
             modifier: modifier
         );
     }
@@ -105,10 +115,11 @@ public static partial class UiToolkitComposeFunctions
         ComposableContent content,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
-        float scale = 1.1f,
+        bool scale = true,
         Optional<ButtonShapes> shapes = default,
         Optional<ButtonColors> colors = default,
         Optional<PaddingValues> contentPadding = default,
+        Optional<PaddingValues> margins = default,
         IModifier? modifier = null
     )
     {
@@ -122,6 +133,7 @@ public static partial class UiToolkitComposeFunctions
             shapes: shapes,
             colors: resolvedColors,
             contentPadding: contentPadding,
+            margins: margins,
             modifier: modifier
         );
     }

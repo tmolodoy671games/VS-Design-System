@@ -45,7 +45,7 @@ public static partial class UiToolkitComposeFunctions
         Box(
             modifier: modifier.OrEmpty()
                 .Margin(all: 4.Dp())
-                .Background(resolvedColors.GetTrackColor(enabled, isChecked))
+                .Background(AnimateColorAsState(resolvedColors.GetTrackColor(enabled, isChecked)).Value)
                 .Size(
                     width: trackWidth.Dp(),
                     height: trackHeight.Dp()
@@ -70,7 +70,7 @@ public static partial class UiToolkitComposeFunctions
                         .Size(width: thumbWidth.Dp())
                         .FillMaxHeight()
                         .Background(
-                            resolvedColors.GetThumbColor(enabled, isChecked),
+                            AnimateColorAsState(resolvedColors.GetThumbColor(enabled, isChecked)).Value,
                             RoundedCornerShape((trackHeight - 2 * padding).Dp() / 2)
                         )
                         .Margin(left: AnimateFloatAsState(currentTrackDistance, bounceAnimationSpec).Value.Dp())
