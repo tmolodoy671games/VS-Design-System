@@ -14,6 +14,10 @@ public static partial class UiToolkitComposeFunctions
         Optional<AnimationSpec> animationSpec = default
     )
     {
+        if (IsInPreview)
+        {
+            return MutableStateOf<float>(visible.ToInt());
+        }
         var animation = RememberSingleAnimationPlayer(animationSpec);
         var result = Remember(() => MutableStateOf(0f));
         SideEffect(visible, () => animation.Play(force: true, backward: !visible));

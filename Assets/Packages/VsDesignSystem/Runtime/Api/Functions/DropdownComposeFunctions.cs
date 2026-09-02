@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 
 using System;
+using System.Collections;
 using SharpExtensions;
 using UnityCompose;
 using UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils;
@@ -11,11 +12,12 @@ namespace VS.UiToolkit;
 public static partial class UiToolkitComposeFunctions
 {
     [Composable]
-    public static void Dropdown(
+    public static void Dropdown<T>(
         bool expanded,
         Action onClick,
         Action onDismiss,
-        ComposableContent content,
+        T state,
+        ComposableContent<T> content,
         ComposableContent sizeContent,
         ComposableContent dropdownContent,
         IMutableInteractionSource? interactionSource = null,
@@ -31,8 +33,6 @@ public static partial class UiToolkitComposeFunctions
         {
             DropdownModal(
                 onDismiss: onDismiss,
-                content: content,
-                sizeContent: sizeContent,
                 dropdownContent: dropdownContent,
                 coordinates: coordinates.Value.Value
             );
@@ -42,6 +42,7 @@ public static partial class UiToolkitComposeFunctions
             content: content,
             sizeContent: sizeContent,
             expandProgress: expandProgress,
+            state: state,
             modifier: modifier.OrEmpty()
                 .ClickIndication(onClick, interactionSource)
                 .OnGloballyPositioned(it => coordinates.Value = it)
@@ -58,6 +59,11 @@ public static partial class UiToolkitComposeFunctions
         var interactionSource = Remember(MutableInteractionSource);
         var isPressed = interactionSource.CollectIsPressedAsState().Value;
         var bounce = Theme.AnimationSpecs.Bounce;
+        var coroutineScope = RememberCoroutineScope();
+        var dismiss = LocalDismiss.Current;
+        var onDismiss = LocalOnDismiss.Current;
+        var onClickCallback = () => { coroutineScope.StartCoroutine(OnClickCoroutine()); };
+
         ListSelectionItem(item =>
         {
             var isHovered = interactionSource.CollectIsHoveredAsState().Value;
@@ -75,7 +81,8 @@ public static partial class UiToolkitComposeFunctions
                     )
                     .Margin(vertical: 2.Dp())
                     .Hoverable(interactionSource)
-                    .ClickIndication(onClick, interactionSource),
+                    .Clip(RoundedCornerShape(8.Dp()))
+                    .ClickIndication(onClickCallback, interactionSource),
                 content: () =>
                 {
                     Box(
@@ -87,11 +94,21 @@ public static partial class UiToolkitComposeFunctions
                 }
             );
         });
+        return;
+
+        IEnumerator OnClickCoroutine()
+        {
+            dismiss();
+            yield return new WaitForSeconds(0.15f);
+            onClick();
+            onDismiss();
+        }
     }
 
     [Composable]
-    private static void DropdownLayout(
-        ComposableContent content,
+    private static void DropdownLayout<T>(
+        T state,
+        ComposableContent<T> content,
         ComposableContent sizeContent,
         float expandProgress,
         IModifier? modifier = null
@@ -99,9 +116,16 @@ public static partial class UiToolkitComposeFunctions
     {
         var theme = Theme;
         var colors = theme.ColorScheme;
+        var bounce = theme.AnimationSpecs.Bounce;
+        var interactionSource = Remember(MutableInteractionSource);
+        var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+        var isPressed = interactionSource.CollectIsPressedAsState().Value;
         Box(
             alignment: Alignment.CenterLeft,
             modifier: modifier.OrEmpty()
+                .Margin(all: 2.Dp())
+                .Hoverable(interactionSource)
+                .Clickable(interactionSource)
                 .Padding(
                     horizontal: 8.Dp(),
                     vertical: 4.Dp()
@@ -131,11 +155,34 @@ public static partial class UiToolkitComposeFunctions
                 CompositionLocalProvider(
                     LocalContentColor.Provides(colors.OnPrimary),
                     LocalTextStyle.Provides(theme.Typography.Control),
-                    () => Row(
-                        verticalAlignment: Alignment.CenterVertically,
-                        modifier: Modifier.Float(),
-                        content: content
-                    )
+                    () =>
+                    {
+                        Row(
+                            verticalAlignment: Alignment.CenterVertically,
+                            modifier: Modifier.Float()
+                                .Scale(
+                                    AnimateFloatAsState(
+                                        isPressed ? 0.8f : isHovered ? 1.1f : 1f,
+                                        bounce
+                                    ).Value
+                                ),
+                            content: () =>
+                            {
+                                AnimatedContent(
+                                    targetState: state,
+                                    transitionSpec: _ => FadeIn().TogetherWith(FadeOut())
+                                        .With(Tween(duration: 1f)),
+                                    content: (_, m) =>
+                                    {
+                                        Box(
+                                            modifier: m.FillMaxSize(),
+                                            content: () => content(state)
+                                        );
+                                    }
+                                );
+                            }
+                        );
+                    }
                 );
             }
         );
@@ -144,20 +191,18 @@ public static partial class UiToolkitComposeFunctions
     [Composable]
     private static void DropdownModal(
         Action onDismiss,
-        ComposableContent content,
-        ComposableContent sizeContent,
         ComposableContent dropdownContent,
         LayoutCoordinates coordinates
     )
     {
         var theme = Theme;
         var colors = theme.ColorScheme;
-        var bounce = theme.AnimationSpecs.Bounce;
         ModalMenu(() =>
         {
             WithTheme(() =>
             {
-                var visibilityProgress = VisibilityProgress(true).Value;
+                var isVisible = Remember(() => MutableStateOf(true));
+                var visibilityProgress = VisibilityProgress(isVisible.Value).Value;
                 Box(
                     modifier: Modifier.FillMaxSize()
                         .OnClick(onDismiss),
@@ -167,16 +212,11 @@ public static partial class UiToolkitComposeFunctions
                             modifier: Modifier
                                 .Float()
                                 .Position(
-                                    top: coordinates.GlobalPosition.y.Dp(),
+                                    top: coordinates.GlobalBottom.Dp(),
                                     left: coordinates.GlobalPosition.x.Dp()
                                 ),
                             content: () =>
                             {
-                                DropdownLayout(
-                                    content: content,
-                                    sizeContent: sizeContent,
-                                    expandProgress: visibilityProgress
-                                );
                                 ScrollableColumn(
                                     modifier: Modifier
                                         .Width(coordinates.Width.Dp())
@@ -193,7 +233,10 @@ public static partial class UiToolkitComposeFunctions
                                     content: () =>
                                     {
                                         CompositionLocalProvider(
+                                            LocalDismiss.Provides(() => isVisible.Value = false),
+                                            LocalOnDismiss.Provides(onDismiss),
                                             LocalContentColor.Provides(colors.OnPrimaryContainer),
+                                            LocalTextStyle.Provides(theme.Typography.Control),
                                             content: () => ListSelection(dropdownContent)
                                         );
                                     }

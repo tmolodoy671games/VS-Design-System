@@ -19,19 +19,32 @@ public static partial class UiToolkitComposeFunctions
     public static void Tabs(
         ComposableContent content,
         Optional<AnimationSpec> animationSpec = default,
+        Optional<AnimationSpec> appearAnimationSpec = default,
         IModifier? modifier = null
     )
     {
         var theme = Theme;
         var colors = theme.ColorScheme;
-        
+
         animationSpec = animationSpec.GetOrDefault(
             Tween(duration: 0.25f)
         );
+        appearAnimationSpec = appearAnimationSpec.GetOrDefault(
+            Tween(
+                delay: 0.2f,
+                duration: 0.4f
+            )
+        );
+        var visibilityProgress = VisibilityProgress(
+            LocalTransitionState.Current.Phase != TransitionPhase.Exiting,
+            appearAnimationSpec
+        ).Value;
         Surface(
             color: colors.Primary,
             modifier: modifier.OrEmpty()
-                .Clip(RoundedCornerShape(16.Dp())),
+                .Clip(RoundedCornerShape(16.Dp()))
+                .Offset(y: (1 - visibilityProgress) * -100.Dp())
+                .Alpha(visibilityProgress),
             content: () =>
             {
                 FixedSize(() =>
@@ -111,6 +124,7 @@ public static partial class UiToolkitComposeFunctions
         var theme = Theme;
         var bounce = theme.AnimationSpecs.Bounce;
         var interactionSource = Remember(MutableInteractionSource);
+        var isHovered = interactionSource.CollectIsHoveredAsState().Value;
         var isPressed = interactionSource.CollectIsPressedAsState().Value;
         var tabsCoordinates = LocalTabsCoordinates.Current;
         ListSelectionItem(item =>
@@ -130,6 +144,7 @@ public static partial class UiToolkitComposeFunctions
                         onGloballyPositioned: it => tabsCoordinates[item.Id] = it
                     )
                     .Clip(RoundedCornerShape(16.Dp()))
+                    .Hoverable(interactionSource)
                     .ClickIndication(
                         onClick: onClick,
                         interactionSource: interactionSource
@@ -138,7 +153,7 @@ public static partial class UiToolkitComposeFunctions
                 {
                     Box(
                         modifier: Modifier
-                            .Scale(AnimateFloatAsState(isPressed ? 0.75f : 1f, bounce).Value),
+                            .Scale(AnimateFloatAsState(isPressed ? 0.75f : isHovered ? 1.1f : 1f, bounce).Value),
                         content: () =>
                         {
                             CompositionLocalProvider(

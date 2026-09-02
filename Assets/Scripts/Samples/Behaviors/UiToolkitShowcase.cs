@@ -277,10 +277,11 @@ namespace Samples.Samples.Behaviors
             var state = Remember(() => MutableStateOf("Item 1"));
             var isExpanded = Remember(() => MutableStateOf(false));
             Dropdown(
+                state: state.Value,
                 expanded: isExpanded.Value,
                 onClick: () => isExpanded.Value = true,
                 onDismiss: () => isExpanded.Value = false,
-                content: () => Text(state.Value),
+                content: it => Text(it),
                 sizeContent: () => Text("Item 1000"),
                 dropdownContent: () =>
                 {
