@@ -283,7 +283,7 @@ namespace Samples.Samples.Behaviors
                     __composer.StartReplaceGroup(1228399252);
                     for (var i = 0; i < 20; i++)
                     {
-                        var currentI = i;
+                        var currentI = i + 1;
                         __DropdownItem(onClick: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<string>>(state!).Changed<int>(currentI!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.Value = $"Item {currentI}")), content: (!__composer.Changed<int>(currentI!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text($"Item {currentI}", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00))), __composer: __composer, __changed: 0b_01_00_00);
                     }
 

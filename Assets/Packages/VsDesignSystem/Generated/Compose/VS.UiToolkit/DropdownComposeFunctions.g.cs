@@ -87,15 +87,17 @@ public static partial class UiToolkitComposeFunctions
             }));
             __ListSelectionItem((!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).ChangedAsFlag((__dirty & 0b_11_00_00) == 0b_10_00_00).Changed<global::UnityCompose.Packages.UnityCompose.Runtime.Impl.Utils.IMutableInteractionSource>(interactionSource!).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounce!).Changed<global::System.Action>(onClickCallback!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<global::VS.UiToolkit.IListSelectionItem>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<global::VS.UiToolkit.IListSelectionItem>>(item =>
             {
+                var appearAnimationSpec = bounce.With(delay: item.Delay, duration: 0.3f);
+                var alphaProgress = __VisibilityProgress(true, appearAnimationSpec, __composer: __composer, __changed: 0b_00_01).Value;
                 var isHovered = interactionSource.__CollectIsHoveredAsState(__composer: __composer, __changed: 0b_00).Value;
                 __SideEffect(isHovered, (!__composer.BuildChanged().Changed<global::VS.UiToolkit.IListSelectionItem>(item!).Changed<bool>(isHovered!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
                 {
                     if (isHovered)
                         item.Select();
                 })), __composer: __composer, __changed: 0b_00_00);
-                __Box(modifier: modifier.OrEmpty().FillMaxWidth().Padding(horizontal: 2.Dp(), vertical: 2.Dp() + 8.Dp() * item.SelectionProgress).Margin(vertical: 2.Dp()).Hoverable(interactionSource).Clip(RoundedCornerShape(8.Dp())).__ClickIndication(onClickCallback, interactionSource, __composer: __composer, __changed: 0b_01_01_00_00), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounce!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                __Box(modifier: modifier.OrEmpty().FillMaxWidth().Padding(horizontal: 2.Dp(), vertical: 2.Dp() + 8.Dp() * item.SelectionProgress).Margin(vertical: 2.Dp()).Hoverable(interactionSource).Clip(RoundedCornerShape(8.Dp())).__ClickIndication(onClickCallback, interactionSource, __composer: __composer, __changed: 0b_01_01_00_00), content: (!__composer.BuildChanged().ChangedAsFlag((__dirty & 0b_00_11_00) == 0b_00_10_00).Changed<bool>(isPressed!).Changed<global::UnityCompose.AnimationSpec>(bounce!).Changed<float>(alphaProgress!).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __Box(modifier: Modifier.FillMaxSize().Scale(__AnimateFloatAsState(isPressed ? 0.8f : 1f, bounce, __composer: __composer, __changed: 0b_00_00).Value), content: content, __composer: __composer, __changed: 0b_01_00_00 | ((__dirty & 0b_11_00) >> 2));
+                    __Box(modifier: Modifier.Scale(alphaProgress).Alpha(alphaProgress).FillMaxSize().Scale(__AnimateFloatAsState(isPressed ? 0.8f : 1f, bounce, __composer: __composer, __changed: 0b_00_00).Value), content: content, __composer: __composer, __changed: 0b_01_00_00 | ((__dirty & 0b_11_00) >> 2));
                 })), __composer: __composer, __changed: 0b_01_00_00);
             })), __composer: __composer, __changed: 0b_00);
             __dirty = 0b_01_01_01;
@@ -121,7 +123,7 @@ public static partial class UiToolkitComposeFunctions
     private static void __DropdownLayout<T>(T state, ComposableContent<T> content, ComposableContent sizeContent, float expandProgress, IModifier? modifier = null, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__state, __content, __sizeContent, __expandProgress, __modifier) = (state, content, sizeContent, expandProgress, modifier);
-        var __isCreated = __composer.StartRestartGroup(1747606119);
+        var __isCreated = __composer.StartRestartGroup(1866461427);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_00_00_11) == 0)
             __dirty |= __composer.Changed(state) ? 0b_00_00_00_00_10 : 0b_00_00_00_00_01;
@@ -151,9 +153,9 @@ public static partial class UiToolkitComposeFunctions
                     {
                         __AnimatedContent(targetState: state, transitionSpec: (!__composer.Changed() ? __composer.RememberedValue<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<T>, global::UnityCompose.ContentTransform>>() : __composer.UpdateRememberedValue<global::System.Func<global::UnityCompose.IAnimatedContentTransitionScope<T>, global::UnityCompose.ContentTransform>>(_ => FadeIn().TogetherWith(FadeOut()).With(Tween(duration: 1f)))), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_00_11_00) == 0b_00_00_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<T, global::UnityCompose.IModifier>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<T, global::UnityCompose.IModifier>>((_, m) =>
                         {
-                            __composer.StartReplaceGroup(489057240);
+                            __composer.StartReplaceGroup(340255915);
                             __Box(modifier: m.FillMaxSize(), content: (!__composer.BuildChanged().Changed().ChangedAsFlag((__dirty & 0b_00_00_00_00_11) == 0b_00_00_00_00_10).ChangedAsFlag((__dirty & 0b_00_00_00_11_00) == 0b_00_00_00_10_00).Get() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => content(state))), __composer: __composer, __changed: 0b_01_00_00);
-                            __composer.EndReplaceGroup(489057240);
+                            __composer.EndReplaceGroup(340255915);
                         })), __composer: __composer, __changed: 0b_01_01_00_00_00 | (__dirty & 0b_00_00_11));
                     })), __composer: __composer, __changed: 0b_01_00_00);
                 })), __composer: __composer, __changed: 0b_00_00_00);
@@ -165,13 +167,13 @@ public static partial class UiToolkitComposeFunctions
         }
 
         __dirty = 0b_01_01_01_01_01;
-        __composer.EndRestartGroup(1747606119, __isRestarted)?.UpdateScope(() => __DropdownLayout(__state, __content, __sizeContent, __expandProgress, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(1866461427, __isRestarted)?.UpdateScope(() => __DropdownLayout(__state, __content, __sizeContent, __expandProgress, __modifier, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 
     private static void __DropdownModal(Action onDismiss, ComposableContent dropdownContent, LayoutCoordinates coordinates, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__onDismiss, __dropdownContent, __coordinates) = (onDismiss, dropdownContent, coordinates);
-        var __isCreated = __composer.StartRestartGroup(1615800600);
+        var __isCreated = __composer.StartRestartGroup(603981669);
         var __dirty = __changed;
         if ((__changed & 0b_00_00_11) == 0)
             __dirty |= __composer.Changed(onDismiss) ? 0b_00_00_10 : 0b_00_00_01;
@@ -209,6 +211,6 @@ public static partial class UiToolkitComposeFunctions
         }
 
         __dirty = 0b_01_01_01;
-        __composer.EndRestartGroup(1615800600, __isRestarted)?.UpdateScope(() => __DropdownModal(__onDismiss, __dropdownContent, __coordinates, __composer, __composer.UpdateChangedFlags(__changed)));
+        __composer.EndRestartGroup(603981669, __isRestarted)?.UpdateScope(() => __DropdownModal(__onDismiss, __dropdownContent, __coordinates, __composer, __composer.UpdateChangedFlags(__changed)));
     }
 }

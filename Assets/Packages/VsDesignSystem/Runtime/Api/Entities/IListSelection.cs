@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
+using System.Linq;
+using SharpExtensions;
 using StableCollections;
 using UnityCompose;
 using UnityEngine;
+using Random = System.Random;
 
 // ReSharper disable CheckNamespace
 
@@ -27,6 +30,7 @@ public interface IListSelectionItem
     int Id { get; }
     bool IsSelected { get; }
     float SelectionProgress { get; }
+    float Delay { get; }
     void Select();
     void Deselect();
 }
@@ -47,6 +51,7 @@ internal class ListSelectionItemImpl : IListSelectionItem
     public int Id { get; }
     public bool IsSelected => _selection.IsSelected(Id);
     public float SelectionProgress => _selection.SelectionProgress(Id);
+    public float Delay => _selection.Delay(Id);
     public void Select() => _selection.Select(Id);
     public void Deselect() => _selection.Select(0);
 }
@@ -55,9 +60,11 @@ internal class ListSelectionImpl : IListSelection
 {
     private readonly IMutableState<int> _selection = MutableStateOf(0);
     private readonly IMutableStableList<float> _items = MutableStateListOf<float>();
+    private readonly IMutableStableList<float> _delays = MutableStateListOf<float>();
     private readonly IComposeCoroutineScope _coroutineScope;
     private readonly AnimationSpec _animationSpec;
     private IDisposable? _coroutine;
+    private readonly Random _random = new();
 
     public ListSelectionImpl(IComposeCoroutineScope coroutineScope, AnimationSpec animationSpec)
     {
@@ -75,6 +82,8 @@ internal class ListSelectionImpl : IListSelection
             id: index
         );
         _items.Add(index == 0 ? 1 : 0);
+        _delays.Add(_random.NextDouble().ToFloat().Remap(0, 1, 0.1f, 0.3f));
+        Shuffle(_delays);
         return newItem;
     }
 
@@ -93,6 +102,8 @@ internal class ListSelectionImpl : IListSelection
         _coroutine?.Dispose();
         _coroutine = _coroutineScope.StartCoroutine(SelectCoroutine(index));
     }
+
+    public float Delay(int id) => _delays[id];
 
     private IEnumerator SelectCoroutine(int selection)
     {
@@ -145,5 +156,15 @@ internal class ListSelectionImpl : IListSelection
             if (i != selection)
                 _items[i] = 0f;
         }
+    }
+
+    private static void Shuffle<T>(IMutableStableList<T> list)
+    {
+        // var random = new Random();
+        // for (var i = 0; i < list.Count; i++)
+        // {
+        //     var j = random.Next(i + 1);
+        //     (list[i], list[j]) = (list[j], list[i]);
+        // }
     }
 }

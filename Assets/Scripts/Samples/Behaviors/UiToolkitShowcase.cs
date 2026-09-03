@@ -287,7 +287,7 @@ namespace Samples.Samples.Behaviors
                 {
                     for (var i = 0; i < 20; i++)
                     {
-                        var currentI = i;
+                        var currentI = i + 1;
                         DropdownItem(
                             onClick: () => state.Value = $"Item {currentI}",
                             content: () => Text($"Item {currentI}")

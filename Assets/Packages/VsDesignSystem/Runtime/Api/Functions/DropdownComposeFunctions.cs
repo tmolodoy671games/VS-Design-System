@@ -66,6 +66,11 @@ public static partial class UiToolkitComposeFunctions
 
         ListSelectionItem(item =>
         {
+            var appearAnimationSpec = bounce.With(
+                delay: item.Delay,
+                duration: 0.3f
+            );
+            var alphaProgress = VisibilityProgress(true, appearAnimationSpec).Value;
             var isHovered = interactionSource.CollectIsHoveredAsState().Value;
             SideEffect(isHovered, () =>
             {
@@ -87,6 +92,8 @@ public static partial class UiToolkitComposeFunctions
                 {
                     Box(
                         modifier: Modifier
+                            .Scale(alphaProgress)
+                            .Alpha(alphaProgress)
                             .FillMaxSize()
                             .Scale(AnimateFloatAsState(isPressed ? 0.8f : 1f, bounce).Value),
                         content: content
@@ -168,18 +175,18 @@ public static partial class UiToolkitComposeFunctions
                                 ),
                             content: () =>
                             {
-                                AnimatedContent(
-                                    targetState: state,
-                                    transitionSpec: _ => FadeIn().TogetherWith(FadeOut())
-                                        .With(Tween(duration: 1f)),
-                                    content: (_, m) =>
-                                    {
-                                        Box(
-                                            modifier: m.FillMaxSize(),
-                                            content: () => content(state)
-                                        );
-                                    }
+                                // AnimatedContent(
+                                //     targetState: state,
+                                //     transitionSpec: _ => FadeIn().TogetherWith(FadeOut())
+                                //         .With(Tween(duration: 1f)),
+                                //     content: (_, m) =>
+                                //     {
+                                Box(
+                                    modifier: Modifier.FillMaxSize(),
+                                    content: () => content(state)
                                 );
+                                //     }
+                                // );
                             }
                         );
                     }
