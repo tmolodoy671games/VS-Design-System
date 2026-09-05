@@ -21,32 +21,39 @@ namespace Samples.Samples.Behaviors
                     modifier: Modifier.FillMaxSize(),
                     content: () =>
                     {
-                        Column(
-                            horizontalAlignment: Alignment.CenterHorizontally,
+                        Row(
+                            verticalAlignment: Alignment.CenterVertically,
                             content: () =>
                             {
-                                TabsSample();
-                                Spacer(Modifier.Height(64.Dp()));
-                                Row(
-                                    modifier: Modifier
-                                        .Background(Theme.ColorScheme.Surface)
-                                        .Padding(all: 16.Dp())
-                                        .Clip(RoundedCornerShape(16.Dp())),
+                                Column(
+                                    horizontalAlignment: Alignment.CenterHorizontally,
                                     content: () =>
                                     {
-                                        Buttons();
-                                        Spacer(Modifier.Width(16.Dp()));
-                                        Switches();
-                                        Spacer(Modifier.Width(16.Dp()));
-                                        Column(() =>
-                                        {
-                                            Sliders();
-                                            Selection();
-                                            AlertDialogSample();
-                                            DropdownSample();
-                                        });
+                                        TabsSample();
+                                        Spacer(Modifier.Height(64.Dp()));
+                                        Row(
+                                            modifier: Modifier
+                                                .Background(Theme.ColorScheme.Surface)
+                                                .Padding(all: 16.Dp())
+                                                .Clip(RoundedCornerShape(16.Dp())),
+                                            content: () =>
+                                            {
+                                                Buttons();
+                                                Spacer(Modifier.Width(16.Dp()));
+                                                Switches();
+                                                Spacer(Modifier.Width(16.Dp()));
+                                                Column(() =>
+                                                {
+                                                    Sliders();
+                                                    Selection();
+                                                    AlertDialogSample();
+                                                    DropdownSample();
+                                                });
+                                            }
+                                        );
                                     }
                                 );
+                                MenuSample();
                             }
                         );
                     }
@@ -293,6 +300,29 @@ namespace Samples.Samples.Behaviors
                             content: () => Text($"Item {currentI}")
                         );
                     }
+                }
+            );
+        }
+
+        [Composable]
+        private static void MenuSample()
+        { 
+            
+            MenuList(
+                content: () =>
+                {
+                    MenuItem(
+                        onClick: () => { },
+                        content: () => Text("Item One")
+                    );
+                    MenuItem(
+                        onClick: () => { },
+                        content: () => Text("Item Two")
+                    );
+                    MenuItem(
+                        onClick: () => { },
+                        content: () => Text("Item Three")
+                    );
                 }
             );
         }

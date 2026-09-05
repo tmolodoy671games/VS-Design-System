@@ -19,12 +19,19 @@ public readonly record struct ColorSchemeConfig(
     Color Surface,
     Color SurfaceVariant,
     Color OnSurface,
+    
+    // Element
+    Color Slot,
+    Color ElementLow,
+    Color ElementMid,
+    Color ElementHigh,
 
     // Scrim
     Color Scrim,
     Color ScrimDark,
     
-    // Outline
+    // Other
+    Color MenuItem,
     Color Outline,
     
     // Interaction

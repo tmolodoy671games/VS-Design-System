@@ -12,7 +12,7 @@ using static UnityCompose.ComposeFunctions;
 namespace VS.UiToolkit;
 public static partial class ModifierExtensions
 {
-    public static IModifier __DsHoverIndication(this IModifier modifier, IMutableInteractionSource? interactionSource = null, bool enabled = true, global::UnityCompose.Composer __composer = null !, int __changed = -1)
+    public static IModifier __HoverIndication(this IModifier modifier, IMutableInteractionSource? interactionSource = null, bool enabled = true, global::UnityCompose.Composer __composer = null !, int __changed = -1)
     {
         var(__modifier, __interactionSource, __enabled) = (modifier, interactionSource, enabled);
         __composer.StartReplaceGroup(1342145680);

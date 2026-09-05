@@ -23,25 +23,29 @@ namespace Samples.Samples.Behaviors
                 {
                     __Box(alignment: Alignment.Center, modifier: Modifier.FillMaxSize(), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                     {
-                        __Column(horizontalAlignment: Alignment.CenterHorizontally, content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                        __Row(verticalAlignment: Alignment.CenterVertically, content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                         {
-                            __TabsSample(__composer: __composer, __changed: 0b_00);
-                            __Spacer(Modifier.Height(64.Dp()), __composer: __composer, __changed: 0b_00);
-                            __Row(modifier: Modifier.Background(Theme.ColorScheme.Surface).Padding(all: 16.Dp()).Clip(RoundedCornerShape(16.Dp())), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                            __Column(horizontalAlignment: Alignment.CenterHorizontally, content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                             {
-                                __Buttons(__composer: __composer, __changed: 0b_00);
-                                __Spacer(Modifier.Width(16.Dp()), __composer: __composer, __changed: 0b_00);
-                                __Switches(__composer: __composer, __changed: 0b_00);
-                                __Spacer(Modifier.Width(16.Dp()), __composer: __composer, __changed: 0b_00);
-                                __Column((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                                __TabsSample(__composer: __composer, __changed: 0b_00);
+                                __Spacer(Modifier.Height(64.Dp()), __composer: __composer, __changed: 0b_00);
+                                __Row(modifier: Modifier.Background(Theme.ColorScheme.Surface).Padding(all: 16.Dp()).Clip(RoundedCornerShape(16.Dp())), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                                 {
-                                    __Sliders(__composer: __composer, __changed: 0b_00);
-                                    __Selection(__composer: __composer, __changed: 0b_00);
-                                    __AlertDialogSample(__composer: __composer, __changed: 0b_00);
-                                    __DropdownSample(__composer: __composer, __changed: 0b_00);
-                                })), __composer: __composer, __changed: 0b_01_01_01_00);
-                            })), __composer: __composer, __changed: 0b_01_01_00_00);
-                        })), __composer: __composer, __changed: 0b_01_00_01_00);
+                                    __Buttons(__composer: __composer, __changed: 0b_00);
+                                    __Spacer(Modifier.Width(16.Dp()), __composer: __composer, __changed: 0b_00);
+                                    __Switches(__composer: __composer, __changed: 0b_00);
+                                    __Spacer(Modifier.Width(16.Dp()), __composer: __composer, __changed: 0b_00);
+                                    __Column((!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                                    {
+                                        __Sliders(__composer: __composer, __changed: 0b_00);
+                                        __Selection(__composer: __composer, __changed: 0b_00);
+                                        __AlertDialogSample(__composer: __composer, __changed: 0b_00);
+                                        __DropdownSample(__composer: __composer, __changed: 0b_00);
+                                    })), __composer: __composer, __changed: 0b_01_01_01_00);
+                                })), __composer: __composer, __changed: 0b_01_01_00_00);
+                            })), __composer: __composer, __changed: 0b_01_00_01_00);
+                            __MenuSample(__composer: __composer, __changed: 0b_00);
+                        })), __composer: __composer, __changed: 0b_01_01_00);
                     })), __composer: __composer, __changed: 0b_00_00_00);
                 })), __composer: __composer, __changed: 0b_00);
             }
@@ -55,7 +59,7 @@ namespace Samples.Samples.Behaviors
 
         protected override void __Preview(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(452502114);
+            var __isCreated = __composer.StartRestartGroup(258025731);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -66,12 +70,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(452502114, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
+            __composer.EndRestartGroup(258025731, __isRestarted)?.UpdateScope(() => __Preview(__composer, 0));
         }
 
         private static void __Buttons(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1432834659);
+            var __isCreated = __composer.StartRestartGroup(1729546161);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -102,12 +106,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1432834659, __isRestarted)?.UpdateScope(() => __Buttons(__composer, 0));
+            __composer.EndRestartGroup(1729546161, __isRestarted)?.UpdateScope(() => __Buttons(__composer, 0));
         }
 
         private static void __Switches(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(107688370);
+            var __isCreated = __composer.StartRestartGroup(964099792);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -131,12 +135,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(107688370, __isRestarted)?.UpdateScope(() => __Switches(__composer, 0));
+            __composer.EndRestartGroup(964099792, __isRestarted)?.UpdateScope(() => __Switches(__composer, 0));
         }
 
         private static void __Sliders(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(2136478715);
+            var __isCreated = __composer.StartRestartGroup(1661509680);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -154,12 +158,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(2136478715, __isRestarted)?.UpdateScope(() => __Sliders(__composer, 0));
+            __composer.EndRestartGroup(1661509680, __isRestarted)?.UpdateScope(() => __Sliders(__composer, 0));
         }
 
         private static void __Selection(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1669558311);
+            var __isCreated = __composer.StartRestartGroup(1094851100);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -209,17 +213,17 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1669558311, __isRestarted)?.UpdateScope(() => __Selection(__composer, 0));
+            __composer.EndRestartGroup(1094851100, __isRestarted)?.UpdateScope(() => __Selection(__composer, 0));
         }
 
         private static void __AlertDialogSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(929855255);
+            var __isCreated = __composer.StartRestartGroup(1336022821);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
                 var alertDialogVisibility = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
-                __composer.StartReplaceGroup(1135512664);
+                __composer.StartReplaceGroup(1255468377);
                 if (alertDialogVisibility.Value)
                 {
                     __ModalMenu((!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
@@ -237,7 +241,7 @@ namespace Samples.Samples.Behaviors
                     })), __composer: __composer, __changed: 0b_01_00);
                 }
 
-                __composer.EndReplaceGroup(1135512664);
+                __composer.EndReplaceGroup(1255468377);
                 __Button(onClick: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(alertDialogVisibility!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => alertDialogVisibility.Value = true)), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Show AlertDialog", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00_00);
             }
             else
@@ -245,12 +249,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(929855255, __isRestarted)?.UpdateScope(() => __AlertDialogSample(__composer, 0));
+            __composer.EndRestartGroup(1336022821, __isRestarted)?.UpdateScope(() => __AlertDialogSample(__composer, 0));
         }
 
         private static void __TabsSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(1294453841);
+            var __isCreated = __composer.StartRestartGroup(1774850892);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -267,12 +271,12 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(1294453841, __isRestarted)?.UpdateScope(() => __TabsSample(__composer, 0));
+            __composer.EndRestartGroup(1774850892, __isRestarted)?.UpdateScope(() => __TabsSample(__composer, 0));
         }
 
         private static void __DropdownSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
         {
-            var __isCreated = __composer.StartRestartGroup(159246542);
+            var __isCreated = __composer.StartRestartGroup(1565739084);
             var __isRestarted = __composer.IsRestarted();
             if (__isCreated || __isRestarted || __changed != 0b_00)
             {
@@ -280,14 +284,14 @@ namespace Samples.Samples.Behaviors
                 var isExpanded = (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.IMutableState<bool>>() : __composer.UpdateRememberedValue<global::UnityCompose.IMutableState<bool>>(MutableStateOf(false)));
                 __Dropdown(state: state.Value, expanded: isExpanded.Value, onClick: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isExpanded!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isExpanded.Value = true)), onDismiss: (!__composer.Changed<global::UnityCompose.IMutableState<bool>>(isExpanded!) ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => isExpanded.Value = false)), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent<string>>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent<string>>(it => __Text(it, __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00))), sizeContent: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Item 1000", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), dropdownContent: (!__composer.Changed<global::UnityCompose.IMutableState<string>>(state!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
                 {
-                    __composer.StartReplaceGroup(1228399252);
+                    __composer.StartReplaceGroup(430331617);
                     for (var i = 0; i < 20; i++)
                     {
                         var currentI = i + 1;
                         __DropdownItem(onClick: (!__composer.BuildChanged().Changed<global::UnityCompose.IMutableState<string>>(state!).Changed<int>(currentI!).Get() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() => state.Value = $"Item {currentI}")), content: (!__composer.Changed<int>(currentI!) ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text($"Item {currentI}", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_00))), __composer: __composer, __changed: 0b_01_00_00);
                     }
 
-                    __composer.EndReplaceGroup(1228399252);
+                    __composer.EndReplaceGroup(430331617);
                 })), __composer: __composer, __changed: 0b_01_01_00_00_00_00_00_00_00);
             }
             else
@@ -295,7 +299,34 @@ namespace Samples.Samples.Behaviors
                 __composer.SkipToGroupEnd();
             }
 
-            __composer.EndRestartGroup(159246542, __isRestarted)?.UpdateScope(() => __DropdownSample(__composer, 0));
+            __composer.EndRestartGroup(1565739084, __isRestarted)?.UpdateScope(() => __DropdownSample(__composer, 0));
+        }
+
+        private static void __MenuSample(global::UnityCompose.Composer __composer = null !, int __changed = -1)
+        {
+            var __isCreated = __composer.StartRestartGroup(1368175778);
+            var __isRestarted = __composer.IsRestarted();
+            if (__isCreated || __isRestarted || __changed != 0b_00)
+            {
+                __MenuList(content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() =>
+                {
+                    __MenuItem(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                    {
+                    })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Item One", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_00_00);
+                    __MenuItem(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                    {
+                    })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Item Two", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_00_00);
+                    __MenuItem(onClick: (!__composer.Changed() ? __composer.RememberedValue<global::System.Action>() : __composer.UpdateRememberedValue<global::System.Action>(() =>
+                    {
+                    })), content: (!__composer.Changed() ? __composer.RememberedValue<global::UnityCompose.ComposableContent>() : __composer.UpdateRememberedValue<global::UnityCompose.ComposableContent>(() => __Text("Item Three", __composer: __composer, __changed: 0b_01_01_01_01_01_01_01_01_01))), __composer: __composer, __changed: 0b_01_01_01_00_00);
+                })), __composer: __composer, __changed: 0b_01_00);
+            }
+            else
+            {
+                __composer.SkipToGroupEnd();
+            }
+
+            __composer.EndRestartGroup(1368175778, __isRestarted)?.UpdateScope(() => __MenuSample(__composer, 0));
         }
     }
 }

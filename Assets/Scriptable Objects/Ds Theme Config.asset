@@ -19,11 +19,16 @@ MonoBehaviour:
     secondaryContainer: {r: 0.370172, g: 0.6753143, b: 0.71599996, a: 1}
     surface: {r: 1, g: 0.984, b: 0.996, a: 1}
     surfaceVariant: {r: 0.89389205, g: 0.9131969, b: 0.91400003, a: 1}
-    outline: {r: 1, g: 1, b: 1, a: 1}
+    slot: {r: 0, g: 0, b: 0, a: 1}
+    elementLow: {r: 1, g: 1, b: 1, a: 1}
+    elementMid: {r: 0, g: 0, b: 0, a: 1}
+    elementHigh: {r: 1, g: 1, b: 1, a: 1}
     onLight: {r: 0, g: 0, b: 0, a: 1}
     onDark: {r: 1, g: 1, b: 1, a: 1}
-    scrim: {r: 0, g: 0, b: 0, a: 0.5}
-    scrimDark: {r: 0.046981145, g: 0.052726343, b: 0.05660379, a: 0.972549}
+    scrim: {r: 0.03508009, g: 0.038289357, b: 0.04905659, a: 0.5}
+    scrimDark: {r: 0.044421535, g: 0.05428626, b: 0.06415099, a: 0.972549}
+    menuItem: {r: 1, g: 1, b: 1, a: 1}
+    outline: {r: 0.87757206, g: 0.9289536, b: 0.93962264, a: 1}
     hover: {r: 0.7546101, g: 0.8867924, b: 0.88562787, a: 0.25490198}
     press: {r: 0.04313726, g: 0.08674655, b: 0.11372549, a: 0.2509804}
   typography:

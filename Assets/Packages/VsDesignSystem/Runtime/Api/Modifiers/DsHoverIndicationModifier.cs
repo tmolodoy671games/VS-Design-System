@@ -11,7 +11,7 @@ namespace VS.UiToolkit;
 public static partial class ModifierExtensions
 {
     [Composable]
-    public static IModifier DsHoverIndication(
+    public static IModifier HoverIndication(
         this IModifier modifier,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true
