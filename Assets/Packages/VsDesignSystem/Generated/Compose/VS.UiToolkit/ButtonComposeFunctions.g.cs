@@ -50,11 +50,11 @@ public static partial class UiToolkitComposeFunctions
             var isPressed = interactionSource.__CollectIsPressedAsState(__composer: __composer, __changed: 0b_00).Value;
             var contentBackground = __AnimateColorAsState(resolvedColors.GetContainerColor(enabled), __composer: __composer, __changed: 0b_01_00).Value;
             var bounceAnimationSpec = Theme.AnimationSpecs.Bounce;
-            var buttonModifier = modifier.OrEmpty().Padding(resolvedContentPadding).Margin(top: resolvedMargins.Top, bottom: resolvedMargins.Bottom, left: resolvedMargins.Left, right: resolvedMargins.Right).Clip(__AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value).Background(contentBackground).__ClickIndication(enabled: enabled, onClick: onClick, interactionSource: interactionSource, __composer: __composer, __changed: 0b_01_00_00 | (__dirty & 0b_00_00_11) | (__dirty & 0b_11_00_00_00));
+            var buttonModifier = modifier.OrEmpty().Padding(resolvedContentPadding).Margin(top: resolvedMargins.Top, bottom: resolvedMargins.Bottom, left: resolvedMargins.Left, right: resolvedMargins.Right).Clip(__AnimateRoundedCornerShapeAsState(resolvedShape, __composer: __composer, __changed: 0b_01_00).Value).Background(contentBackground).__ClickIndication(enabled: enabled, onClick: onClick, interactionSource: interactionSource, __composer: __composer, __changed: 0b_01_00_00 | (__dirty & 0b_00_00_11) | (__dirty & 0b_11_00_00_00));
             __composer.StartReplaceGroup(145467163);
             if (scale)
             {
-                buttonModifier = buttonModifier.Scale(__AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec, __composer: __composer, __changed: 0b_00_00).Value);
+                buttonModifier = buttonModifier.Scale(__AnimateFloatAsState(isHovered ? 1.1f : 1f, __composer: __composer, __changed: 0b_01_00).Value);
             }
 
             __composer.EndReplaceGroup(145467163);

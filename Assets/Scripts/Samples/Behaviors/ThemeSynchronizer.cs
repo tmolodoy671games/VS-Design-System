@@ -8,7 +8,7 @@ using VS.UiToolkit;
 namespace Samples.Samples.Behaviors
 {
     [HideMonoScript, ExecuteAlways, DefaultExecutionOrder(-1_000_000)]
-    internal class DsThemeSynchronizer : MonoBehaviour
+    internal class ThemeSynchronizer : MonoBehaviour
     {
         [SerializeField] private SerializableDsThemeConfig theme = null!;
 

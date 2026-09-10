@@ -44,7 +44,7 @@ public static partial class UiToolkitComposeFunctions
                 left: resolvedMargins.Left,
                 right: resolvedMargins.Right
             )
-            .Clip(AnimateRoundedCornerShapeAsState(resolvedShape, bounceAnimationSpec).Value)
+            .Clip(AnimateRoundedCornerShapeAsState(resolvedShape).Value)
             .Background(contentBackground)
             .ClickIndication(
                 enabled: enabled,
@@ -54,7 +54,7 @@ public static partial class UiToolkitComposeFunctions
         if (scale)
         {
             buttonModifier = buttonModifier
-                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f, bounceAnimationSpec).Value);
+                .Scale(AnimateFloatAsState(isHovered ? 1.1f : 1f).Value);
         }
 
         Box(

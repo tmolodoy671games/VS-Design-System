@@ -53,6 +53,7 @@ namespace Samples.Samples.Behaviors
                                         );
                                     }
                                 );
+                                Spacer(Modifier.Width(20.Dp()));
                                 MenuSample();
                             }
                         );
@@ -306,22 +307,29 @@ namespace Samples.Samples.Behaviors
 
         [Composable]
         private static void MenuSample()
-        { 
-            
-            MenuList(
+        {
+            Surface(
+                color: Theme.ColorScheme.Surface,
+                modifier: Modifier.Clip(RoundedCornerShape(16.Dp()))
+                    .Padding(all: 16.Dp()),
                 content: () =>
                 {
-                    MenuItem(
-                        onClick: () => { },
-                        content: () => Text("Item One")
-                    );
-                    MenuItem(
-                        onClick: () => { },
-                        content: () => Text("Item Two")
-                    );
-                    MenuItem(
-                        onClick: () => { },
-                        content: () => Text("Item Three")
+                    MenuList(
+                        content: () =>
+                        {
+                            MenuItem(
+                                onClick: () => { },
+                                content: () => Text("Item One")
+                            );
+                            MenuItem(
+                                onClick: () => { },
+                                content: () => Text("Item Two")
+                            );
+                            MenuItem(
+                                onClick: () => { },
+                                content: () => Text("Item Three")
+                            );
+                        }
                     );
                 }
             );
