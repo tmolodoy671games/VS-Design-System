@@ -30,7 +30,7 @@ public static partial class DesignSystemComposeFunctions
         );
         interactionSource ??= Remember(MutableInteractionSource);
         var hovered = interactionSource.CollectIsHoveredAsState().Value;
-        var resolvedShape = shape.GetOrDefault(ButtonDefaults.Shape);
+        var resolvedShape = shape.GetOrDefault(ButtonDefaults.Shape) * AnimateFloatAsState(hovered ? 2f : 1f).Value;
         Surface(
             onClick: onClick,
             modifier: modifier.OrEmpty()

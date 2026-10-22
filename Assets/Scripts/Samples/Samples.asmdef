@@ -3,6 +3,6 @@
   "rootNamespace": "Samples",
   "references": [
     "Compose.Net.Unity",
-    "VS UI Toolkit"
+    "VS.DesignSystem"
   ]
 }
