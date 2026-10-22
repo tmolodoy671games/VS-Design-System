@@ -11,8 +11,22 @@ public static partial class DesignSystemComposeFunctions
     public static void Button(
         Action onClick,
         [Composable] Action content,
-        IModifier? modifier = null
+        IModifier? modifier = null,
+        bool enabled = true
     )
     {
+        Surface(
+            onClick: onClick,
+            modifier: modifier,
+            enabled: enabled,
+            content: () =>
+            {
+                CompositionLocalProvider(
+                    LocalContentColor.Provides(default),
+                    LocalTextStyle.Provides(Theme.Typography.LabelLarge),
+                    content: content
+                );
+            }
+        );
     }
 }

@@ -68,7 +68,7 @@ public static partial class DesignSystemComposeFunctions
                             onClick: onClick,
                             enabled: enabled,
                             interactionSource: interactionSource,
-                            indication: null // BRUH
+                            indication: LocalIndication.Current
                         ),
                     content: content
                 );
