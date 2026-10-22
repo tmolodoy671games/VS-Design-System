@@ -3,7 +3,8 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 28
+  m_BuildProfilePlayerSettings: {fileID: 0}
+  serializedVersion: 32
   productGUID: ee975d39af9fbc842b48430693efdd1f
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -41,11 +42,11 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
-  m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
   defaultScreenHeight: 1080
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
+  webProgressiveAssetLoading: 0
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 1
   unsupportedMSAAFallback: 0
@@ -55,7 +56,7 @@ PlayerSettings:
   mipStripping: 0
   numberOfMipsStripped: 0
   numberOfMipsStrippedPerMipmapLimitGroup: {}
-  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  m_StackTraceTypes: 010000000100000001000000010000000100000001000000i
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
   iosUseCustomAppBackgroundBehavior: 0
@@ -73,6 +74,16 @@ PlayerSettings:
   androidStartInFullscreen: 1
   androidRenderOutsideSafeArea: 1
   androidUseSwappy: 1
+  androidRequestedVisibleInsets: 0
+  m_AndroidWindowInsets:
+    2:
+      overlapping: 0
+      appearance: 0
+    1:
+      overlapping: 0
+      appearance: 0
+  androidSystemBarsBehavior: 2
+  androidSystemBarsBackground: 0
   androidDisplayOptions: 1
   androidBlitType: 0
   androidResizeableActivity: 1
@@ -87,6 +98,7 @@ PlayerSettings:
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 0
+  callOnDisableOnAssetBundleUnload: 1
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
   Force IOS Speakers When Recording: 0
@@ -152,18 +164,16 @@ PlayerSettings:
   - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
-  m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 1
   xboxOneEnable7thCore: 1
   vrSettings:
     enable360StereoCapture: 0
-  isWsaHolographicRemotingEnabled: 0
   enableFrameTimingStats: 0
   enableOpenGLProfilerGPURecorders: 1
   allowHDRDisplaySupport: 0
   useHDRDisplay: 0
   hdrBitDepth: 0
-  m_ColorGamuts: 00000000
+  m_ColorGamuts: 00000000i
   targetPixelDensity: 30
   resolutionScalingMode: 0
   resetResolutionOnWindowResize: 0
@@ -179,8 +189,9 @@ PlayerSettings:
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 25
+  AndroidMinSdkVersion: 26
   AndroidTargetSdkVersion: 0
+  AndroidCompileSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   AndroidPreferredDataLocation: 1
   aotOptions: 
@@ -197,13 +208,14 @@ PlayerSettings:
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
   iOSSimulatorArchitecture: 0
-  iOSTargetOSVersionString: 15.0
+  iOSTargetOSVersionString: 16.0
   tvOSSdkVersion: 0
   tvOSSimulatorArchitecture: 0
   tvOSRequireExtendedGameController: 0
-  tvOSTargetOSVersionString: 15.0
+  tvOSTargetOSVersionString: 16.0
   VisionOSSdkVersion: 0
   VisionOSTargetOSVersionString: 1.0
+  xcodeProjectType: 0
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -256,7 +268,6 @@ PlayerSettings:
   VisionOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
-  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
   clonedFromGUID: c19f32bac17ee4170b3bf8a6a0333fb9
@@ -271,7 +282,6 @@ PlayerSettings:
   useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
   AndroidTargetArchitectures: 2
-  AndroidAllowedArchitectures: -13
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: 
@@ -284,10 +294,10 @@ PlayerSettings:
   androidAppCategory: 3
   useAndroidAppCategory: 1
   androidAppCategoryOther: 
-  AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
   androidUseCustomKeystore: 0
+  androidRenderServiceUseVirtualDisplay: 0
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -299,17 +309,80 @@ PlayerSettings:
   AndroidAppBundleSizeToValidate: 150
   AndroidReportGooglePlayAppDependencies: 1
   androidSymbolsSizeThreshold: 800
+  androidIconSourceType: 0
+  androidAdaptiveIconVectorDrawableBackground: {fileID: 0}
+  androidAdaptiveIconVectorDrawableForeground: {fileID: 0}
+  androidAdaptiveIconVectorDrawableMonochrome: {fileID: 0}
+  androidAdaptiveBannerVectorDrawableBackground: {fileID: 0}
+  androidAdaptiveBannerVectorDrawableForeground: {fileID: 0}
   m_BuildTargetIcons: []
-  m_BuildTargetPlatformIcons: []
+  m_BuildTargetPlatformIcons:
+  - m_BuildTarget: Android
+    m_Icons:
+    - m_Textures: []
+      m_Width: 432
+      m_Height: 432
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 324
+      m_Height: 324
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 216
+      m_Height: 216
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 162
+      m_Height: 162
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 108
+      m_Height: 108
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 81
+      m_Height: 81
+      m_Kind: 2
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 640
+      m_Height: 360
+      m_Kind: 3
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 480
+      m_Height: 270
+      m_Kind: 3
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 320
+      m_Height: 180
+      m_Kind: 3
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 240
+      m_Height: 135
+      m_Kind: 3
+      m_SubKind: 
+    - m_Textures: []
+      m_Width: 160
+      m_Height: 90
+      m_Kind: 3
+      m_SubKind: 
   m_BuildTargetBatching:
   - m_BuildTarget: Standalone
     m_StaticBatching: 1
     m_DynamicBatching: 0
+  m_UseLegacyStaticBatchingDefault: 1
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
   m_BuildTargetGraphicsAPIs: []
-  m_BuildTargetVRSettings: []
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
   openGLRequireES31: 0
@@ -483,6 +556,12 @@ PlayerSettings:
   switchMicroSleepForYieldTime: 25
   switchRamDiskSpaceSize: 12
   switchUpgradedPlayerSettingsToNMETA: 0
+  switchCaStoreSource: 0
+  switchCaStoreFilePath: 
+  switchStorageMode: 0
+  switchStorageMounts: []
+  switchPersistentDataPathMountName: 
+  switchTemporaryCachePathMountName: 
   ps4NPAgeRating: 12
   ps4NPTitleSecret: 
   ps4NPTrophyPackPath: 
@@ -599,6 +678,7 @@ PlayerSettings:
     Android: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
+  il2cppLTOMode: {}
   il2cppStacktraceInformation: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
@@ -609,10 +689,12 @@ PlayerSettings:
   scriptingRuntimeVersion: 1
   gcIncremental: 1
   gcWBarrierValidation: 0
+  managedCodeVariant: {}
   apiCompatibilityLevelPerPlatform: {}
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
+  windowsCopyVCRuntime: 1
   metroPackageName: VS Design System
   metroPackageVersion: 
   metroCertificatePath: 
@@ -668,7 +750,6 @@ PlayerSettings:
   XboxOneXTitleMemory: 8
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
-  vrEditorSettings: {}
   cloudServicesEnabled: {}
   luminIcon:
     m_Name: 
@@ -691,6 +772,7 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
+  enableDirectStorage: 1
   cloudProjectId: 6a29e5af-05e4-48ae-bf28-9ea20ebbceba
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
@@ -706,4 +788,5 @@ PlayerSettings:
   androidVulkanAllowFilterList: []
   androidVulkanDeviceFilterListAsset: {fileID: 0}
   d3d12DeviceFilterListAsset: {fileID: 0}
+  webGPUDeviceFilterListAsset: {fileID: 0}
   allowedHttpConnections: 3
