@@ -2,6 +2,8 @@ using Compose.Net;
 using Compose.Net.Unity;
 using UnityEngine;
 
+// ReSharper disable CheckNamespace
+
 namespace VS.DesignSystem;
 
 /// <summary>Provides an editable theme in both Play Mode and the editor preview.</summary>
