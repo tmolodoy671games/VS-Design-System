@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf39b949ab34ac898581d6619f142df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Samples::Samples.ButtonSample
+  themeAsset: {fileID: 11400000, guid: 314884733c5b6b243b35992cf6876334, type: 2}
 --- !u!1931382934 &1850000004
 PanelRenderer:
   m_ObjectHideFlags: 0
