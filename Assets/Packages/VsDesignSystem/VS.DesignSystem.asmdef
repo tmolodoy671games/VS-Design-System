@@ -1,6 +1,6 @@
-{
-  "name": "VS UI Toolkit",
-  "rootNamespace": "VS.UiToolkit",
+﻿{
+  "name": "VS.DesignSystem",
+  "rootNamespace": "VS.DesignSystem",
   "references": [
     "Compose.Net.Unity",
     "Kamgam.UIToolkitGlow"

@@ -1,0 +1,42 @@
+// ReSharper disable CheckNamespace
+
+namespace VS.DesignSystem;
+
+public readonly record struct ColorScheme(
+    Color Primary,
+    Color OnPrimary,
+    Color PrimaryContainer,
+    Color OnPrimaryContainer,
+    Color InversePrimary,
+    Color Secondary,
+    Color OnSecondary,
+    Color SecondaryContainer,
+    Color OnSecondaryContainer,
+    Color Tertiary,
+    Color OnTertiary,
+    Color TertiaryContainer,
+    Color OnTertiaryContainer,
+    Color Background,
+    Color OnBackground,
+    Color Surface,
+    Color OnSurface,
+    Color SurfaceVariant,
+    Color OnSurfaceVariant,
+    Color SurfaceTint,
+    Color InverseSurface,
+    Color InverseOnSurface,
+    Color Error,
+    Color OnError,
+    Color ErrorContainer,
+    Color OnErrorContainer,
+    Color Outline,
+    Color OutlineVariant,
+    Color Scrim,
+    Color SurfaceBright,
+    Color SurfaceDim,
+    Color SurfaceContainer,
+    Color SurfaceContainerHigh,
+    Color SurfaceContainerHighest,
+    Color SurfaceContainerLow,
+    Color SurfaceContainerLowest
+);
