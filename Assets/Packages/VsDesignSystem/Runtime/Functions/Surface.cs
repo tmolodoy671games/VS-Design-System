@@ -77,7 +77,7 @@ public static partial class DesignSystemComposeFunctions
     }
 }
 
-file static class ModifierExtensions
+internal static class ModifierExtensions
 {
     public static IModifier Surface(
         this IModifier modifier,
