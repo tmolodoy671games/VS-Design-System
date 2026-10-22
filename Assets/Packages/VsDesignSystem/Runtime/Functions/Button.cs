@@ -21,19 +21,42 @@ public static partial class DesignSystemComposeFunctions
         bool enabled = true
     )
     {
-        var resolvedColors = colors.GetOrDefault(ButtonDefaults.Colors());
-        var resolvedContentPadding = contentPadding.GetOrDefault(
-            PaddingValues(
-                horizontal: 24.Dp(),
-                vertical: 8.Dp()
-            )
+        ButtonImpl(
+            onClick: onClick,
+            content: content,
+            modifier: modifier.OrEmpty(),
+            shape: shape.GetOrDefault(ButtonDefaults.Shape),
+            colors: colors.GetOrDefault(ButtonDefaults.Colors()),
+            border: border,
+            contentPadding: contentPadding.GetOrDefault(
+                PaddingValues(
+                    horizontal: 24.Dp(),
+                    vertical: 8.Dp()
+                )
+            ),
+            interactionSource: interactionSource ?? Remember(MutableInteractionSource),
+            enabled: enabled
         );
-        interactionSource ??= Remember(MutableInteractionSource);
+    }
+
+    [Composable, NonRestartableComposable]
+    private static void ButtonImpl(
+        Action onClick,
+        [Composable] Action content,
+        IModifier modifier,
+        Shape shape,
+        ButtonColors colors,
+        BorderStroke border,
+        PaddingValues contentPadding,
+        IMutableInteractionSource interactionSource,
+        bool enabled
+    )
+    {
         var hovered = interactionSource.CollectIsHoveredAsState().Value;
-        var resolvedShape = shape.GetOrDefault(ButtonDefaults.Shape) * AnimateFloatAsState(hovered ? 1f : 1f).Value;
+        var resolvedShape = shape * AnimateFloatAsState(hovered ? 1.2f : 1f).Value;
         Surface(
             onClick: onClick,
-            modifier: modifier.OrEmpty()
+            modifier: modifier
                 .Scale(AnimateFloatAsState(hovered ? 1.1f : 1f).Value)
                 .DropShadow(
                     shape: resolvedShape,
@@ -46,13 +69,13 @@ public static partial class DesignSystemComposeFunctions
             enabled: enabled,
             shape: resolvedShape,
             border: border,
-            color: resolvedColors.GetContainerColor(enabled),
+            color: colors.GetContainerColor(enabled),
             interactionSource: interactionSource,
             content: () =>
             {
                 var pressed = interactionSource.CollectIsPressedAsState().Value;
                 CompositionLocalProvider(
-                    LocalContentColor.Provides(resolvedColors.GetContentColor(enabled)),
+                    LocalContentColor.Provides(colors.GetContentColor(enabled)),
                     LocalTextStyle.Provides(Theme.Typography.LabelLarge),
                     content: () =>
                     {
@@ -60,7 +83,7 @@ public static partial class DesignSystemComposeFunctions
                             horizontalArrangement: Arrangement.Center,
                             verticalAlignment: Alignment.CenterVertically,
                             modifier: Modifier
-                                .Padding(resolvedContentPadding)
+                                .Padding(contentPadding)
                                 .Scale(AnimateFloatAsState(pressed ? 0.9f : 1f).Value)
                                 .Alpha(AnimateFloatAsState(pressed ? 0.8f : 1f).Value),
                             content: content
@@ -110,6 +133,5 @@ public readonly record struct ButtonColors(
 )
 {
     public Color GetContainerColor(bool enabled) => enabled ? ContainerColor : DisabledContainerColor;
-
     public Color GetContentColor(bool enabled) => enabled ? ContentColor : DisabledContentColor;
 }
