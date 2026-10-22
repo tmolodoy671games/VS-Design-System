@@ -447,7 +447,9 @@ MonoBehaviour:
       type: {class: Shadow2DGeometrySettings, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data:
         m_Version: 0
-        m_Generators: []
+        m_Generators:
+        - rid: 8220756477629956111
+        - rid: 8220756477629956112
         m_GeometryVersion: 0
     - rid: 8220756477629956100
       type: {class: SurfaceCacheRenderPipelineResourceSet, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
@@ -538,3 +540,9 @@ MonoBehaviour:
       type: {class: AlphaUpscaler/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_AlphaUpscaleCS: {fileID: 7200000, guid: f10c23179af641eea368ee165b2e97cf, type: 3}
+    - rid: 8220756477629956111
+      type: {class: LegacyShadowGeometryGenerator, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 
+    - rid: 8220756477629956112
+      type: {class: SoftShadowGeometryGenerator, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 
