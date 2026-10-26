@@ -24,19 +24,19 @@ public static partial class DesignSystemComposeFunctions
         bool enabled = true
     )
     {
-        DropdownSelectorImpl<T>(
-            value: value,
-            expanded: expanded,
-            onExpandedChange: onExpandedChange,
-            values: values,
-            content: content,
-            modifier: modifier,
-            shape: shape.GetOrDefault(),
-            colors: colors.GetOrDefault(),
-            contentPadding: contentPadding.GetOrDefault(),
-            interactionSource: interactionSource ?? Remember(MutableInteractionSource),
-            enabled: enabled
-        );
+        // DropdownSelectorImpl<T>(
+        //     value: value,
+        //     expanded: expanded,
+        //     onExpandedChange: onExpandedChange,
+        //     values: values,
+        //     content: content,
+        //     modifier: modifier,
+        //     shape: shape.GetOrDefault(),
+        //     colors: colors.GetOrDefault(),
+        //     contentPadding: contentPadding.GetOrDefault(),
+        //     interactionSource: interactionSource ?? Remember(MutableInteractionSource),
+        //     enabled: enabled
+        // );
     }
 
     [Composable, NonRestartableComposable]
