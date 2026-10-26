@@ -54,7 +54,7 @@ public static partial class DesignSystemComposeFunctions
         bool enabled
     )
     {
-        ModalMenu
+        // ModalMenu
     }
 }
 
