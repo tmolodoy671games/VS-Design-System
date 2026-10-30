@@ -8,5 +8,9 @@ public readonly record struct Theme(
     Typography Typography
 )
 {
-    public static Theme Dark { get; } = new SerializableTheme().ToTheme();
+    public static Theme Dark { get; } = new(
+        ColorScheme: new SerializableColorScheme().ToColorSystem(),
+        Shapes: new SerializableShapes().ToShapes(),
+        Typography: new SerializableTypography().ToTypography()
+    );
 }

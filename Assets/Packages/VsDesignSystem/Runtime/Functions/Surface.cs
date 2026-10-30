@@ -62,7 +62,7 @@ public static partial class DesignSystemComposeFunctions
                             shape: shape,
                             backgroundColor: color,
                             border: border,
-                            shadowElevation: shadowElevation.Value
+                            shadowElevation: shadowElevation
                         )
                         .Clickable(
                             onClick: onClick,
@@ -84,17 +84,17 @@ internal static class ModifierExtensions
         Shape shape,
         Color backgroundColor,
         BorderStroke border,
-        float shadowElevation
+        Dp shadowElevation
     )
     {
         return modifier
             .Then(
-                shadowElevation > 0
+                shadowElevation > 0.Dp()
                     ? Modifier.DropShadow(
                         shape: shape,
                         shadow: Shadow(
-                            radius: shadowElevation.Dp(),
-                            spread: shadowElevation.Dp(),
+                            radius: shadowElevation,
+                            spread: shadowElevation,
                             color: Color.Black
                         )
                     )

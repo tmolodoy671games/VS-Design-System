@@ -9,6 +9,58 @@ namespace VS.DesignSystem;
 public static partial class DesignSystemComposeFunctions
 {
     [Composable]
+    public static void OutlineButton(
+        Action onClick,
+        [Composable] Action content,
+        IModifier? modifier = null,
+        Optional<Shape> shape = default,
+        Optional<ButtonColors> colors = default,
+        Optional<BorderStroke> border = default,
+        Optional<PaddingValues> contentPadding = default,
+        IMutableInteractionSource? interactionSource = null,
+        bool enabled = true
+    )
+    {
+        Button(
+            onClick: onClick,
+            content: content,
+            modifier: modifier,
+            shape: shape,
+            colors: colors.GetOrDefault(ButtonDefaults.OutlineButtonColors()),
+            border: border.GetOrDefault(ButtonDefaults.OutlineBorder(enabled)),
+            contentPadding: contentPadding,
+            interactionSource: interactionSource,
+            enabled: enabled
+        );
+    }
+
+    [Composable]
+    public static void TextButton(
+        Action onClick,
+        [Composable] Action content,
+        IModifier? modifier = null,
+        Optional<Shape> shape = default,
+        Optional<ButtonColors> colors = default,
+        Optional<PaddingValues> contentPadding = default,
+        IMutableInteractionSource? interactionSource = null,
+        bool enabled = true
+    )
+    {
+        Button(
+            onClick: onClick,
+            content: content,
+            modifier: modifier,
+            shape: shape,
+            colors: colors.GetOrDefault(ButtonDefaults.TextButtonColors()),
+            contentPadding: contentPadding.GetOrDefault(
+                PaddingValues(horizontal: 12.Dp(), vertical: 8.Dp())
+            ),
+            interactionSource: interactionSource,
+            enabled: enabled
+        );
+    }
+
+    [Composable]
     public static void Button(
         Action onClick,
         [Composable] Action content,
@@ -52,7 +104,7 @@ public static partial class DesignSystemComposeFunctions
         bool enabled
     )
     {
-        var hovered = interactionSource.CollectIsHoveredAsState().Value;
+        var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
         var resolvedShape = shape * AnimateFloatAsState(hovered ? 1.2f : 1f).Value;
         Surface(
             onClick: onClick,
@@ -73,7 +125,7 @@ public static partial class DesignSystemComposeFunctions
             interactionSource: interactionSource,
             content: () =>
             {
-                var pressed = interactionSource.CollectIsPressedAsState().Value;
+                var pressed = interactionSource.CollectIsPressedAsState().Value && enabled;
                 CompositionLocalProvider(
                     LocalContentColor.Provides(colors.GetContentColor(enabled)),
                     LocalTextStyle.Provides(Theme.Typography.LabelLarge),
@@ -95,8 +147,39 @@ public static partial class DesignSystemComposeFunctions
     }
 }
 
-internal static partial class ButtonDefaults
+public static partial class ButtonDefaults
 {
+    [Composable]
+    public static BorderStroke OutlineBorder(bool enabled = true)
+    {
+        var scheme = DesignSystemComposeFunctions.Theme.ColorScheme;
+        return BorderStroke(
+            width: 1.Dp(),
+            color: enabled ? scheme.Outline : scheme.OnSurface with { Alpha = 0.12f }
+        );
+    }
+
+    [Composable]
+    public static ButtonColors OutlineButtonColors(
+        Optional<Color> containerColor = default,
+        Optional<Color> contentColor = default,
+        Optional<Color> disabledContainerColor = default,
+        Optional<Color> disabledContentColor = default
+    ) => Colors(
+        containerColor: containerColor.GetOrDefault(Color.Transparent),
+        contentColor: contentColor.GetOrDefault(DesignSystemComposeFunctions.Theme.ColorScheme.Primary),
+        disabledContainerColor: disabledContainerColor.GetOrDefault(Color.Transparent),
+        disabledContentColor: disabledContentColor
+    );
+
+    [Composable]
+    public static ButtonColors TextButtonColors(
+        Optional<Color> containerColor = default,
+        Optional<Color> contentColor = default,
+        Optional<Color> disabledContainerColor = default,
+        Optional<Color> disabledContentColor = default
+    ) => OutlineButtonColors(containerColor, contentColor, disabledContainerColor, disabledContentColor);
+
     public static Shape Shape
     {
         [Composable] get => DesignSystemComposeFunctions.Theme.Shapes.ExtraLarge;

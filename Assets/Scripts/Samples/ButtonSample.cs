@@ -19,9 +19,61 @@ namespace Samples.Samples
                 contentAlignment: Alignment.Center,
                 content: () =>
                 {
-                    Button(
-                        onClick: () => Debug.Log("ButtonSample clicked", this),
-                        content: () => Text("Button Sample")
+                    Column(
+                        horizontalAlignment: Alignment.CenterHorizontally,
+                        content: () =>
+                        {
+                            Text("Enabled", color: Theme.ColorScheme.OnSurface);
+                            Row(
+                                modifier: Modifier.Padding(16.Dp()),
+                                verticalAlignment: Alignment.CenterVertically,
+                                content: () =>
+                                {
+                                    Button(
+                                        onClick: () => Debug.Log("Button clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("Button")
+                                    );
+                                    OutlineButton(
+                                        onClick: () => Debug.Log("OutlineButton clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("OutlineButton")
+                                    );
+                                    TextButton(
+                                        onClick: () => Debug.Log("TextButton clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("TextButton")
+                                    );
+                                }
+                            );
+
+                            Text("Disabled", color: Theme.ColorScheme.OnSurface);
+                            Row(
+                                modifier: Modifier.Padding(16.Dp()),
+                                verticalAlignment: Alignment.CenterVertically,
+                                content: () =>
+                                {
+                                    Button(
+                                        onClick: () => Debug.Log("Disabled Button clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("Button"),
+                                        enabled: false
+                                    );
+                                    OutlineButton(
+                                        onClick: () => Debug.Log("Disabled OutlineButton clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("OutlineButton"),
+                                        enabled: false
+                                    );
+                                    TextButton(
+                                        onClick: () => Debug.Log("Disabled TextButton clicked", this),
+                                        modifier: Modifier.Padding(8.Dp()),
+                                        content: () => Text("TextButton"),
+                                        enabled: false
+                                    );
+                                }
+                            );
+                        }
                     );
                 }
             );

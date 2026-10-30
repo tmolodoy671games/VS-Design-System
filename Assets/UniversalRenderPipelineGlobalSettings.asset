@@ -79,9 +79,10 @@ MonoBehaviour:
       - rid: 8220756477629956108
       - rid: 8220756477629956109
       - rid: 8220756477629956110
+      - rid: 8220756659400343552
     m_RuntimeSettings:
       m_List: []
-  m_AssetVersion: 14
+  m_AssetVersion: 16
   m_ObsoleteDefaultVolumeProfile: {fileID: 0}
   m_RenderingLayerNames:
   - Default
@@ -212,6 +213,7 @@ MonoBehaviour:
       data:
         m_RasterizationShader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
         m_GTAOComputeShader: {fileID: 7200000, guid: 0e79c0fbcc6ffc642834ff60779ad086, type: 3}
+        m_GTAODepthPrefilterComputeShader: {fileID: 7200000, guid: 42244eac3d92497eb7dd4ad591a29e19, type: 3}
         m_Version: 0
     - rid: 6428928742378700810
       type: {class: PostProcessData/TextureResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
@@ -448,8 +450,8 @@ MonoBehaviour:
       data:
         m_Version: 0
         m_Generators:
-        - rid: 8220756477629956111
         - rid: 8220756477629956112
+        - rid: 8220756477629956111
         m_GeometryVersion: 0
     - rid: 8220756477629956100
       type: {class: SurfaceCacheRenderPipelineResourceSet, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
@@ -472,6 +474,7 @@ MonoBehaviour:
       data:
         m_Version: 1
         m_DepthBiasMode: 0
+        m_NormalBiasMode: 0
     - rid: 8220756477629956103
       type: {class: UniversalRenderPipelineFilmGrainResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -546,3 +549,8 @@ MonoBehaviour:
     - rid: 8220756477629956112
       type: {class: SoftShadowGeometryGenerator, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
+    - rid: 8220756659400343552
+      type: {class: URPLightFalloffSettings, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_Version: 1
+        m_LightFalloffMode: 0

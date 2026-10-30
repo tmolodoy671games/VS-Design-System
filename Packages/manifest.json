@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
-    "com.unity.ide.rider": "3.0.40",
-    "com.unity.inputsystem": "6.7.0",
+    "com.unity.ide.rider": "3.1.0",
+    "com.unity.inputsystem": "7.0.0",
     "com.unity.render-pipelines.universal": "17.7.0",
-    "com.unity.ugui": "2.7.0",
+    "com.unity.ugui": "7.0.0",
     "t.molodoy.compose.net.unity": "https://github.com/tmolodoy671games/Unity-Compose.git?path=/Assets/Packages/Compose.Net.Unity",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",

@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1df541a1c6c4d643ae38d9fa24a206e, type: 3}
+  m_Name: Dark Blue Teal Theme
+  m_EditorClassIdentifier: VS.DesignSystem::VS.DesignSystem.SerializableTheme
+  colorScheme:
+    primary: {r: 0.65098039, g: 0.7372549, b: 0.87843137, a: 1}
+    onPrimary: {r: 0.1254902, g: 0.19607843, b: 0.30196078, a: 1}
+    primaryContainer: {r: 0.20392157, g: 0.28627451, b: 0.39607843, a: 1}
+    onPrimaryContainer: {r: 0.84705882, g: 0.89803922, b: 0.98039216, a: 1}
+    inversePrimary: {r: 0.29803922, g: 0.38823529, b: 0.51372549, a: 1}
+    secondary: {r: 0.56862745, g: 0.78039216, b: 0.8, a: 1}
+    onSecondary: {r: 0.09803922, g: 0.21960784, b: 0.23529412, a: 1}
+    secondaryContainer: {r: 0.18823529, g: 0.30588235, b: 0.3254902, a: 1}
+    onSecondaryContainer: {r: 0.79607843, g: 0.9254902, b: 0.9372549, a: 1}
+    tertiary: {r: 0.7372549, g: 0.70980392, b: 0.81960784, a: 1}
+    onTertiary: {r: 0.19607843, g: 0.18039216, b: 0.2627451, a: 1}
+    tertiaryContainer: {r: 0.28627451, g: 0.26666667, b: 0.35686275, a: 1}
+    onTertiaryContainer: {r: 0.90196078, g: 0.8745098, b: 0.95686275, a: 1}
+    background: {r: 0.06666667, g: 0.07843137, b: 0.09803922, a: 1}
+    onBackground: {r: 0.88235294, g: 0.89019608, b: 0.91372549, a: 1}
+    surface: {r: 0.06666667, g: 0.07843137, b: 0.09803922, a: 1}
+    onSurface: {r: 0.88235294, g: 0.89019608, b: 0.91372549, a: 1}
+    surfaceVariant: {r: 0.25490196, g: 0.27843137, b: 0.31372549, a: 1}
+    onSurfaceVariant: {r: 0.75686275, g: 0.78039216, b: 0.81960784, a: 1}
+    surfaceTint: {r: 0.65098039, g: 0.7372549, b: 0.87843137, a: 1}
+    inverseSurface: {r: 0.88235294, g: 0.89019608, b: 0.91372549, a: 1}
+    inverseOnSurface: {r: 0.16862745, g: 0.18823529, b: 0.21568627, a: 1}
+    error: {r: 0.89019608, g: 0.66666667, b: 0.65098039, a: 1}
+    onError: {r: 0.29019608, g: 0.1372549, b: 0.1372549, a: 1}
+    errorContainer: {r: 0.38823529, g: 0.21176471, b: 0.20784314, a: 1}
+    onErrorContainer: {r: 0.97254902, g: 0.85490196, b: 0.83921569, a: 1}
+    outline: {r: 0.54509804, g: 0.57254902, b: 0.61568627, a: 1}
+    outlineVariant: {r: 0.25490196, g: 0.27843137, b: 0.31372549, a: 1}
+    scrim: {r: 0, g: 0, b: 0, a: 1}
+    surfaceBright: {r: 0.21568627, g: 0.23529412, b: 0.26666667, a: 1}
+    surfaceDim: {r: 0.06666667, g: 0.07843137, b: 0.09803922, a: 1}
+    surfaceContainer: {r: 0.11372549, g: 0.13333333, b: 0.16078431, a: 1}
+    surfaceContainerHigh: {r: 0.15686275, g: 0.17647059, b: 0.20784314, a: 1}
+    surfaceContainerHighest: {r: 0.2, g: 0.21960784, b: 0.25490196, a: 1}
+    surfaceContainerLow: {r: 0.09803922, g: 0.11372549, b: 0.14117647, a: 1}
+    surfaceContainerLowest: {r: 0.04705882, g: 0.05882353, b: 0.07843137, a: 1}
+  shapes:
+    extraSmall:
+      topLeft: 4
+      topRight: 4
+      bottomLeft: 4
+      bottomRight: 4
+    small:
+      topLeft: 8
+      topRight: 8
+      bottomLeft: 8
+      bottomRight: 8
+    medium:
+      topLeft: 12
+      topRight: 12
+      bottomLeft: 12
+      bottomRight: 12
+    large:
+      topLeft: 16
+      topRight: 16
+      bottomLeft: 16
+      bottomRight: 16
+    extraLarge:
+      topLeft: 28
+      topRight: 28
+      bottomLeft: 28
+      bottomRight: 28
+  typography:
+    displayLarge:
+      fontSize: 57
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    displayMedium:
+      fontSize: 45
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    displaySmall:
+      fontSize: 36
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    headlineLarge:
+      fontSize: 32
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    headlineMedium:
+      fontSize: 28
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    headlineSmall:
+      fontSize: 24
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    titleLarge:
+      fontSize: 22
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    titleMedium:
+      fontSize: 16
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    titleSmall:
+      fontSize: 14
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    bodyLarge:
+      fontSize: 16
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    bodyMedium:
+      fontSize: 14
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    bodySmall:
+      fontSize: 12
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    labelLarge:
+      fontSize: 14
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    labelMedium:
+      fontSize: 12
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0
+    labelSmall:
+      fontSize: 11
+      overrideColor: 0
+      color: {r: 0, g: 0, b: 0, a: 1}
+      fontWeight: 0
+      fontStyle: 0

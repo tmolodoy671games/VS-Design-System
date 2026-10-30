@@ -10,19 +10,19 @@ namespace VS.DesignSystem;
 [ExecuteAlways]
 public abstract partial class ThemedComposeUI : ComposeUI
 {
-    [SerializeField] private ThemeAsset? themeAsset;
+    [SerializeField] private SerializableTheme? theme;
 
     private readonly IMutableState<Theme> _theme = MutableStateOf(VS.DesignSystem.Theme.Dark);
-    private ThemeAsset? _appliedAsset;
+    private SerializableTheme? _appliedAsset;
     private int _appliedRevision;
     private bool _initialized;
 
-    public ThemeAsset? ThemeAsset
+    public SerializableTheme? ThemeAsset
     {
-        get => themeAsset;
+        get => theme;
         set
         {
-            themeAsset = value;
+            theme = value;
             RefreshTheme();
         }
     }
@@ -31,12 +31,12 @@ public abstract partial class ThemedComposeUI : ComposeUI
 
     private void RefreshTheme()
     {
-        var revision = themeAsset ? themeAsset.Revision : 0;
-        if (_initialized && _appliedAsset == themeAsset && _appliedRevision == revision)
+        var revision = theme ? theme.Revision : 0;
+        if (_initialized && _appliedAsset == theme && _appliedRevision == revision)
             return;
 
-        _theme.Value = themeAsset ? themeAsset.ToTheme() : VS.DesignSystem.Theme.Dark;
-        _appliedAsset = themeAsset;
+        _theme.Value = theme ? theme.ToTheme() : VS.DesignSystem.Theme.Dark;
+        _appliedAsset = theme;
         _appliedRevision = revision;
         _initialized = true;
     }
@@ -50,7 +50,10 @@ public abstract partial class ThemedComposeUI : ComposeUI
             colorScheme: theme.ColorScheme,
             shapes: theme.Shapes,
             typography: theme.Typography,
-            content: ThemedContent
+            content: () => Box(
+                modifier: Modifier.FillMaxSize().Background(theme.ColorScheme.Surface),
+                content: ThemedContent
+            )
         );
     }
 

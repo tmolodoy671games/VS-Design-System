@@ -17,17 +17,6 @@
       "version": "6.7.0",
       "depth": 2,
       "source": "builtin",
-      "dependencies": {
-        "com.unity.burst": "1.8.25",
-        "com.unity.nuget.mono-cecil": "1.11.6",
-        "com.unity.test-framework": "1.4.6",
-        "com.unity.test-framework.performance": "3.2.0"
-      }
-    },
-    "com.unity.ext.nunit": {
-      "version": "2.1.1",
-      "depth": 1,
-      "source": "builtin",
       "dependencies": {}
     },
     "com.unity.graph-authoring": {
@@ -37,28 +26,19 @@
       "dependencies": {}
     },
     "com.unity.ide.rider": {
-      "version": "3.0.40",
+      "version": "3.1.0",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.ext.nunit": "1.0.6"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "6.7.0",
+      "version": "7.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
       }
-    },
-    "com.unity.nuget.mono-cecil": {
-      "version": "1.11.6",
-      "depth": 3,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
     },
     "com.unity.profiling.core": {
       "version": "1.0.3",
@@ -113,26 +93,8 @@
         "com.unity.graph-authoring": "1.0.0"
       }
     },
-    "com.unity.test-framework": {
-      "version": "1.9.0",
-      "depth": 3,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.ext.nunit": "2.1.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
-    "com.unity.test-framework.performance": {
-      "version": "6.7.0",
-      "depth": 3,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.33",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
     "com.unity.ugui": {
-      "version": "2.7.0",
+      "version": "7.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -145,7 +107,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c04f728a39236c8b354d216af5424e636bd2d43a"
+      "hash": "d010185ab259af62a6a0fd4b3bfb485300988258"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
