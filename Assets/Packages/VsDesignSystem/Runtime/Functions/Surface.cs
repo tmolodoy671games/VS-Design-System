@@ -58,17 +58,17 @@ public static partial class DesignSystemComposeFunctions
             {
                 Box(
                     modifier: modifier
-                        .Surface(
-                            shape: shape,
-                            backgroundColor: color,
-                            border: border,
-                            shadowElevation: shadowElevation
-                        )
                         .Clickable(
                             onClick: onClick,
                             enabled: enabled,
                             interactionSource: interactionSource,
                             indication: LocalIndication.Current
+                        )
+                        .Surface(
+                            shape: shape,
+                            backgroundColor: color,
+                            border: border,
+                            shadowElevation: shadowElevation
                         ),
                     content: content
                 );

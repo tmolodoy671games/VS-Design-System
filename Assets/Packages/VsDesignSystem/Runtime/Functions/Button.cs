@@ -1,6 +1,7 @@
 using System;
 using Compose.Net;
 using SharpExtensions;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 
@@ -104,28 +105,30 @@ public static partial class DesignSystemComposeFunctions
         bool enabled
     )
     {
-        var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
-        var resolvedShape = shape * AnimateFloatAsState(hovered ? 1.2f : 1f).Value;
-        Surface(
-            onClick: onClick,
+        var isHovered = interactionSource.CollectIsHoveredAsState().Value;
+        var hovered = isHovered && enabled;
+        // var resolvedShape = shape * AnimateFloatAsState(hovered ? 1.2f : 1f).Value;
+        Debug.Log(hovered);
+        var resolvedShape = shape;
+        Box(
+            // onClick: onClick,
             modifier: modifier
-                .Scale(AnimateFloatAsState(hovered ? 1.1f : 1f).Value)
-                .DropShadow(
-                    shape: resolvedShape,
-                    shadow: Shadow(
-                        radius: 6.Dp(),
-                        spread: 0.Dp(),
-                        color: AnimateColorAsState(hovered ? Color.Black : Color.Black with { Alpha = 0f }).Value
-                    )
-                ),
-            enabled: enabled,
-            shape: resolvedShape,
-            border: border,
-            color: colors.GetContainerColor(enabled),
-            interactionSource: interactionSource,
+                .Hoverable(interactionSource, enabled)
+                .Background(colors.GetContainerColor(enabled)),
+            // enabled: enabled,
+            // shape: resolvedShape,
+            // border: border,
+            // color: colors.GetContainerColor(enabled),
+            // interactionSource: interactionSource,
             content: () =>
             {
-                var pressed = interactionSource.CollectIsPressedAsState().Value && enabled;
+                var isPressed = interactionSource.CollectIsPressedAsState().Value;
+                var pressed = isPressed && enabled;
+                var contentScale = CustomSwitch.Switch()
+                    .Case(pressed, 0.9f)
+                    .Case(hovered, 1.1f)
+                    .Default(1)
+                    .Get();
                 CompositionLocalProvider(
                     LocalContentColor.Provides(colors.GetContentColor(enabled)),
                     LocalTextStyle.Provides(Theme.Typography.LabelLarge),
@@ -136,7 +139,7 @@ public static partial class DesignSystemComposeFunctions
                             verticalAlignment: Alignment.CenterVertically,
                             modifier: Modifier
                                 .Padding(contentPadding)
-                                .Scale(AnimateFloatAsState(pressed ? 0.9f : 1f).Value)
+                                // .Scale(AnimateFloatAsState(contentScale).Value)
                                 .Alpha(AnimateFloatAsState(pressed ? 0.8f : 1f).Value),
                             content: content
                         );

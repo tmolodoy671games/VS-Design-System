@@ -2,6 +2,23 @@
 
 .Net implementation of Compose.
 
+Delegate a local to state with `By()` inside composable code:
+
+```csharp
+var count = Remember(() => MutableStateOf(0)).By();
+Text(count.ToString());
+Button(onClick: () => count++, content: () => Text("Increment"));
+```
+
+Each read accesses the state's `Value`; assignments, compound assignments and
+increments write `Value`. Callbacks capture the state and observe its latest
+value. Declaring the local does not read the value or subscribe to changes.
+Delegation to `IState<T>` is read-only; `IMutableState<T>` supports writes.
+Use a single local declaration per `By()` call. Delegated locals cannot be
+passed by reference. As with other generated Compose syntax, containing types
+must be `partial`, and the source generator and assembly patching are required.
+Unsupported uses produce `CN_STATE_BY`.
+
 Composable content supports both explicit lambdas and trailing `using` blocks:
 
 ```csharp

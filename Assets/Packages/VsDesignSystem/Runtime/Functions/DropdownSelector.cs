@@ -60,7 +60,7 @@ public static partial class DesignSystemComposeFunctions
         Action<T>? onValueChange
     )
     {
-        var anchor = Remember(() => MutableStateOf(default(Rect)));
+        var anchor = Remember(() => MutableStateOf(default(Compose.Net.Rect)));
         var viewport = Remember(() => MutableStateOf(default(Size)));
         var menuSize = Remember(() => MutableStateOf(default(Size)));
         var density = LocalDensity.Current;
@@ -75,7 +75,7 @@ public static partial class DesignSystemComposeFunctions
             shape: shape,
             color: colors.GetContainerColor(enabled),
             contentColor: colors.GetContentColor(enabled),
-            modifier: modifier.OnGloballyPositioned(c => anchor.Value = new Rect(c.LocalToRoot(default), c.Size)),
+            modifier: modifier.OnGloballyPositioned(c => anchor.Value = new Compose.Net.Rect(c.LocalToRoot(default), c.Size)),
             content: () => CompositionLocalProvider(
                 LocalTextStyle.Provides(textStyle),
                 content: () => Row(
