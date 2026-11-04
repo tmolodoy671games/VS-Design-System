@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &290298457
 Transform:
   m_ObjectHideFlags: 0
@@ -271,7 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e38566e6e04b0b9614e49d00863766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Samples::Samples.Samples.SwitchSample
-  theme: {fileID: 0}
 --- !u!1931382934 &378145413
 PanelRenderer:
   m_ObjectHideFlags: 0
@@ -379,7 +378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8c14dbc5d04023930cc9144234c8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Samples::Samples.Samples.DropdownSelectorSample
-  theme: {fileID: 0}
 --- !u!1931382934 &478932293
 PanelRenderer:
   m_ObjectHideFlags: 0
@@ -763,7 +761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf39b949ab34ac898581d6619f142df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Samples::Samples.ButtonSample
-  theme: {fileID: 11400000, guid: 3d59aa88947243d7b79b377731cd7010, type: 2}
 --- !u!1931382934 &1850000004
 PanelRenderer:
   m_ObjectHideFlags: 0

@@ -33,11 +33,9 @@ internal static class MaterialTextures
         geometry.Update(scope.Size.Width, scope.Size.Height, radii, tileSize,
             material.Kind != SurfaceMaterialKind.Metal && !(material.Kind == SurfaceMaterialKind.Cloth && material.Weave == ClothWeave.Twill));
         if (geometry.Vertices.Count == 0) return;
-        var strength = material.Kind switch
-        {
-            SurfaceMaterialKind.Matte => 0.12f, SurfaceMaterialKind.Ceramic => 0.06f,
-            SurfaceMaterialKind.Metal => 0.45f, SurfaceMaterialKind.Paper => 0.5f, _ => 0.8f
-        };
+        // All materials share the same contrast budget. Their pattern and sheen,
+        // not arbitrary multipliers, distinguish cloth, paper, ceramic and metal.
+        const float strength = 0.38f;
         var mesh = scope.Context.Allocate(geometry.Vertices.Count, geometry.Indices.Count, texture);
         var atlas = mesh.uvRegion;
         var tint = new UnityEngine.Color(1, 1, 1, opacity * material.TextureStrength * strength);
@@ -59,19 +57,27 @@ internal static class MaterialTextures
         double sum = 0;
         foreach (var p in pixels) sum += (p.r + p.g + p.b) / (3f * 255);
         var mean = (float)(sum / pixels.Length);
+        double variance = 0;
+        foreach (var p in pixels)
+        {
+            var delta = (p.r + p.g + p.b) / (3f * 255) - mean;
+            variance += delta * delta;
+        }
+        // Normalize RMS contrast once on load, independent of source exposure.
+        var gain = 0.35f / Mathf.Max(0.001f, Mathf.Sqrt((float)(variance / pixels.Length)));
         for (var i = 0; i < pixels.Length; i++)
         {
             var p = pixels[i];
-            var relief = Mathf.Clamp(((p.r + p.g + p.b) / (3f * 255) - mean) * 4, -1, 1);
+            var relief = Mathf.Clamp(((p.r + p.g + p.b) / (3f * 255) - mean) * gain, -1, 1);
             var value = relief > 0 ? (byte)255 : (byte)0;
             pixels[i] = new Color32(value, value, value, (byte)(Mathf.Abs(relief) * 255));
         }
-        var texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false)
+        var texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
         {
             name = "Compose " + name + " relief", hideFlags = HideFlags.HideAndDontSave,
-            wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear
+            wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear
         };
-        texture.SetPixels32(pixels); texture.Apply(false, true);
+        texture.SetPixels32(pixels); texture.Apply(true, true);
         return texture;
     }
 

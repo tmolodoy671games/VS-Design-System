@@ -2,15 +2,9 @@
 
 namespace VS.DesignSystem;
 
-public readonly record struct Theme(
+/// <summary>An immutable theme. Use with expressions to customize a built-in theme.</summary>
+public sealed record Theme(
     ColorScheme ColorScheme,
     Shapes Shapes,
     Typography Typography
-)
-{
-    public static Theme Dark { get; } = new(
-        ColorScheme: new SerializableColorScheme().ToColorSystem(),
-        Shapes: new SerializableShapes().ToShapes(),
-        Typography: new SerializableTypography().ToTypography()
-    );
-}
+);

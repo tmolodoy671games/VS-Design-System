@@ -19,3 +19,26 @@ git@github.com:tmolodoy671games/VS-Design-System.git?path=/Assets/Packages/VsDes
 ```
 
 The package appears as **VS Design System** in Package Manager.
+
+## Themes
+
+Use `LightTheme.Instance` or `DarkTheme.Instance` with `WithTheme` in any `ComposeUI`:
+
+```csharp
+WithTheme(theme: LightTheme.Instance, content: () =>
+{
+    Text("Hello", color: CurrentTheme.ColorScheme.OnSurface);
+});
+```
+
+The default is `DarkTheme.Instance`. Create a custom theme with `new Theme(colorScheme, shapes, typography)` or copy a built-in theme:
+
+```csharp
+var customTheme = DarkTheme.Instance with
+{
+    ColorScheme = DarkTheme.Instance.ColorScheme with { Primary = new Color(0.2f, 0.8f, 0.6f, 1f) }
+};
+WithTheme(theme: customTheme, content: Content);
+```
+
+Nested `WithTheme` calls inherit the current theme when `theme` is omitted. The optional `colorScheme`, `shapes`, and `typography` arguments override the selected theme. Use `CurrentTheme` inside the content callback to read the active values.

@@ -10,7 +10,7 @@ namespace VS.DesignSystem;
 public static partial class WithThemeFunctions
 {
     private static readonly ICompositionLocal<Theme> LocalTheme =
-        CompositionLocalOf(() => Theme.Dark);
+        CompositionLocalOf(() => DarkTheme.Instance);
 
     public static Theme CurrentTheme
     {
@@ -22,10 +22,11 @@ public static partial class WithThemeFunctions
         [Composable] Action content,
         Optional<ColorScheme> colorScheme = default,
         Optional<Typography> typography = default,
-        Optional<Shapes> shapes = default
+        Optional<Shapes> shapes = default,
+        Theme? theme = null
     )
     {
-        var parentTheme = CurrentTheme;
+        var parentTheme = theme ?? CurrentTheme;
         CompositionLocalProvider(
             LocalTheme.Provides(
                 new Theme(

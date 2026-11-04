@@ -4,11 +4,11 @@ using DropdownSelectorDefaults = VS.DesignSystem.DropdownSelectorDefaults;
 using static Compose.Net.ComposeFunctions;
 using static StableCollections.StableCollectionsFactory;
 using static VS.DesignSystem.WithThemeFunctions;
-using ThemedComposeUI = VS.DesignSystem.ThemedComposeUI;
+using Compose.Net.Unity;
 
 namespace Samples.Samples
 {
-    public partial class DropdownSelectorSample : ThemedComposeUI
+    public partial class DropdownSelectorSample : ComposeUI
     {
         private static readonly IStableList<string> Options = MutableStableListOf("Low", "Medium", "High", "Ultra");
         private static readonly IStableList<string> ManyOptions = MutableStableListOf(
@@ -17,7 +17,16 @@ namespace Samples.Samples
         private static readonly IStableList<string> EmptyOptions = MutableStableListOf<string>();
 
         [Composable]
-        protected override void ThemedContent()
+        protected override void Content() => WithTheme(
+            theme: VS.DesignSystem.DarkTheme.Instance,
+            content: SampleContent
+        );
+
+        [Composable]
+        protected override void Preview() => Content();
+
+        [Composable]
+        private void SampleContent()
         {
             Box(
                 modifier: Modifier.FillMaxSize().Background(CurrentTheme.ColorScheme.Surface),

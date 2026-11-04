@@ -65,7 +65,8 @@ public static partial class DropdownSelectorFunctions
         var viewport = Remember(() => MutableStateOf(default(Size)));
         var menuSize = Remember(() => MutableStateOf(default(Size)));
         var density = LocalDensity.Current;
-        var textStyle = CurrentTheme.Typography.BodyLarge;
+        var textStyle = CurrentTheme.Typography.BodyMedium;
+        var reveal = AnimateFloatAsState(expanded && enabled ? 1f : 0f, Tween(180)).Value;
         // Clickable retains its handler; resolve current inputs when the click arrives.
         var inputs = Remember(() => MutableStateOf((expanded, onExpandedChange, onValueChange)));
         inputs.Value = (expanded, onExpandedChange, onValueChange);
@@ -74,7 +75,7 @@ public static partial class DropdownSelectorFunctions
             enabled: enabled && values.Size > 0,
             interactionSource: interactionSource,
             shape: shape,
-            color: colors.GetContainerColor(enabled),
+            color: AnimateColorAsState(colors.GetContainerColor(enabled), Tween(180)).Value,
             contentColor: colors.GetContentColor(enabled),
             modifier: modifier.OnGloballyPositioned(c => anchor.Value = new Compose.Net.Rect(c.LocalToRoot(default), c.Size)),
             content: () => CompositionLocalProvider(
@@ -121,7 +122,7 @@ public static partial class DropdownSelectorFunctions
                         LocalTextStyle.Provides(textStyle),
                         content: () => Column(
                             modifier: Modifier.Offset(x: density.ToDp(x), y: density.ToDp(y))
-                                .Width(density.ToDp(width)).HeightIn(max: density.ToDp(height))
+                                .Alpha(reveal).Width(density.ToDp(width)).HeightIn(max: density.ToDp(height))
                                 .Background(colors.DropdownColor, shape).Clip(shape)
                                 .OnGloballyPositioned(c => menuSize.Value = c.Size)
                                 .VerticalScroll(RememberScrollState()),
@@ -131,20 +132,19 @@ public static partial class DropdownSelectorFunctions
                                 {
                                     var currentItem = Remember(() => MutableStateOf(item));
                                     currentItem.Value = item;
-                                    Surface(
+                                    NavigationFunctions.MenuItem(
                                         onClick: () =>
                                         {
                                             inputs.Value.onValueChange?.Invoke(currentItem.Value);
                                             inputs.Value.onExpandedChange(false);
                                         },
-                                        color: EqualityComparer<T>.Default.Equals(value, item)
-                                            ? colors.ContainerColor : colors.DropdownColor,
-                                        contentColor: colors.ContentColor,
+                                        selected: EqualityComparer<T>.Default.Equals(value, item),
+                                        colors: MenuItemDefaults.Colors(container: colors.DropdownColor,
+                                            hoverContainer: colors.ContainerColor, selectedContainer: colors.ContainerColor,
+                                            content: colors.ContentColor, selectedContent: colors.ContentColor),
+                                        contentPadding: contentPadding,
                                         modifier: Modifier.FillMaxWidth(),
-                                        content: () => Row(
-                                            modifier: Modifier.Padding(contentPadding),
-                                            verticalAlignment: Alignment.CenterVertically,
-                                            content: () => content(item))
+                                        content: () => content(item)
                                     );
                                 }
                             }

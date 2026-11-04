@@ -18,17 +18,19 @@ public static partial class MaterialModifierExtensions
         {
             var material = appearance.Material;
             // Read locals in a stable order on every composition, including opacity zero.
-            var opacity = material.ResolveOpacity(LocalMaterialOpacity.Current);
+            var opacity = material.ResolveOpacity(VS.DesignSystem.SurfaceFunctions.LocalMaterialOpacity.Current);
             var density = LocalDensity.Current;
-            var light = LocalSurfaceLighting.Current;
+            var light = VS.DesignSystem.SurfaceFunctions.LocalSurfaceLighting.Current;
             var theme = CurrentTheme;
             var shape = appearance.Shape.GetOrDefault(theme.Shapes.Medium);
             var depth = appearance.Depth;
             var amount = depth.Amount.IsUnspecified ? 0.Dp() : depth.Amount;
             var distance = amount.ToPx(density);
             var offset = new Offset(-light.X * distance, -light.Y * distance);
-            var dark = Color.Black with { Alpha = opacity * (0.12f + light.Intensity * 0.18f) };
-            var bright = Color.White with { Alpha = opacity * light.Intensity * 0.65f };
+            var dark = Color.Lerp(theme.ColorScheme.Scrim, theme.ColorScheme.Secondary, 0.12f)
+                with { Alpha = opacity * (0.24f + light.Intensity * 0.3f) };
+            var bright = Color.Lerp(Color.Lerp(theme.ColorScheme.SurfaceBright, Color.White, 0.35f), theme.ColorScheme.Primary, 0.1f)
+                with { Alpha = opacity * light.Intensity * 0.45f };
             var result = Modifier;
             if (distance > 0 && depth.Kind == SurfaceDepthKind.Raised)
                 result = result

@@ -5,6 +5,13 @@ using static VS.DesignSystem.SurfaceFunctions;
 using static VS.DesignSystem.WithThemeFunctions;
 using static Compose.Net.ComposeFunctions;
 
+using SurfaceMaterial = VS.DesignSystem.SurfaceMaterial;
+using SurfaceDepth = VS.DesignSystem.SurfaceDepth;
+using Materials = VS.DesignSystem.Materials;
+using Depth = VS.DesignSystem.Depth;
+using ClothWeave = VS.DesignSystem.ClothWeave;
+using SurfaceLighting = VS.DesignSystem.SurfaceLighting;
+
 namespace Samples;
 
 public sealed class MaterialLabState
@@ -52,11 +59,12 @@ public static partial class MaterialLab
         var colors = theme.ColorScheme;
         var shape = s.CustomShape.Value ? RoundedCornerShape(s.Radius.Value.Dp()) : theme.Shapes.Large;
         CompositionLocalProvider(LocalContentColor.Provides(colors.OnSurface),
-            LocalMaterialOpacity.Provides(s.Opacity.Value),
-            LocalSurfaceLighting.Provides(SurfaceLighting.Directional(s.RightLight.Value ? 1 : -1, -1)), () =>
+            VS.DesignSystem.SurfaceFunctions.LocalMaterialOpacity.Provides(s.Opacity.Value),
+            VS.DesignSystem.SurfaceFunctions.LocalSurfaceLighting.Provides(SurfaceLighting.Directional(s.RightLight.Value ? 1 : -1, -1)), () =>
         {
             Column(modifier: Modifier.FillMaxSize().Background(colors.Surface)
-                .VerticalScroll(RememberScrollState()).Padding(32.Dp()).TestTag("materials.root"), content: () =>
+                .VerticalScroll(RememberScrollState()).TestTag("materials.root"), content: () =>
+            Column(modifier: Modifier.FillMaxWidth().Padding(40.Dp()), content: () =>
             {
                 Text("MATERIAL LAB", style: CurrentTheme.Typography.HeadlineLarge);
                 Text("VS Design System / theme, materials and depth", style: CurrentTheme.Typography.BodyMedium);
@@ -87,7 +95,7 @@ public static partial class MaterialLab
                             new Offset(x, y), new Size(Math.Min(20, d.Size.Width - x), Math.Min(20, d.Size.Height - y)));
                 }).Padding(28.Dp()), content: () =>
                 {
-                    Surface(material: material, depth: CurrentDepth(s), color: colors.Surface,
+                    Surface(material: material, depth: CurrentDepth(s), color: colors.PrimaryContainer,
                         shape: shape, modifier: Modifier.FillMaxSize().TestTag("materials.preview"),
                         content: () => Column(modifier: Modifier.Padding(24.Dp()), content: () =>
                         {
@@ -105,12 +113,12 @@ public static partial class MaterialLab
                 {
                     var index = i;
                     Surface(material: Material(s, index, s.Inherit.Value ? -1f : 1f), depth: CurrentDepth(s),
-                        color: colors.Surface, shape: shape,
+                        color: colors.SurfaceContainerHigh, shape: shape,
                         modifier: Modifier.FillMaxWidth().Height(80.Dp()).TestTag("materials.compare." + index),
                         content: () => Text(Names[index], style: CurrentTheme.Typography.TitleMedium, modifier: Modifier.Padding(24.Dp())));
                     Gap(28);
                 }
-            });
+            }));
         });
     }
 
@@ -119,9 +127,9 @@ public static partial class MaterialLab
         var source = Remember(MutableInteractionSource);
         var pressed = source.CollectIsPressedAsState().Value;
         Box(modifier: Modifier.FillMaxWidth().Height(64.Dp())
-            .Surface(material, pressed ? Depth.Inset(3.Dp()) : Depth.Raised(3.Dp()), CurrentTheme.ColorScheme.Surface, CurrentTheme.Shapes.Medium)
-            .Clickable(() => s.Clicks.Value++, indication: null, interactionSource: source).TestTag("materials.press"),
-            contentAlignment: Alignment.Center, content: () => Text("Press me · Raised → Inset · " + s.Clicks.Value, style: CurrentTheme.Typography.BodyLarge));
+            .Surface(material, pressed ? Depth.Inset(3.Dp()) : Depth.Raised(3.Dp()), CurrentTheme.ColorScheme.SecondaryContainer, CurrentTheme.Shapes.Medium),
+            content: () => Box(modifier: Modifier.FillMaxSize().Clickable(() => s.Clicks.Value++, indication: null, interactionSource: source).TestTag("materials.press"),
+            contentAlignment: Alignment.Center, content: () => Text("Press me · Raised → Inset · " + s.Clicks.Value, color: CurrentTheme.ColorScheme.OnSecondaryContainer, style: CurrentTheme.Typography.BodyLarge)));
     }
 
     [Composable] private static void Choices(string label, string[] names, IMutableState<int> selected)

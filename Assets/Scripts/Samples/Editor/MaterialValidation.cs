@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using VS.DesignSystem;
 
+using Materials = VS.DesignSystem.Materials;
+
 namespace Samples.Editor;
 
 [global::Unity.Scripting.LifecycleManagement.NoAutoStaticsCleanup]
@@ -13,7 +15,7 @@ internal static class MaterialValidation
 {
     private static MaterialDemoWindow? _window;
     private static string _result = "";
-    private static int _step;
+    private static int _step, _stable;
     private static double _next;
     private static Vector2 _size;
     private static string? _failure;
@@ -41,7 +43,7 @@ internal static class MaterialValidation
             _window = EditorWindow.GetWindow<MaterialDemoWindow>();
             _window.position = new UnityEngine.Rect(80, 80, 900, 1050);
             _failure = null; Application.logMessageReceived += OnLog;
-            _step = 0; _next = EditorApplication.timeSinceStartup + 1;
+            _step = 0; _stable = 0; _next = EditorApplication.timeSinceStartup + 1;
             EditorApplication.update += Tick;
         }
         catch (Exception e) { File.WriteAllText(_result, e.ToString()); }
@@ -56,8 +58,12 @@ internal static class MaterialValidation
             var preview = _window!.rootVisualElement.Q("materials.preview");
             if (preview == null || preview.layout.width <= 0 || preview.layout.height <= 0)
                 throw new Exception("Material preview has no layout");
-            if (_step == 0) _size = preview.layout.size;
-            else if (preview.layout.size != _size) throw new Exception("Material setting changed layout size");
+            if (_step == 0)
+            {
+                if (preview.layout.size != _size) { _size = preview.layout.size; _stable = 0; }
+                if (++_stable < 3) return;
+            }
+            else if (preview.layout.size != _size) throw new Exception($"Material setting changed layout size at step {_step}: {_size} -> {preview.layout.size}");
             var state = _window.State;
             if (_step < 5) state.Material.Value = _step;
             else if (_step < 9) { state.Material.Value = 3; state.Weave.Value = _step - 5; }

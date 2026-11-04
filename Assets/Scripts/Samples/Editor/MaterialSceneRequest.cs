@@ -21,6 +21,13 @@ internal static class MaterialSceneRequest
         File.Delete(request);
         try
         {
+            if (command == "expedition")
+            {
+                ExpeditionDemoScene.InstallInSampleScene();
+                ExpeditionDemoWindow.Open();
+                File.WriteAllText(System.IO.Path.Combine(Folder, "expedition.result"), "Installed Expedition sample");
+                return;
+            }
             if (command == "validate")
             {
                 MaterialValidation.Start(System.IO.Path.Combine(Folder, "validation.result"));
