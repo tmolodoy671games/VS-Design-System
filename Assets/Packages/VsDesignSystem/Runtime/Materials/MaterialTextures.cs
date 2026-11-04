@@ -11,10 +11,10 @@ namespace VS.DesignSystem;
 [global::Unity.Scripting.LifecycleManagement.NoAutoStaticsCleanup]
 internal static class MaterialTextures
 {
-    private static readonly Dictionary<string, Texture2D> Textures = new();
+    private static readonly Dictionary<(string Name, bool ShadowsOnly), Texture2D> Textures = new();
     private static readonly ConditionalWeakTable<VisualElement, Geometry> Meshes = new();
 
-    internal static void Draw(IDrawScope<MeshGenerationContext> scope, SurfaceMaterial material, Shape shape, float opacity, float tileSize, IDensity density)
+    internal static void Draw(IDrawScope<MeshGenerationContext> scope, SurfaceMaterial material, Shape shape, float opacity, float tileSize, IDensity density, bool shadowsOnly)
     {
         if (opacity <= 0 || material.TextureStrength <= 0) return;
         var name = material.Kind switch
@@ -26,7 +26,8 @@ internal static class MaterialTextures
             SurfaceMaterialKind.Metal => "metal",
             _ => "paper"
         };
-        if (!Textures.TryGetValue(name, out var texture)) Textures.Add(name, texture = Load(name));
+        var key = (name, shadowsOnly);
+        if (!Textures.TryGetValue(key, out var texture)) Textures.Add(key, texture = Load(name, shadowsOnly));
         var geometry = Meshes.GetValue(scope.Context.visualElement, static _ => new Geometry());
         var radii = new Vector4(shape.TopLeft.ToPx(density), shape.TopRight.ToPx(density),
             shape.BottomRight.ToPx(density), shape.BottomLeft.ToPx(density));
@@ -46,7 +47,7 @@ internal static class MaterialTextures
         foreach (var index in geometry.Indices) mesh.SetNextIndex(index);
     }
 
-    private static Texture2D Load(string name)
+    private static Texture2D Load(string name, bool shadowsOnly)
     {
         var source = Resources.Load<Texture2D>("VSMaterials/" + name)
             ?? throw new InvalidOperationException("Missing Compose material texture: " + name);
@@ -67,7 +68,11 @@ internal static class MaterialTextures
             var p = pixels[i];
             var relief = Mathf.Clamp(((p.r + p.g + p.b) / (3f * 255) - mean) * gain, -1, 1);
             var value = relief > 0 ? (byte)255 : (byte)0;
-            pixels[i] = new Color32(value, value, value, (byte)(Mathf.Abs(relief) * 255));
+            // A dark-only mask keeps the weave visible after mip filtering on near-white faces.
+            if (shadowsOnly)
+                pixels[i] = new Color32(0, 0, 0, (byte)(Mathf.Clamp01(-relief * 2f) * 255));
+            else
+                pixels[i] = new Color32(value, value, value, (byte)(Mathf.Abs(relief) * 255));
         }
         var texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
         {

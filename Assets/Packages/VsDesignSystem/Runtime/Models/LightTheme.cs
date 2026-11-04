@@ -20,12 +20,12 @@ public static class LightTheme
             OnTertiary: Rgb(0xFFFFFF),
             TertiaryContainer: Rgb(0xF8D4C0),
             OnTertiaryContainer: Rgb(0x492F24),
-            Background: Rgb(0xF3F5F1),
-            OnBackground: Rgb(0x202820),
-            Surface: Rgb(0xFAF8F2),
-            OnSurface: Rgb(0x202820),
-            SurfaceVariant: Rgb(0xE5EAE1),
-            OnSurfaceVariant: Rgb(0x566151),
+            Background: Rgb(0xE2E2E2),
+            OnBackground: Rgb(0x242424),
+            Surface: Rgb(0xE8E8E8),
+            OnSurface: Rgb(0x242424),
+            SurfaceVariant: Rgb(0xD8D8D8),
+            OnSurfaceVariant: Rgb(0x535353),
             SurfaceTint: Rgb(0x365879),
             InverseSurface: Rgb(0x252933),
             InverseOnSurface: Rgb(0xF2F3EE),
@@ -33,22 +33,22 @@ public static class LightTheme
             OnError: Rgb(0xFFFFFF),
             ErrorContainer: Rgb(0xFFDAD6),
             OnErrorContainer: Rgb(0x410002),
-            Outline: Rgb(0x7A8675),
-            OutlineVariant: Rgb(0xCCD4C7),
+            Outline: Rgb(0x767676),
+            OutlineVariant: Rgb(0xCCCCCC),
             Scrim: Rgb(0x202820),
-            SurfaceBright: Rgb(0xFFFEFA),
-            SurfaceDim: Rgb(0xD6DDCF),
-            SurfaceContainer: Rgb(0xE9EDE5),
-            SurfaceContainerHigh: Rgb(0xE5EAE1),
-            SurfaceContainerHighest: Rgb(0xDCE3D5),
-            SurfaceContainerLow: Rgb(0xF0F2EA),
-            SurfaceContainerLowest: Rgb(0xFFFFFF)
+            SurfaceBright: Rgb(0xEFEFEF),
+            SurfaceDim: Rgb(0xCDCDCD),
+            SurfaceContainer: Rgb(0xDFDFDF),
+            SurfaceContainerHigh: Rgb(0xDADADA),
+            SurfaceContainerHighest: Rgb(0xD4D4D4),
+            SurfaceContainerLow: Rgb(0xE5E5E5),
+            SurfaceContainerLowest: Rgb(0xF1F1F1)
         ),
         Shapes: new SerializableShapes().ToShapes(),
         Typography: new SerializableTypography().ToTypography()
     )
     {
-        Materials = MaterialSettings.Default with { Cloth = new(.95f, .025f) }
+        Materials = MaterialSettings.Default with { Cloth = new(.95f, .025f, TextureShadowsOnly: true) }
     };
 
     private static Color Rgb(uint hex) => new(

@@ -29,8 +29,11 @@ light direction and intensity. `textureStrength` controls bitmap relief;
 Six PNG textures render through `IDrawScope<MeshGenerationContext>` in this
 package, with cached relief textures and clipped, atlas-safe tile geometry.
 Paper/linen/metal reuse ORBIT assets; canvas/felt/twill were generated for the
-material experiment. Import size is 512px. Matte and ceramic reuse paper relief
-at low intensity. Directional twill and metal repeat without mirroring.
+material experiment. Import size is 512px. The default finishes keep matte nearly
+smooth with faint grain, ceramic smooth with a broad sheen and crisp rim, and
+paper visibly fibrous with minimal sheen. `CurrentTheme.Materials` controls these
+responses for every Surface; ceramic has zero texture contrast by default.
+Directional twill and metal repeat without mirroring.
 
 The Materials scene installer reuses an existing object and panel settings.
 Editor validation checks all six resources, opacity validation, scene

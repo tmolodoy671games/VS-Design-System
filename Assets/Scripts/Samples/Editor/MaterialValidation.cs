@@ -15,7 +15,7 @@ internal static class MaterialValidation
 {
     private static MaterialDemoWindow? _window;
     private static string _result = "";
-    private static int _step, _stable;
+    private static int _stable;
     private static double _next;
     private static Vector2 _size;
     private static string? _failure;
@@ -41,9 +41,9 @@ internal static class MaterialValidation
                 throw new Exception("Sample installation is not idempotent");
             MaterialDemoWindow.Open();
             _window = EditorWindow.GetWindow<MaterialDemoWindow>();
-            _window.position = new UnityEngine.Rect(80, 80, 900, 1050);
+            _window.position = new UnityEngine.Rect(80, 80, 680, 640);
             _failure = null; Application.logMessageReceived += OnLog;
-            _step = 0; _stable = 0; _next = EditorApplication.timeSinceStartup + 1;
+            _stable = 0; _next = EditorApplication.timeSinceStartup + 1;
             EditorApplication.update += Tick;
         }
         catch (Exception e) { File.WriteAllText(_result, e.ToString()); }
@@ -55,36 +55,30 @@ internal static class MaterialValidation
         try
         {
             if (_failure != null) throw new Exception(_failure);
-            var preview = _window!.rootVisualElement.Q("materials.preview");
-            if (preview == null || preview.layout.width <= 0 || preview.layout.height <= 0)
-                throw new Exception("Material preview has no layout");
-            if (_step == 0)
+            var root = _window!.rootVisualElement;
+            if (root.layout.size != _size) { _size = root.layout.size; _stable = 0; }
+            if (++_stable < 3) return;
+            foreach (var dark in new[] { false, true })
             {
-                if (preview.layout.size != _size) { _size = preview.layout.size; _stable = 0; }
-                if (++_stable < 3) return;
-            }
-            else if (preview.layout.size != _size) throw new Exception($"Material setting changed layout size at step {_step}: {_size} -> {preview.layout.size}");
-            var state = _window.State;
-            if (_step < 5) state.Material.Value = _step;
-            else if (_step < 9) { state.Material.Value = 3; state.Weave.Value = _step - 5; }
-            else if (_step == 9) state.Opacity.Value = 0;
-            else if (_step == 10) state.Inherit.Value = false;
-            else if (_step == 11) _window.PreviewTheme.Value = LightTheme.Instance;
-            else if (_step == 12)
-            {
-                var expected = LightTheme.Instance.ColorScheme.Surface;
-                var actual = _window.rootVisualElement.Q("materials.root").resolvedStyle.backgroundColor;
+                var tag = dark ? "dark" : "light";
+                var column = root.Q("materials." + tag);
+                if (column == null || column.layout.width <= 0)
+                    throw new Exception("Missing theme column: " + tag);
+                var expected = (dark ? DarkTheme.Instance : LightTheme.Instance).ColorScheme.Surface;
+                var actual = column.resolvedStyle.backgroundColor;
                 if (Math.Abs(actual.r - expected.Red) > 0.01f || Math.Abs(actual.g - expected.Green) > 0.01f || Math.Abs(actual.b - expected.Blue) > 0.01f)
-                    throw new Exception("Sample did not follow the VS theme's Surface color");
-                _window.PreviewTheme.Value = DarkTheme.Instance;
+                    throw new Exception("Incorrect theme surface: " + tag);
+                for (var i = 0; i < 5; i++)
+                {
+                    var swatch = root.Q("materials." + tag + "." + i);
+                    if (swatch == null || swatch.layout.width <= 0 || swatch.layout.height <= 0)
+                        throw new Exception("Missing material: " + tag + "." + i);
+                    if (swatch.worldBound.yMax > column.worldBound.yMax)
+                        throw new Exception("Material exceeds column bounds: " + tag + "." + i);
+                }
             }
-            else
-            {
-                state.Material.Value = 3; state.Weave.Value = 0; state.Opacity.Value = 1; state.Inherit.Value = true;
-                EditorApplication.update -= Tick; Application.logMessageReceived -= OnLog;
-                File.WriteAllText(_result, "PASS: six textures; opacity validation; scene idempotence; five materials, four weaves and zero/explicit opacity rendered with stable layout; VS Light/Dark theme colors update.");
-            }
-            _step++;
+            EditorApplication.update -= Tick; Application.logMessageReceived -= OnLog;
+            File.WriteAllText(_result, "PASS: six textures; opacity validation; scene idempotence; five materials in both VS Light/Dark theme columns with visible layout.");
         }
         catch (Exception e) { EditorApplication.update -= Tick; Application.logMessageReceived -= OnLog; File.WriteAllText(_result, e.ToString()); }
     }

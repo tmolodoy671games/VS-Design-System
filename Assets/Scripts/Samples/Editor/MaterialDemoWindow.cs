@@ -17,27 +17,23 @@ namespace Samples.Editor;
 public sealed partial class MaterialDemoWindow : EditorWindow
 {
     private IComposer? _composer;
-    private MaterialLabState? _state;
     private readonly EditorAdapter _adapter = new();
-    public MaterialLabState State => _state!;
-    public IMutableState<VS.DesignSystem.Theme> PreviewTheme { get; } = MutableStateOf(VS.DesignSystem.DarkTheme.Instance);
     [MenuItem("Tools/VS Design System/Material Lab")]
     public static void Open()
     {
         var window = GetWindow<MaterialDemoWindow>();
         window.titleContent = new GUIContent("Material Lab");
-        window.minSize = new Vector2(680, 600);
+        window.minSize = new Vector2(680, 640);
         window.Show();
     }
     private void CreateGUI()
     {
         _composer?.Dispose(); rootVisualElement.Clear();
-        _state ??= new MaterialLabState(); _composer = IComposer.Create();
+        _composer = IComposer.Create();
         // Editor preview mode intentionally skips some animations; the showcase is live.
         Bootstrap(_composer, _adapter, false, new ComposeConfig(Logging: false), new Root(rootVisualElement), Content);
     }
-    [Composable] private void Content() => VS.DesignSystem.WithThemeFunctions.WithTheme(
-        theme: PreviewTheme.Value, content: () => MaterialLab.Content(_state!));
+    [Composable] private void Content() => MaterialLab.Content();
     private void Update() { ComposeInvalidatorHolder.ComposeInvalidator.Tick(); Repaint(); }
     private void OnDisable() { _composer?.Dispose(); _composer = null; }
     private sealed class Root(VisualElement element) : UnityReusableComposeNode(element), IReusableComposeNode

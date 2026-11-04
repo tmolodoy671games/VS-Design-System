@@ -13,7 +13,8 @@ public sealed record Theme(
 }
 
 /// <summary>Texture contrast, directional sheen and rim opacity, each from 0 to 1.</summary>
-public readonly record struct MaterialFinish(float TextureContrast, float Sheen, float RimOpacity = 0);
+public readonly record struct MaterialFinish(float TextureContrast, float Sheen, float RimOpacity = 0,
+    bool TextureShadowsOnly = false);
 
 public sealed record MaterialSettings(
     MaterialFinish Matte,
@@ -23,9 +24,11 @@ public sealed record MaterialSettings(
     MaterialFinish Metal)
 {
     public static MaterialSettings Default { get; } = new(
-        Matte: new(.38f, .07f),
-        Ceramic: new(.38f, .22f, .25f),
-        Paper: new(.38f, .04f),
+        // Matte has only a trace of grain; glazed ceramic is smooth. Paper
+        // carries the visible fibre relief instead of sharing it with every finish.
+        Matte: new(.025f, .035f),
+        Ceramic: new(0f, .22f, .25f),
+        Paper: new(.38f, .018f),
         Cloth: new(.38f, .025f),
         Metal: new(.38f, .32f, .25f));
 

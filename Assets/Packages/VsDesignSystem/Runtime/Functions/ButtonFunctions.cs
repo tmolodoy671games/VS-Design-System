@@ -24,7 +24,7 @@ public static partial class ButtonFunctions
     ) => ButtonWithDefaults(onClick, content, modifier, shape, colors, border, contentPadding,
         interactionSource, enabled, material ?? Materials.Metal());
 
-    [Composable]
+    [Composable, NonRestartableComposable]
     private static void ButtonWithDefaults(
         Action onClick,
         [Composable] Action content,
@@ -56,7 +56,7 @@ public static partial class ButtonFunctions
             material: material
         );
     }
-    
+
     [Composable]
     public static void OutlineButton(
         Action onClick,
@@ -125,30 +125,28 @@ public static partial class ButtonFunctions
     {
         var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
         var pressed = interactionSource.CollectIsPressedAsState().Value && enabled;
-        var targetScale = pressed ? 0.8f : hovered ? 1.2f : 1f;
-        var animatedScale = AnimateFloatAsState(targetScale).Value;
-        var animatedAlpha = AnimateFloatAsState(pressed ? 0.8f : 1f).Value;
-        var color = colors.GetContainerColor(enabled);
-        var indication = LocalIndication.Current;
+        var lift = AnimateFloatAsState(hovered && !pressed ? 2f : 0f, Tween(150)).Value;
         var textStyle = CurrentTheme.Typography.LabelLarge;
-        var face = material is { } finish
-            ? modifier.Surface(finish, enabled ? pressed ? Depth.Inset(2.Dp()) : Depth.Raised(2.Dp()) : Depth.Flat,
-                color, shape).Then(border.Width != default ? Modifier.Border(border, shape) : Modifier)
-            : modifier.Surface(shape, color, border, shadowElevation: default);
-        Box(modifier: face, contentAlignment: Alignment.Center, content: () =>
-        {
-            CompositionLocalProvider(
-                LocalContentColor.Provides(colors.GetContentColor(enabled)),
+        var depth = !enabled ? Depth.Flat : pressed ? Depth.Inset(2.Dp()) : Depth.Raised((2f + lift).Dp());
+        Surface(
+            onClick: onClick,
+            modifier: modifier.Offset(y: (-lift).Dp()),
+            enabled: enabled,
+            shape: shape,
+            color: colors.GetContainerColor(enabled),
+            contentColor: colors.GetContentColor(enabled),
+            border: border,
+            interactionSource: interactionSource,
+            material: material,
+            depth: depth,
+            contentAlignment: Alignment.Center,
+            content: () => CompositionLocalProvider(
                 LocalTextStyle.Provides(textStyle),
                 content: () => Row(
                     horizontalArrangement: Arrangement.Center,
                     verticalAlignment: Alignment.CenterVertically,
-                    modifier: Modifier.Padding(contentPadding).Scale(animatedScale).Alpha(animatedAlpha),
-                    content: content));
-            // Keep the hit target as large as the face without clipping its outer shadows.
-            Box(modifier: Modifier.MatchParentSize().Clip(shape)
-                .Clickable(onClick, indication, interactionSource, enabled), content: () => { });
-        });
+                    modifier: Modifier.Padding(contentPadding),
+                    content: content)));
     }
 }
 
@@ -157,7 +155,7 @@ public static partial class ButtonDefaults
     [Composable]
     public static BorderStroke OutlineBorder(bool enabled = true)
     {
-        var scheme = WithThemeFunctions.CurrentTheme.ColorScheme;
+        var scheme = CurrentTheme.ColorScheme;
         return BorderStroke(
             width: 2.Dp(),
             color: enabled ? scheme.Outline : scheme.OnSurface with { Alpha = 0.12f }

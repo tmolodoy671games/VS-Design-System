@@ -30,7 +30,7 @@ public static partial class ExpeditionDemo
     private static Shape Round(float radius = 16) => RoundedCornerShape(radius.Dp());
     private static Color Tint(Color c, float a) => c with { Alpha = a };
     private static Color Accent(int i) => i % 3 == 0 ? C.Primary : i % 3 == 1 ? C.Secondary : C.Tertiary;
-    private static SurfaceMaterial Finish(int i) => i switch { 0 => Materials.Cloth(textureStrength: .24f), 1 => Materials.Matte(textureStrength: .2f), 2 => Materials.Paper(textureStrength: .22f), 3 => Materials.Ceramic(textureStrength: .2f), _ => Materials.Metal(textureStrength: .2f) };
+    private static SurfaceMaterial Finish(int i) => i switch { 0 => Materials.Cloth(textureStrength: .24f), 1 => Materials.Matte(textureStrength: .07f), 2 => Materials.Paper(textureStrength: .08f), 3 => Materials.Ceramic(textureStrength: .07f), _ => Materials.Metal(textureStrength: .2f) };
     private static AnimationSpec Motion(ExpeditionState s, int duration = 240) => Tween(s.ReducedMotion.Value ? 0 : duration, easing: EaseOutEasing);
     [Composable] private static void Label(string text, float size = 13, Color? color = null, bool bold = false, IModifier? modifier = null) =>
         Text(text, style: CurrentTheme.Typography.BodyMedium, fontSize: size.Sp(), color: color ?? C.OnSurface,
@@ -108,7 +108,7 @@ public static partial class ExpeditionDemo
                         selected: s.Category.Value == index, trailingContent: () => Text(index == 0 ? "06" : "02")); Gap(4);
                 }
                 Gap(24);
-                Box(modifier: Modifier.FillMaxWidth().Surface(Materials.Paper(textureStrength: .16f), Depth.Raised(2.Dp()), C.SurfaceContainer, Round()).Padding(18.Dp()), content: () => Column(content: () =>
+                Box(modifier: Modifier.FillMaxWidth().Surface(Materials.Paper(textureStrength: .06f), Depth.Raised(2.Dp()), C.SurfaceContainer, Round()).Padding(18.Dp()), content: () => Column(content: () =>
                 {
                     Label("YOUR LOADOUT", 9, C.OnSurfaceVariant, true); Gap(12);
                     Label(s.Equipped.Count(e => e.Value) + " / 6", 28, C.Primary, true); Gap(8);
@@ -166,7 +166,7 @@ public static partial class ExpeditionDemo
     [Composable] private static void Details(ExpeditionState s)
     {
         var id = s.Selected.Value; var accent = Accent(id);
-        Column(modifier: Modifier.FillMaxWidth().Surface(Materials.Matte(textureStrength: .16f), Depth.Raised(3.Dp()), C.SurfaceContainer, Round()).Padding(22.Dp()), content: () =>
+        Column(modifier: Modifier.FillMaxWidth().Surface(Materials.Matte(textureStrength: .06f), Depth.Raised(3.Dp()), C.SurfaceContainer, Round()).Padding(22.Dp()), content: () =>
         {
             Label("A CLOSER LOOK", 9, C.OnSurfaceVariant, true); Gap(10);
             ItemArt(s, id, accent, 160); Badge(Kinds[id], accent); Gap(14); Label(Names[id], 23, bold: true); Gap(12);
@@ -191,13 +191,13 @@ public static partial class ExpeditionDemo
     [Composable, NonRestartableComposable] private static void ActionButton(string text, Action action, string tag, ExpeditionState s, bool primary = false, IModifier? modifier = null, bool enabled = true)
     {
         var source = Remember(MutableInteractionSource); var hover = source.CollectIsHoveredAsState().Value; var pressed = source.CollectIsPressedAsState().Value;
-        var scale = AnimateFloatAsState(pressed && enabled ? .97f : hover && enabled ? 1.015f : 1, Motion(s, 150)).Value;
+        var lift = AnimateFloatAsState(hover && enabled && !pressed ? 2f : 0f, Motion(s, 150)).Value;
         var targetColor = primary ? C.PrimaryContainer : C.SurfaceContainerHigh;
         if (hover)
             targetColor = Color.Lerp(targetColor, primary ? C.OnPrimaryContainer : C.OnSurface, .08f);
         var color = AnimateColorAsState(targetColor, Motion(s)).Value;
-        Box(modifier: (modifier ?? Modifier).Scale(scale).Alpha(enabled ? 1 : .4f)
-            .Surface(Materials.Metal(), pressed ? Depth.Inset(1.Dp()) : Depth.Raised(2.Dp()), color, Round(10)),
+        Box(modifier: (modifier ?? Modifier).Offset(y: (-lift).Dp()).Alpha(enabled ? 1 : .4f)
+            .Surface(Materials.Metal(), pressed ? Depth.Inset(1.Dp()) : Depth.Raised((2f + lift).Dp()), color, Round(10)),
             content: () => Box(
                 modifier: (modifier == null ? Modifier : Modifier.FillMaxWidth())
                     .Clickable(action, enabled: enabled, interactionSource: source, indication: null)

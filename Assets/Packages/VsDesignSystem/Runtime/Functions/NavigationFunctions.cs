@@ -45,8 +45,17 @@ public static partial class NavigationFunctions
         var source = interactionSource ?? Remember(MutableInteractionSource);
         var hover = source.CollectIsHoveredAsState().Value;
         var pressed = source.CollectIsPressedAsState().Value;
-        var background = AnimateColorAsState(selected ? palette.SelectedContainer
-            : hover && enabled ? palette.HoverContainer : palette.Container, Tween(180)).Value;
+        var targetBackground = selected ? palette.SelectedContainer : palette.Container;
+        if (enabled && (hover || pressed))
+        {
+            var state = palette.HoverContainer;
+            if (pressed) state = state with { Alpha = Math.Min(1f, state.Alpha * 2f) };
+            var alpha = state.Alpha + targetBackground.Alpha * (1f - state.Alpha);
+            targetBackground = alpha > 0f
+                ? Color.Lerp(targetBackground, state, state.Alpha / alpha) with { Alpha = alpha }
+                : Color.Transparent;
+        }
+        var background = AnimateColorAsState(targetBackground, Tween(180)).Value;
         var foreground = AnimateColorAsState(!enabled ? palette.Content with { Alpha = .38f }
             : selected ? palette.SelectedContent : palette.Content, Tween(180)).Value;
         var scale = AnimateFloatAsState(pressed && enabled ? .985f : 1f, Tween(120)).Value;
@@ -78,7 +87,8 @@ public static partial class MenuItemDefaults
     {
         var scheme = CurrentTheme.ColorScheme;
         return new MenuItemColors(container.GetOrDefault(scheme.SurfaceContainer with { Alpha = 0 }),
-            hoverContainer.GetOrDefault(scheme.SurfaceContainerHighest), selectedContainer.GetOrDefault(scheme.PrimaryContainer),
-            content.GetOrDefault(scheme.OnSurface), selectedContent.GetOrDefault(scheme.OnPrimaryContainer));
+            hoverContainer.GetOrDefault(content.GetOrDefault(scheme.OnSurface) with { Alpha = .08f }),
+            selectedContainer.GetOrDefault(scheme.Primary with { Alpha = .12f }),
+            content.GetOrDefault(scheme.OnSurface), selectedContent.GetOrDefault(scheme.Primary));
     }
 }

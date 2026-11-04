@@ -17,25 +17,31 @@ namespace Samples.Samples
         private static readonly IStableList<string> EmptyOptions = MutableStableListOf<string>();
 
         [Composable]
-        protected override void Content() => WithTheme(
-            theme: VS.DesignSystem.DarkTheme.Instance,
-            content: SampleContent
-        );
+        protected override void Content() => Row(
+            modifier: Modifier.FillMaxSize(),
+            content: () =>
+            {
+                var panel = Modifier.Weight(1).FillMaxHeight();
+                WithTheme(theme: VS.DesignSystem.DarkTheme.Instance,
+                    content: () => SampleContent("Dark theme", panel));
+                WithTheme(theme: VS.DesignSystem.LightTheme.Instance,
+                    content: () => SampleContent("Light theme", panel));
+            });
 
         [Composable]
         protected override void Preview() => Content();
 
         [Composable]
-        private void SampleContent()
+        private static void SampleContent(string title, IModifier panel)
         {
             Box(
-                modifier: Modifier.FillMaxSize().Background(CurrentTheme.ColorScheme.Surface),
+                modifier: panel.Background(CurrentTheme.ColorScheme.Surface),
                 contentAlignment: Alignment.Center,
                 content: () => Column(
                     modifier: Modifier.Padding(24.Dp()).VerticalScroll(RememberScrollState()),
                     content: () =>
                     {
-                        Text("DropdownSelector", color: CurrentTheme.ColorScheme.OnSurface,
+                        Text("DropdownSelector / " + title, color: CurrentTheme.ColorScheme.OnSurface,
                             style: CurrentTheme.Typography.HeadlineSmall);
                         Example("Default", Options);
                         Example("Custom colors, shape and padding", Options, custom: true);
@@ -65,7 +71,7 @@ namespace Samples.Samples
                     enabled: enabled,
                     modifier: Modifier.Width(300.Dp()),
                     shape: custom ? CurrentTheme.Shapes.ExtraLarge : DropdownSelectorDefaults.Shape,
-                    contentPadding: PaddingValues(horizontal: custom ? 24.Dp() : 16.Dp(), vertical: 12.Dp()),
+                    contentPadding: custom ? PaddingValues(horizontal: 16.Dp(), vertical: 6.Dp()) : DropdownSelectorDefaults.ContentPadding,
                     colors: custom ? DropdownSelectorDefaults.Colors(
                         containerColor: CurrentTheme.ColorScheme.PrimaryContainer,
                         dropdownColor: CurrentTheme.ColorScheme.SecondaryContainer,

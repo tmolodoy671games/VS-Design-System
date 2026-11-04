@@ -17,7 +17,9 @@ public static partial class SwitchFunctions
         [Composable] Action? thumbContent = null,
         bool enabled = true,
         Optional<SwitchColors> colors = default,
-        IMutableInteractionSource? interactionSource = null
+        IMutableInteractionSource? interactionSource = null,
+        SurfaceMaterial? material = null,
+        SurfaceMaterial? trackMaterial = null
     )
     {
         SwitchImpl(
@@ -27,7 +29,9 @@ public static partial class SwitchFunctions
             thumbContent: thumbContent ?? (() => { }),
             enabled: enabled,
             colors: colors.GetOrDefault(SwitchDefaults.Colors()),
-            interactionSource: interactionSource ?? Remember(MutableInteractionSource)
+            interactionSource: interactionSource ?? Remember(MutableInteractionSource),
+            material: material ?? Materials.Metal(),
+            trackMaterial: trackMaterial ?? Materials.Matte()
         );
     }
 
@@ -39,7 +43,9 @@ public static partial class SwitchFunctions
         [Composable] Action thumbContent,
         bool enabled,
         SwitchColors colors,
-        IMutableInteractionSource interactionSource
+        IMutableInteractionSource interactionSource,
+        SurfaceMaterial material,
+        SurfaceMaterial trackMaterial
     )
     {
         // The click handler can outlive this composition; read the latest inputs on each click.
@@ -51,7 +57,7 @@ public static partial class SwitchFunctions
             currentOnValueChange.Value(!currentValue.Value))
         );
 
-        var hovered = interactionSource.CollectIsHoveredAsState().Value;
+        var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
         var pressed = interactionSource.CollectIsPressedAsState().Value;
         var thumbSize = AnimateFloatAsState(enabled && pressed ? 28f : 24f).Value;
         var thumbOffset = AnimateFloatAsState(value ? 10f : -10f).Value;
@@ -91,7 +97,7 @@ public static partial class SwitchFunctions
                     content: () => Box(
                         modifier: Modifier
                             .Size(width: 48.Dp(), height: 28.Dp())
-                            .Background(trackColor, innerShape),
+                            .Surface(trackMaterial, enabled ? Depth.Inset(1.Dp()) : Depth.Flat, trackColor, innerShape),
                         content: () => { }
                     )
                 );
@@ -100,7 +106,7 @@ public static partial class SwitchFunctions
                     modifier: Modifier
                         .Offset(x: thumbOffset.Dp())
                         .Size(thumbSize.Dp())
-                        .Background(thumbColor, shape)
+                        .Surface(material, enabled ? Depth.Raised((pressed ? 1f : 2f).Dp()) : Depth.Flat, thumbColor, shape)
                         .Scale(AnimateFloatAsState(value ? 1f : 0.6f).Value),
                     contentAlignment: Alignment.Center,
                     content: () => CompositionLocalProvider(

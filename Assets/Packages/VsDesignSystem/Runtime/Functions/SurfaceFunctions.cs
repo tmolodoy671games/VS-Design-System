@@ -20,89 +20,63 @@ public static partial class SurfaceFunctions
         Optional<Color> contentColor = default,
         Dp shadowElevation = default,
         BorderStroke border = default,
-        IMutableInteractionSource? interactionSource = null
+        IMutableInteractionSource? interactionSource = null,
+        SurfaceMaterial? material = null,
+        SurfaceDepth depth = default,
+        Alignment contentAlignment = default
     )
     {
-        var resolvedColor = color.GetOrDefault(CurrentTheme.ColorScheme.Surface);
-        var resolvedContentColor = contentColor.GetOrDefault(ContentColorFor(resolvedColor));
-        SurfaceImpl(
-            onClick: onClick,
-            content: content,
-            modifier: modifier.OrEmpty(),
-            enabled: enabled,
-            shape: shape,
-            color: resolvedColor,
-            contentColor: resolvedContentColor,
-            shadowElevation: shadowElevation,
-            border: border,
-            interactionSource: interactionSource
-        );
+        var theme = CurrentTheme;
+        var resolvedColor = color.GetOrDefault(theme.ColorScheme.Surface);
+        var foreground = contentColor.GetOrDefault(ContentColorFor(resolvedColor));
+        var face = modifier.OrEmpty();
+        var resolvedShape = material.HasValue ? shape.GetOrDefault(theme.Shapes.Medium) : shape;
+        face = face.WithSurfaceElevation(resolvedShape, shadowElevation);
+        if (material is { } finish)
+            face = face.Surface(finish, depth, resolvedColor, resolvedShape);
+        else
+            face = face.Background(resolvedColor, resolvedShape).Clip(resolvedShape);
+
+        SurfaceImpl(content, face, foreground, resolvedShape, border, contentAlignment,
+            onClick, enabled, interactionSource);
     }
 
-    [Composable]
+    [Composable, NonRestartableComposable]
     private static void SurfaceImpl(
-        Action onClick,
         [Composable] Action content,
-        IModifier modifier,
-        bool enabled,
-        Shape shape,
-        Color color,
+        IModifier face,
         Color contentColor,
-        Dp shadowElevation,
+        Shape shape,
         BorderStroke border,
-        IMutableInteractionSource? interactionSource = null
+        Alignment contentAlignment,
+        Action? onClick,
+        bool enabled,
+        IMutableInteractionSource? interactionSource
     )
     {
-        CompositionLocalProvider(
-            LocalContentColor.Provides(contentColor),
-            content: () =>
+        var indication = LocalIndication.Current;
+        if (border.Width != default)
+            face = face.Border(border, shape);
+
+        Box(modifier: face, contentAlignment: contentAlignment, content: () =>
+        {
+            CompositionLocalProvider(LocalContentColor.Provides(contentColor), content);
+            if (onClick != null)
             {
-                Box(
-                    modifier: modifier
-                        .Clickable(
-                            onClick: onClick,
-                            enabled: enabled,
-                            interactionSource: interactionSource,
-                            indication: LocalIndication.Current
-                        )
-                        .Surface(
-                            shape: shape,
-                            backgroundColor: color,
-                            border: border,
-                            shadowElevation: shadowElevation
-                        ),
-                    content: content
-                );
+                // The input layer fills the face without clipping its outer shadows.
+                Row(
+                    modifier: Modifier.MatchParentSize().Clip(shape)
+                        .Clickable(onClick, indication, interactionSource, enabled),
+                    content: () => { });
             }
-        );
+        });
     }
 }
 
-internal static class ModifierExtensions
+internal static class SurfaceModifierExtensions
 {
-    public static IModifier Surface(
-        this IModifier modifier,
-        Shape shape,
-        Color backgroundColor,
-        BorderStroke border,
-        Dp shadowElevation
-    )
-    {
-        return modifier
-            .Then(
-                shadowElevation > 0.Dp()
-                    ? Modifier.DropShadow(
-                        shape: shape,
-                        shadow: Shadow(
-                            radius: shadowElevation,
-                            spread: shadowElevation,
-                            color: Color.Black
-                        )
-                    )
-                    : Modifier
-            )
-            .Then(border.Width != default ? Modifier.Border(border, shape) : Modifier)
-            .Background(backgroundColor, shape)
-            .Clip(shape);
-    }
+    internal static IModifier WithSurfaceElevation(this IModifier modifier, Shape shape, Dp elevation) =>
+        elevation > 0.Dp()
+            ? modifier.DropShadow(shape, Shadow(radius: elevation, spread: elevation, color: Color.Black))
+            : modifier;
 }

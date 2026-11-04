@@ -26,7 +26,8 @@ public static partial class DropdownSelectorFunctions
         Optional<PaddingValues> contentPadding = default,
         IMutableInteractionSource? interactionSource = null,
         bool enabled = true,
-        Action<T>? onValueChange = null
+        Action<T>? onValueChange = null,
+        SurfaceMaterial? material = null
     )
     {
         DropdownSelectorImpl(
@@ -38,10 +39,11 @@ public static partial class DropdownSelectorFunctions
             modifier: modifier.OrEmpty(),
             shape: shape.GetOrDefault(DropdownSelectorDefaults.Shape),
             colors: colors.GetOrDefault(DropdownSelectorDefaults.Colors()),
-            contentPadding: contentPadding.GetOrDefault(PaddingValues(horizontal: 16.Dp(), vertical: 12.Dp())),
+            contentPadding: contentPadding.GetOrDefault(DropdownSelectorDefaults.ContentPadding),
             interactionSource: interactionSource ?? Remember(MutableInteractionSource),
             enabled: enabled,
-            onValueChange: onValueChange
+            onValueChange: onValueChange,
+            material: material ?? Materials.Metal()
         );
     }
 
@@ -58,7 +60,8 @@ public static partial class DropdownSelectorFunctions
         PaddingValues contentPadding,
         IMutableInteractionSource interactionSource,
         bool enabled,
-        Action<T>? onValueChange
+        Action<T>? onValueChange,
+        SurfaceMaterial material
     )
     {
         var anchor = Remember(() => MutableStateOf(default(Compose.Net.Rect)));
@@ -66,33 +69,68 @@ public static partial class DropdownSelectorFunctions
         var menuSize = Remember(() => MutableStateOf(default(Size)));
         var density = LocalDensity.Current;
         var textStyle = CurrentTheme.Typography.BodyMedium;
-        var reveal = AnimateFloatAsState(expanded && enabled ? 1f : 0f, Tween(180)).Value;
+        var interactive = enabled && values.Size > 0;
+        var hovered = interactionSource.CollectIsHoveredAsState().Value && interactive;
+        var pressed = interactionSource.CollectIsPressedAsState().Value && interactive;
+        var open = expanded && interactive;
+        var scale = AnimateFloatAsState(!interactive ? 1f : pressed ? .99f : open ? 1.025f : hovered ? 1.015f : 1f,
+            Tween(220, easing: EaseOutEasing)).Value;
+        var elevation = AnimateFloatAsState(!interactive ? 0f : open ? 6f : hovered ? 4f : 1f,
+            Tween(220, easing: EaseOutEasing)).Value;
+        var arrowRotation = AnimateFloatAsState(open ? 180f : 0f, Tween(240, easing: EaseOutEasing)).Value;
+        var arrowColor = colors.GetContentColor(enabled);
+        var reveal = AnimateFloatAsState(open ? 1f : 0f,
+            Tween(open ? 240 : 160, easing: EaseOutEasing)).Value;
         // Clickable retains its handler; resolve current inputs when the click arrives.
         var inputs = Remember(() => MutableStateOf((expanded, onExpandedChange, onValueChange)));
         inputs.Value = (expanded, onExpandedChange, onValueChange);
         Surface(
             onClick: () => inputs.Value.onExpandedChange(!inputs.Value.expanded),
-            enabled: enabled && values.Size > 0,
+            enabled: interactive,
             interactionSource: interactionSource,
             shape: shape,
+            material: material,
+            depth: pressed ? Depth.Inset(2.Dp()) : Depth.Raised(elevation.Dp()),
+            contentAlignment: Alignment.CenterStart,
             color: AnimateColorAsState(colors.GetContainerColor(enabled), Tween(180)).Value,
             contentColor: colors.GetContentColor(enabled),
-            modifier: modifier.OnGloballyPositioned(c => anchor.Value = new Compose.Net.Rect(c.LocalToRoot(default), c.Size)),
+            // Scale is visual only; transformed corners keep the popup attached to its field.
+            modifier: modifier.Scale(scale).OnGloballyPositioned(c =>
+            {
+                var topLeft = c.LocalToRoot(default);
+                var bottomRight = c.LocalToRoot(new Offset(c.Size.Width, c.Size.Height));
+                anchor.Value = new Compose.Net.Rect(topLeft,
+                    new Size(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y));
+            }),
             content: () => CompositionLocalProvider(
                 LocalTextStyle.Provides(textStyle),
                 content: () => Row(
-                    modifier: Modifier.Padding(contentPadding),
+                    modifier: Modifier.FillMaxWidth().Padding(contentPadding),
                     verticalAlignment: Alignment.CenterVertically,
                     content: () =>
                     {
-                        content(value);
-                        Text(expanded && enabled ? "\u25B4" : "\u25BE", modifier: Modifier.Padding(left: 16.Dp()));
+                        Box(modifier: Modifier.Weight(1),
+                            contentAlignment: Alignment.CenterLeft,
+                            content: () => content(value));
+                        Spacer(Modifier.Width(8.Dp()));
+                        Spacer(Modifier.Size(18.Dp()).Rotate(arrowRotation).DrawBehind(draw =>
+                        {
+                            var w = draw.Size.Width;
+                            var h = draw.Size.Height;
+                            using var path = Path();
+                            path.MoveTo(w * .17f, h * .33f)
+                                .LineTo(w * .83f, h * .33f)
+                                .LineTo(w * .5f, h * .67f).Close();
+                            draw.DrawPath(path, arrowColor);
+                        }));
                     }
                 )
             )
         );
 
-        if (!expanded || !enabled || values.Size == 0)
+        // Keep the popup mounted through its exit transition; a quick reopen
+        // retargets the same animation instead of recreating the scrolling content.
+        if ((!open && reveal <= 0f) || !interactive)
             return;
 
         ModalDialog(content: () =>
@@ -107,6 +145,7 @@ public static partial class DropdownSelectorFunctions
             var x = Math.Max(0f, Math.Min(bounds.Offset.X, screen.Width - width));
             var y = openAbove ? Math.Max(0f, bounds.Offset.Y - menuSize.Value.Height)
                 : bounds.Offset.Y + bounds.Size.Height;
+            var slide = density.ToPx(6.Dp()) * (1f - reveal) * (openAbove ? 1f : -1f);
             Box(
                 modifier: Modifier.FillMaxSize().OnGloballyPositioned(c => viewport.Value = c.Size),
                 content: () =>
@@ -120,34 +159,44 @@ public static partial class DropdownSelectorFunctions
                     CompositionLocalProvider(
                         LocalContentColor.Provides(colors.ContentColor),
                         LocalTextStyle.Provides(textStyle),
-                        content: () => Column(
-                            modifier: Modifier.Offset(x: density.ToDp(x), y: density.ToDp(y))
-                                .Alpha(reveal).Width(density.ToDp(width)).HeightIn(max: density.ToDp(height))
-                                .Background(colors.DropdownColor, shape).Clip(shape)
-                                .OnGloballyPositioned(c => menuSize.Value = c.Size)
-                                .VerticalScroll(RememberScrollState()),
-                            content: () =>
-                            {
-                                foreach (var item in values)
+                        content: () => Box(
+                            modifier: Modifier.Offset(x: density.ToDp(x), y: density.ToDp(y + slide))
+                                .TransformOrigin(density.ToDp(width * .5f), openAbove ? density.ToDp(menuSize.Value.Height) : 0.Dp())
+                                .Scale(.97f + .03f * reveal).Alpha(reveal).Width(density.ToDp(width)).HeightIn(max: density.ToDp(height))
+                                .Surface(material, Depth.Floating(8.Dp()), colors.DropdownColor, shape)
+                                .OnGloballyPositioned(c => menuSize.Value = c.Size),
+                            // Clip only the scrolling content, leaving the outer shadow visible.
+                            content: () => Column(
+                                modifier: Modifier.FillMaxWidth().HeightIn(max: density.ToDp(height))
+                                    .Clip(shape).VerticalScroll(RememberScrollState()),
+                                content: () =>
                                 {
-                                    var currentItem = Remember(() => MutableStateOf(item));
-                                    currentItem.Value = item;
-                                    NavigationFunctions.MenuItem(
-                                        onClick: () =>
-                                        {
-                                            inputs.Value.onValueChange?.Invoke(currentItem.Value);
-                                            inputs.Value.onExpandedChange(false);
-                                        },
-                                        selected: EqualityComparer<T>.Default.Equals(value, item),
-                                        colors: MenuItemDefaults.Colors(container: colors.DropdownColor,
-                                            hoverContainer: colors.ContainerColor, selectedContainer: colors.ContainerColor,
-                                            content: colors.ContentColor, selectedContent: colors.ContentColor),
-                                        contentPadding: contentPadding,
-                                        modifier: Modifier.FillMaxWidth(),
-                                        content: () => content(item)
-                                    );
-                                }
-                            }
+                                    var itemIndex = 0;
+                                    foreach (var item in values)
+                                    {
+                                        var delay = Math.Min(itemIndex++, 5) * .045f;
+                                        var itemReveal = Math.Clamp((reveal - delay) / (1f - delay), 0f, 1f);
+                                        var currentItem = Remember(() => MutableStateOf(item));
+                                        currentItem.Value = item;
+                                        NavigationFunctions.MenuItem(
+                                            onClick: () =>
+                                            {
+                                                if (!inputs.Value.expanded) return;
+                                                inputs.Value.onValueChange?.Invoke(currentItem.Value);
+                                                inputs.Value.onExpandedChange(false);
+                                            },
+                                            selected: EqualityComparer<T>.Default.Equals(value, item),
+                                            colors: MenuItemDefaults.Colors(
+                                                selectedContainer: CurrentTheme.ColorScheme.PrimaryContainer,
+                                                content: colors.ContentColor,
+                                                selectedContent: CurrentTheme.ColorScheme.OnPrimaryContainer),
+                                            contentPadding: contentPadding,
+                                            modifier: Modifier.FillMaxWidth().Alpha(itemReveal)
+                                                .Offset(y: ((1f - itemReveal) * (openAbove ? 4f : -4f)).Dp()),
+                                            content: () => content(item)
+                                        );
+                                    }
+                                })
                         )
                     );
                 }
@@ -158,6 +207,8 @@ public static partial class DropdownSelectorFunctions
 
 public static partial class DropdownSelectorDefaults
 {
+    public static PaddingValues ContentPadding => PaddingValues(horizontal: 12.Dp(), vertical: 4.Dp());
+
     public static Shape Shape
     {
         [Composable] get => WithThemeFunctions.CurrentTheme.Shapes.Small;
@@ -175,7 +226,7 @@ public static partial class DropdownSelectorDefaults
         var scheme = WithThemeFunctions.CurrentTheme.ColorScheme;
         return new DropdownSelectorColors(
             containerColor.GetOrDefault(scheme.SurfaceContainerHighest),
-            dropdownColor.GetOrDefault(scheme.SurfaceContainer),
+            dropdownColor.GetOrDefault(scheme.SurfaceContainerLow),
             contentColor.GetOrDefault(scheme.OnSurface),
             disabledContainerColor.GetOrDefault(scheme.OnSurface with { Alpha = 0.12f }),
             disabledContentColor.GetOrDefault(scheme.OnSurface with { Alpha = 0.38f })
