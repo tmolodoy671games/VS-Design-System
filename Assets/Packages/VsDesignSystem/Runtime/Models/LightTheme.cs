@@ -46,7 +46,10 @@ public static class LightTheme
         ),
         Shapes: new SerializableShapes().ToShapes(),
         Typography: new SerializableTypography().ToTypography()
-    );
+    )
+    {
+        Materials = MaterialSettings.Default with { Cloth = new(.95f, .025f) }
+    };
 
     private static Color Rgb(uint hex) => new(
         ((hex >> 16) & 0xFF) / 255f,

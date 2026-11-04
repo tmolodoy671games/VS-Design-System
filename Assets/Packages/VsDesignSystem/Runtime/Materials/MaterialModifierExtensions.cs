@@ -39,14 +39,8 @@ public static partial class MaterialModifierExtensions
             else if (distance > 0 && depth.Kind == SurfaceDepthKind.Floating)
                 result = result.DropShadow(shape, Shadow(amount * 2, 0.Dp(), dark, offset));
 
-            var sheen = material.Kind switch
-            {
-                SurfaceMaterialKind.Ceramic => 0.22f,
-                SurfaceMaterialKind.Metal => 0.32f,
-                SurfaceMaterialKind.Cloth => 0.025f,
-                SurfaceMaterialKind.Paper => 0.04f,
-                _ => 0.07f
-            } * light.Intensity;
+            var finish = theme.Materials[material.Kind];
+            var sheen = Math.Clamp(finish.Sheen, 0f, 1f) * light.Intensity;
             var faceColor = appearance.Color ?? theme.ColorScheme.Surface;
             var lighter = Color.Lerp(faceColor, Color.White with { Alpha = faceColor.Alpha }, sheen);
             var darker = Color.Lerp(faceColor, Color.Black with { Alpha = faceColor.Alpha }, sheen);
@@ -57,15 +51,15 @@ public static partial class MaterialModifierExtensions
             {
                 if (d.Size.Width <= 0 || d.Size.Height <= 0) return;
                 d.DrawShape(face, shape: shape, alpha: opacity);
-                MaterialTexture.Draw(d, material, shape, density, opacity * faceColor.Alpha);
+                MaterialTexture.Draw(d, material, shape, density, opacity * faceColor.Alpha * Math.Clamp(finish.TextureContrast, 0f, 1f));
             });
             if (distance > 0 && depth.Kind == SurfaceDepthKind.Inset)
                 result = result
                     .InnerShadow(shape, Shadow(amount * 2, 0.Dp(), dark, offset))
                     .InnerShadow(shape, Shadow(amount * 2, 0.Dp(), bright, new Offset(-offset.X, -offset.Y)));
-            // Ceramic and metal retain a crisp lip even when flat; cloth has no hard specular rim.
-            if (material.Kind == SurfaceMaterialKind.Ceramic || material.Kind == SurfaceMaterialKind.Metal)
-                result = result.Border(0.75f.Dp(), SolidColor(Color.White with { Alpha = opacity * light.Intensity * 0.25f }), shape);
+            if (finish.RimOpacity > 0)
+                result = result.Border(0.75f.Dp(), SolidColor(Color.White with
+                    { Alpha = opacity * faceColor.Alpha * light.Intensity * Math.Clamp(finish.RimOpacity, 0f, 1f) }), shape);
             return result;
         });
 }

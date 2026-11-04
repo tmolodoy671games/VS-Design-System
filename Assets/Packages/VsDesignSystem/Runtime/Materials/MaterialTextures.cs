@@ -33,12 +33,9 @@ internal static class MaterialTextures
         geometry.Update(scope.Size.Width, scope.Size.Height, radii, tileSize,
             material.Kind != SurfaceMaterialKind.Metal && !(material.Kind == SurfaceMaterialKind.Cloth && material.Weave == ClothWeave.Twill));
         if (geometry.Vertices.Count == 0) return;
-        // All materials share the same contrast budget. Their pattern and sheen,
-        // not arbitrary multipliers, distinguish cloth, paper, ceramic and metal.
-        const float strength = 0.38f;
         var mesh = scope.Context.Allocate(geometry.Vertices.Count, geometry.Indices.Count, texture);
         var atlas = mesh.uvRegion;
-        var tint = new UnityEngine.Color(1, 1, 1, opacity * material.TextureStrength * strength);
+        var tint = new UnityEngine.Color(1, 1, 1, opacity * material.TextureStrength);
         foreach (var vertex in geometry.Vertices)
             mesh.SetNextVertex(new Vertex
             {

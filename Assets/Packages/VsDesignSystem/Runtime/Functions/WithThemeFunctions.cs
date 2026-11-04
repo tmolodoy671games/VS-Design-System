@@ -23,17 +23,20 @@ public static partial class WithThemeFunctions
         Optional<ColorScheme> colorScheme = default,
         Optional<Typography> typography = default,
         Optional<Shapes> shapes = default,
-        Theme? theme = null
+        Theme? theme = null,
+        Optional<MaterialSettings> materials = default
     )
     {
         var parentTheme = theme ?? CurrentTheme;
         CompositionLocalProvider(
             LocalTheme.Provides(
-                new Theme(
-                    ColorScheme: colorScheme.GetOrDefault(parentTheme.ColorScheme),
-                    Shapes: shapes.GetOrDefault(parentTheme.Shapes),
-                    Typography: typography.GetOrDefault(parentTheme.Typography)
-                )
+                parentTheme with
+                {
+                    ColorScheme = colorScheme.GetOrDefault(parentTheme.ColorScheme),
+                    Shapes = shapes.GetOrDefault(parentTheme.Shapes),
+                    Typography = typography.GetOrDefault(parentTheme.Typography),
+                    Materials = materials.GetOrDefault(parentTheme.Materials)
+                }
             ),
             content: content
         );

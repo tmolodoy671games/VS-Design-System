@@ -46,7 +46,10 @@ public static class DarkTheme
         ),
         Shapes: new SerializableShapes().ToShapes(),
         Typography: new SerializableTypography().ToTypography()
-    );
+    )
+    {
+        Materials = MaterialSettings.Default with { Metal = new(.12f, .10f, .10f) }
+    };
 
     private static Color Rgb(uint hex) => new(
         ((hex >> 16) & 0xFF) / 255f,
