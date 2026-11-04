@@ -1,7 +1,6 @@
 using System;
 using Compose.Net;
 using SharpExtensions;
-using UnityEngine;
 
 // ReSharper disable CheckNamespace
 
@@ -20,7 +19,23 @@ public static partial class ButtonFunctions
         BorderStroke border = default,
         Optional<PaddingValues> contentPadding = default,
         IMutableInteractionSource? interactionSource = null,
-        bool enabled = true
+        bool enabled = true,
+        SurfaceMaterial? material = null
+    ) => ButtonWithDefaults(onClick, content, modifier, shape, colors, border, contentPadding,
+        interactionSource, enabled, material ?? Materials.Metal());
+
+    [Composable]
+    private static void ButtonWithDefaults(
+        Action onClick,
+        [Composable] Action content,
+        IModifier? modifier = null,
+        Optional<Shape> shape = default,
+        Optional<ButtonColors> colors = default,
+        BorderStroke border = default,
+        Optional<PaddingValues> contentPadding = default,
+        IMutableInteractionSource? interactionSource = null,
+        bool enabled = true,
+        SurfaceMaterial? material = null
     )
     {
         ButtonImpl(
@@ -37,7 +52,8 @@ public static partial class ButtonFunctions
                 )
             ),
             interactionSource: interactionSource ?? Remember(MutableInteractionSource),
-            enabled: enabled
+            enabled: enabled,
+            material: material
         );
     }
     
@@ -54,7 +70,7 @@ public static partial class ButtonFunctions
         bool enabled = true
     )
     {
-        Button(
+        ButtonWithDefaults(
             onClick: onClick,
             content: content,
             modifier: modifier,
@@ -79,7 +95,7 @@ public static partial class ButtonFunctions
         bool enabled = true
     )
     {
-        Button(
+        ButtonWithDefaults(
             onClick: onClick,
             content: content,
             modifier: modifier,
@@ -103,7 +119,8 @@ public static partial class ButtonFunctions
         BorderStroke border,
         PaddingValues contentPadding,
         IMutableInteractionSource interactionSource,
-        bool enabled
+        bool enabled,
+        SurfaceMaterial? material
     )
     {
         var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
@@ -111,34 +128,27 @@ public static partial class ButtonFunctions
         var targetScale = pressed ? 0.8f : hovered ? 1.2f : 1f;
         var animatedScale = AnimateFloatAsState(targetScale).Value;
         var animatedAlpha = AnimateFloatAsState(pressed ? 0.8f : 1f).Value;
-        Surface(
-            onClick: onClick,
-            shape: shape,
-            border: border,
-            enabled: enabled,
-            color: colors.GetContainerColor(enabled),
-            contentColor: colors.GetContentColor(enabled),
-            interactionSource: interactionSource,
-            modifier: modifier,
-            content: () =>
-            {
-                CompositionLocalProvider(
-                    LocalTextStyle.Provides(CurrentTheme.Typography.LabelLarge),
-                    content: () =>
-                    {
-                        Row(
-                            horizontalArrangement: Arrangement.Center,
-                            verticalAlignment: Alignment.CenterVertically,
-                            modifier: Modifier
-                                .Padding(contentPadding)
-                                .Scale(animatedScale)
-                                .Alpha(animatedAlpha),
-                            content: content
-                        );
-                    }
-                );
-            }
-        );
+        var color = colors.GetContainerColor(enabled);
+        var indication = LocalIndication.Current;
+        var textStyle = CurrentTheme.Typography.LabelLarge;
+        var face = material is { } finish
+            ? modifier.Surface(finish, enabled ? pressed ? Depth.Inset(2.Dp()) : Depth.Raised(2.Dp()) : Depth.Flat,
+                color, shape).Then(border.Width != default ? Modifier.Border(border, shape) : Modifier)
+            : modifier.Surface(shape, color, border, shadowElevation: default);
+        Box(modifier: face, contentAlignment: Alignment.Center, content: () =>
+        {
+            CompositionLocalProvider(
+                LocalContentColor.Provides(colors.GetContentColor(enabled)),
+                LocalTextStyle.Provides(textStyle),
+                content: () => Row(
+                    horizontalArrangement: Arrangement.Center,
+                    verticalAlignment: Alignment.CenterVertically,
+                    modifier: Modifier.Padding(contentPadding).Scale(animatedScale).Alpha(animatedAlpha),
+                    content: content));
+            // Keep the hit target as large as the face without clipping its outer shadows.
+            Box(modifier: Modifier.MatchParentSize().Clip(shape)
+                .Clickable(onClick, indication, interactionSource, enabled), content: () => { });
+        });
     }
 }
 

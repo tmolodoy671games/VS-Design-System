@@ -48,7 +48,7 @@ public static partial class ExpeditionDemo
             await scope.Delay(s.ReducedMotion.Value ? 1 : 1400);
             s.Location.Value = destination; s.Travelling.Value = false; s.Notice.Value = "Arrived at " + Places[destination];
         });
-        Column(modifier: Modifier.FillMaxSize().Background(C.Background).OnSizeChanged(size => s.Width.Value = size.Width).TestTag("expedition.root"), content: () =>
+        Column(modifier: Modifier.FillMaxSize().Surface(Materials.Cloth(textureStrength: .16f), Depth.Flat, C.Background, RoundedCornerShape(0.Dp())).OnSizeChanged(size => s.Width.Value = size.Width).TestTag("expedition.root"), content: () =>
         {
             Row(modifier: Modifier.FillMaxWidth().Height(84.Dp()).Padding(horizontal: 28.Dp()), verticalAlignment: Alignment.CenterVertically, content: () =>
             {
@@ -193,9 +193,14 @@ public static partial class ExpeditionDemo
         var source = Remember(MutableInteractionSource); var hover = source.CollectIsHoveredAsState().Value; var pressed = source.CollectIsPressedAsState().Value;
         var scale = AnimateFloatAsState(pressed && enabled ? .97f : hover && enabled ? 1.015f : 1, Motion(s, 150)).Value;
         var color = AnimateColorAsState(primary ? C.Primary : hover ? C.SurfaceContainerHighest : C.SurfaceContainerHigh, Motion(s)).Value;
-        Box(modifier: (modifier ?? Modifier).Scale(scale).Alpha(enabled ? 1 : .4f).Surface(Materials.Ceramic(textureStrength: .1f), pressed ? Depth.Inset(1.Dp()) : Depth.Raised(2.Dp()), color, Round(10)),
-            content: () => Box(modifier: (modifier == null ? Modifier : Modifier.FillMaxWidth()).Clickable(action, enabled: enabled, interactionSource: source, indication: null).Padding(horizontal: 16.Dp(), vertical: 12.Dp()).TestTag("expedition." + tag),
-                contentAlignment: Alignment.Center, content: () => Label(text, 12, primary ? C.OnPrimary : C.OnSurface, true)));
+        Box(modifier: (modifier ?? Modifier).Scale(scale).Alpha(enabled ? 1 : .4f)
+            .Surface(Materials.Metal(), pressed ? Depth.Inset(1.Dp()) : Depth.Raised(2.Dp()), color, Round(10)),
+            content: () => Box(
+                modifier: (modifier == null ? Modifier : Modifier.FillMaxWidth())
+                    .Clickable(action, enabled: enabled, interactionSource: source, indication: null)
+                    .Padding(horizontal: 16.Dp(), vertical: 12.Dp()).TestTag("expedition." + tag),
+                contentAlignment: Alignment.Center,
+                content: () => Label(text, 12, primary ? C.OnPrimary : C.OnSurface, true)));
     }
     [Composable] private static void ItemArt(ExpeditionState s, int id, Color color, float height)
     {
