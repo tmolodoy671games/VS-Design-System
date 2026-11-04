@@ -48,7 +48,11 @@ public static class DarkTheme
         Typography: new SerializableTypography().ToTypography()
     )
     {
-        Materials = MaterialSettings.Default with { Metal = new(.12f, .10f, .10f) }
+        Materials = MaterialSettings.Default with
+        {
+            Cloth = MaterialSettings.Default.Cloth with { TextureContrast = .19f },
+            Metal = new(.12f, .10f, .10f)
+        }
     };
 
     private static Color Rgb(uint hex) => new(
