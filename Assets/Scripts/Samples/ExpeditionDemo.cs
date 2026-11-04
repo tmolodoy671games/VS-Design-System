@@ -188,11 +188,14 @@ public static partial class ExpeditionDemo
             d.DrawRoundRect(color, default, new Size(d.Size.Width * amount.Value, d.Size.Height), 3);
         }), content: () => { });
     }
-    [Composable] private static void ActionButton(string text, Action action, string tag, ExpeditionState s, bool primary = false, IModifier? modifier = null, bool enabled = true)
+    [Composable, NonRestartableComposable] private static void ActionButton(string text, Action action, string tag, ExpeditionState s, bool primary = false, IModifier? modifier = null, bool enabled = true)
     {
         var source = Remember(MutableInteractionSource); var hover = source.CollectIsHoveredAsState().Value; var pressed = source.CollectIsPressedAsState().Value;
         var scale = AnimateFloatAsState(pressed && enabled ? .97f : hover && enabled ? 1.015f : 1, Motion(s, 150)).Value;
-        var color = AnimateColorAsState(primary ? C.Primary : hover ? C.SurfaceContainerHighest : C.SurfaceContainerHigh, Motion(s)).Value;
+        var targetColor = primary ? C.PrimaryContainer : C.SurfaceContainerHigh;
+        if (hover)
+            targetColor = Color.Lerp(targetColor, primary ? C.OnPrimaryContainer : C.OnSurface, .08f);
+        var color = AnimateColorAsState(targetColor, Motion(s)).Value;
         Box(modifier: (modifier ?? Modifier).Scale(scale).Alpha(enabled ? 1 : .4f)
             .Surface(Materials.Metal(), pressed ? Depth.Inset(1.Dp()) : Depth.Raised(2.Dp()), color, Round(10)),
             content: () => Box(
@@ -200,7 +203,7 @@ public static partial class ExpeditionDemo
                     .Clickable(action, enabled: enabled, interactionSource: source, indication: null)
                     .Padding(horizontal: 16.Dp(), vertical: 12.Dp()).TestTag("expedition." + tag),
                 contentAlignment: Alignment.Center,
-                content: () => Label(text, 12, primary ? C.OnPrimary : C.OnSurface, true)));
+                content: () => Label(text, 12, primary ? C.OnPrimaryContainer : C.OnSurface, true)));
     }
     [Composable] private static void ItemArt(ExpeditionState s, int id, Color color, float height)
     {

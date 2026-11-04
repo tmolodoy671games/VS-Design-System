@@ -201,8 +201,8 @@ public static partial class ButtonDefaults
         var colorScheme = CurrentTheme.ColorScheme;
         var onSurface = colorScheme.OnSurface;
         return new ButtonColors(
-            ContainerColor: containerColor.GetOrDefault(colorScheme.Primary),
-            ContentColor: contentColor.GetOrDefault(colorScheme.OnPrimary),
+            ContainerColor: containerColor.GetOrDefault(colorScheme.PrimaryContainer),
+            ContentColor: contentColor.GetOrDefault(colorScheme.OnPrimaryContainer),
             DisabledContainerColor: disabledContainerColor.GetOrDefault(
                 new Color(onSurface.Red, onSurface.Green, onSurface.Blue, 0.12f)
             ),

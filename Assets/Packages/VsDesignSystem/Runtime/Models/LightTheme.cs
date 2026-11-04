@@ -7,11 +7,11 @@ public static class LightTheme
 {
     public static Theme Instance { get; } = new(
         ColorScheme: new ColorScheme(
-            Primary: Rgb(0x416416),
+            Primary: Rgb(0x365879),
             OnPrimary: Rgb(0xFFFFFF),
-            PrimaryContainer: Rgb(0xD5F78B),
-            OnPrimaryContainer: Rgb(0x283B16),
-            InversePrimary: Rgb(0xD5F78B),
+            PrimaryContainer: Rgb(0xDCE8F8),
+            OnPrimaryContainer: Rgb(0x192D44),
+            InversePrimary: Rgb(0xAAC4E4),
             Secondary: Rgb(0x6651AA),
             OnSecondary: Rgb(0xFFFFFF),
             SecondaryContainer: Rgb(0xE0D8FF),
@@ -26,7 +26,7 @@ public static class LightTheme
             OnSurface: Rgb(0x202820),
             SurfaceVariant: Rgb(0xE5EAE1),
             OnSurfaceVariant: Rgb(0x566151),
-            SurfaceTint: Rgb(0x416416),
+            SurfaceTint: Rgb(0x365879),
             InverseSurface: Rgb(0x252933),
             InverseOnSurface: Rgb(0xF2F3EE),
             Error: Rgb(0xBA1A1A),
