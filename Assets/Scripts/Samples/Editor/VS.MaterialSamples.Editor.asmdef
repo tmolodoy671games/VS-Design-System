@@ -1,0 +1,11 @@
+{
+  "name": "VS.MaterialSamples.Editor",
+  "references": [
+    "Samples",
+    "VS.DesignSystem",
+    "Compose.Net.Unity"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}
