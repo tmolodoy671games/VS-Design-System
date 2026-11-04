@@ -1,7 +1,7 @@
 using Compose.Net;
 using ThemedComposeUI = VS.DesignSystem.ThemedComposeUI;
 using static Compose.Net.ComposeFunctions;
-using static VS.DesignSystem.DesignSystemComposeFunctions;
+using static VS.DesignSystem.WithThemeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -16,7 +16,7 @@ namespace Samples.Samples
 
             Box(
                 modifier: Modifier.FillMaxSize()
-                    .Background(Theme.ColorScheme.Surface),
+                    .Background(CurrentTheme.ColorScheme.Surface),
                 contentAlignment: Alignment.Center,
                 content: () =>
                 {

@@ -6,12 +6,13 @@ using SharpExtensions;
 
 namespace VS.DesignSystem;
 
-public static partial class DesignSystemComposeFunctions
+[AutoGlobalUsingStatic]
+public static partial class WithThemeFunctions
 {
     private static readonly ICompositionLocal<Theme> LocalTheme =
         CompositionLocalOf(() => Theme.Dark);
 
-    public static Theme Theme
+    public static Theme CurrentTheme
     {
         [Composable] get => LocalTheme.Current;
     }
@@ -24,7 +25,7 @@ public static partial class DesignSystemComposeFunctions
         Optional<Shapes> shapes = default
     )
     {
-        var parentTheme = Theme;
+        var parentTheme = CurrentTheme;
         CompositionLocalProvider(
             LocalTheme.Provides(
                 new Theme(

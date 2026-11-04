@@ -6,7 +6,8 @@ using SharpExtensions;
 
 namespace VS.DesignSystem;
 
-public static partial class DesignSystemComposeFunctions
+[AutoGlobalUsingStatic]
+public static partial class SurfaceFunctions
 {
     [Composable, NonRestartableComposable]
     public static void Surface(
@@ -22,7 +23,7 @@ public static partial class DesignSystemComposeFunctions
         IMutableInteractionSource? interactionSource = null
     )
     {
-        var resolvedColor = color.GetOrDefault(Theme.ColorScheme.Surface);
+        var resolvedColor = color.GetOrDefault(CurrentTheme.ColorScheme.Surface);
         var resolvedContentColor = contentColor.GetOrDefault(ContentColorFor(resolvedColor));
         SurfaceImpl(
             onClick: onClick,

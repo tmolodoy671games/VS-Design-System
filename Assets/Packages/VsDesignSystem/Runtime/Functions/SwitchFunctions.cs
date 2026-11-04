@@ -6,7 +6,8 @@ using SharpExtensions;
 
 namespace VS.DesignSystem;
 
-public static partial class DesignSystemComposeFunctions
+[AutoGlobalUsingStatic]
+public static partial class SwitchFunctions
 {
     [Composable]
     public static void Switch(
@@ -134,7 +135,7 @@ public static partial class SwitchDefaults
         Optional<Color> disabledUncheckedIconColor = default
     )
     {
-        var scheme = DesignSystemComposeFunctions.Theme.ColorScheme;
+        var scheme = WithThemeFunctions.CurrentTheme.ColorScheme;
         var transparent = scheme.OnSurface with { Alpha = 0f };
         var disabledTrack = scheme.OnSurface with { Alpha = 0.12f };
         var disabledContent = scheme.OnSurface with { Alpha = 0.38f };

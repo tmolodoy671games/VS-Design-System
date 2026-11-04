@@ -8,7 +8,8 @@ using StableCollections;
 
 namespace VS.DesignSystem;
 
-public static partial class DesignSystemComposeFunctions
+[AutoGlobalUsingStatic]
+public static partial class DropdownSelectorFunctions
 {
     /// <summary>A controlled selector. The caller owns the selected value and expanded state.</summary>
     /// <remarks>Selecting an item invokes onValueChange, then requests that the menu close.</remarks>
@@ -64,7 +65,7 @@ public static partial class DesignSystemComposeFunctions
         var viewport = Remember(() => MutableStateOf(default(Size)));
         var menuSize = Remember(() => MutableStateOf(default(Size)));
         var density = LocalDensity.Current;
-        var textStyle = Theme.Typography.BodyLarge;
+        var textStyle = CurrentTheme.Typography.BodyLarge;
         // Clickable retains its handler; resolve current inputs when the click arrives.
         var inputs = Remember(() => MutableStateOf((expanded, onExpandedChange, onValueChange)));
         inputs.Value = (expanded, onExpandedChange, onValueChange);
@@ -159,7 +160,7 @@ public static partial class DropdownSelectorDefaults
 {
     public static Shape Shape
     {
-        [Composable] get => DesignSystemComposeFunctions.Theme.Shapes.Small;
+        [Composable] get => WithThemeFunctions.CurrentTheme.Shapes.Small;
     }
 
     [Composable]
@@ -171,7 +172,7 @@ public static partial class DropdownSelectorDefaults
         Optional<Color> disabledContentColor = default
     )
     {
-        var scheme = DesignSystemComposeFunctions.Theme.ColorScheme;
+        var scheme = WithThemeFunctions.CurrentTheme.ColorScheme;
         return new DropdownSelectorColors(
             containerColor.GetOrDefault(scheme.SurfaceContainerHighest),
             dropdownColor.GetOrDefault(scheme.SurfaceContainer),

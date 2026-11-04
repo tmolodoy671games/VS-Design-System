@@ -3,7 +3,7 @@ using StableCollections;
 using DropdownSelectorDefaults = VS.DesignSystem.DropdownSelectorDefaults;
 using static Compose.Net.ComposeFunctions;
 using static StableCollections.StableCollectionsFactory;
-using static VS.DesignSystem.DesignSystemComposeFunctions;
+using static VS.DesignSystem.WithThemeFunctions;
 using ThemedComposeUI = VS.DesignSystem.ThemedComposeUI;
 
 namespace Samples.Samples
@@ -20,14 +20,14 @@ namespace Samples.Samples
         protected override void ThemedContent()
         {
             Box(
-                modifier: Modifier.FillMaxSize().Background(Theme.ColorScheme.Surface),
+                modifier: Modifier.FillMaxSize().Background(CurrentTheme.ColorScheme.Surface),
                 contentAlignment: Alignment.Center,
                 content: () => Column(
                     modifier: Modifier.Padding(24.Dp()).VerticalScroll(RememberScrollState()),
                     content: () =>
                     {
-                        Text("DropdownSelector", color: Theme.ColorScheme.OnSurface,
-                            style: Theme.Typography.HeadlineSmall);
+                        Text("DropdownSelector", color: CurrentTheme.ColorScheme.OnSurface,
+                            style: CurrentTheme.Typography.HeadlineSmall);
                         Example("Default", Options);
                         Example("Custom colors, shape and padding", Options, custom: true);
                         Example("Disabled", Options, enabled: false);
@@ -45,7 +45,7 @@ namespace Samples.Samples
             var expanded = Remember(() => MutableStateOf(false));
             Column(modifier: Modifier.Padding(vertical: 8.Dp()), content: () =>
             {
-                Text(title, color: Theme.ColorScheme.OnSurface, style: Theme.Typography.LabelLarge);
+                Text(title, color: CurrentTheme.ColorScheme.OnSurface, style: CurrentTheme.Typography.LabelLarge);
                 DropdownSelector(
                     value: value.Value,
                     expanded: expanded.Value,
@@ -55,15 +55,15 @@ namespace Samples.Samples
                     content: item => Text(item),
                     enabled: enabled,
                     modifier: Modifier.Width(300.Dp()),
-                    shape: custom ? Theme.Shapes.ExtraLarge : DropdownSelectorDefaults.Shape,
+                    shape: custom ? CurrentTheme.Shapes.ExtraLarge : DropdownSelectorDefaults.Shape,
                     contentPadding: PaddingValues(horizontal: custom ? 24.Dp() : 16.Dp(), vertical: 12.Dp()),
                     colors: custom ? DropdownSelectorDefaults.Colors(
-                        containerColor: Theme.ColorScheme.PrimaryContainer,
-                        dropdownColor: Theme.ColorScheme.SecondaryContainer,
-                        contentColor: Theme.ColorScheme.OnPrimaryContainer) : DropdownSelectorDefaults.Colors()
+                        containerColor: CurrentTheme.ColorScheme.PrimaryContainer,
+                        dropdownColor: CurrentTheme.ColorScheme.SecondaryContainer,
+                        contentColor: CurrentTheme.ColorScheme.OnPrimaryContainer) : DropdownSelectorDefaults.Colors()
                 );
-                Text("Selected: " + value.Value, color: Theme.ColorScheme.OnSurface,
-                    style: Theme.Typography.LabelSmall);
+                Text("Selected: " + value.Value, color: CurrentTheme.ColorScheme.OnSurface,
+                    style: CurrentTheme.Typography.LabelSmall);
             });
         }
     }

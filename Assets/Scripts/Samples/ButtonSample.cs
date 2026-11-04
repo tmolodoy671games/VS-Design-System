@@ -2,7 +2,7 @@ using Compose.Net;
 using ThemedComposeUI = VS.DesignSystem.ThemedComposeUI;
 using UnityEngine;
 using static Compose.Net.ComposeFunctions;
-using static VS.DesignSystem.DesignSystemComposeFunctions;
+using static VS.DesignSystem.WithThemeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -15,7 +15,7 @@ namespace Samples.Samples
         {
             Box(
                 modifier: Modifier.FillMaxSize()
-                    .Background(Theme.ColorScheme.Surface),
+                    .Background(CurrentTheme.ColorScheme.Surface),
                 contentAlignment: Alignment.Center,
                 content: () =>
                 {
@@ -23,7 +23,7 @@ namespace Samples.Samples
                         horizontalAlignment: Alignment.CenterHorizontally,
                         content: () =>
                         {
-                            Text("Enabled", color: Theme.ColorScheme.OnSurface);
+                            Text("Enabled", color: CurrentTheme.ColorScheme.OnSurface);
                             Row(
                                 modifier: Modifier.Padding(16.Dp()),
                                 verticalAlignment: Alignment.CenterVertically,
@@ -47,7 +47,7 @@ namespace Samples.Samples
                                 }
                             );
 
-                            Text("Disabled", color: Theme.ColorScheme.OnSurface);
+                            Text("Disabled", color: CurrentTheme.ColorScheme.OnSurface);
                             Row(
                                 modifier: Modifier.Padding(16.Dp()),
                                 verticalAlignment: Alignment.CenterVertically,

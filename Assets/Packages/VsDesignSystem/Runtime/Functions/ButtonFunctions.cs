@@ -7,8 +7,40 @@ using UnityEngine;
 
 namespace VS.DesignSystem;
 
-public static partial class DesignSystemComposeFunctions
+[AutoGlobalUsingStatic]
+public static partial class ButtonFunctions
 {
+    [Composable]
+    public static void Button(
+        Action onClick,
+        [Composable] Action content,
+        IModifier? modifier = null,
+        Optional<Shape> shape = default,
+        Optional<ButtonColors> colors = default,
+        BorderStroke border = default,
+        Optional<PaddingValues> contentPadding = default,
+        IMutableInteractionSource? interactionSource = null,
+        bool enabled = true
+    )
+    {
+        ButtonImpl(
+            onClick: onClick,
+            content: content,
+            modifier: modifier.OrEmpty(),
+            shape: shape.GetOrDefault(ButtonDefaults.Shape),
+            colors: colors.GetOrDefault(ButtonDefaults.Colors()),
+            border: border,
+            contentPadding: contentPadding.GetOrDefault(
+                PaddingValues(
+                    horizontal: 24.Dp(),
+                    vertical: 8.Dp()
+                )
+            ),
+            interactionSource: interactionSource ?? Remember(MutableInteractionSource),
+            enabled: enabled
+        );
+    }
+    
     [Composable]
     public static void OutlineButton(
         Action onClick,
@@ -61,37 +93,6 @@ public static partial class DesignSystemComposeFunctions
         );
     }
 
-    [Composable]
-    public static void Button(
-        Action onClick,
-        [Composable] Action content,
-        IModifier? modifier = null,
-        Optional<Shape> shape = default,
-        Optional<ButtonColors> colors = default,
-        BorderStroke border = default,
-        Optional<PaddingValues> contentPadding = default,
-        IMutableInteractionSource? interactionSource = null,
-        bool enabled = true
-    )
-    {
-        ButtonImpl(
-            onClick: onClick,
-            content: content,
-            modifier: modifier.OrEmpty(),
-            shape: shape.GetOrDefault(ButtonDefaults.Shape),
-            colors: colors.GetOrDefault(ButtonDefaults.Colors()),
-            border: border,
-            contentPadding: contentPadding.GetOrDefault(
-                PaddingValues(
-                    horizontal: 24.Dp(),
-                    vertical: 8.Dp()
-                )
-            ),
-            interactionSource: interactionSource ?? Remember(MutableInteractionSource),
-            enabled: enabled
-        );
-    }
-
     [Composable, NonRestartableComposable]
     private static void ButtonImpl(
         Action onClick,
@@ -105,33 +106,24 @@ public static partial class DesignSystemComposeFunctions
         bool enabled
     )
     {
-        var isHovered = interactionSource.CollectIsHoveredAsState().Value;
-        var hovered = isHovered && enabled;
-        // var resolvedShape = shape * AnimateFloatAsState(hovered ? 1.2f : 1f).Value;
-        Debug.Log(hovered);
-        var resolvedShape = shape;
-        Box(
-            // onClick: onClick,
-            modifier: modifier
-                .Hoverable(interactionSource, enabled)
-                .Background(colors.GetContainerColor(enabled)),
-            // enabled: enabled,
-            // shape: resolvedShape,
-            // border: border,
-            // color: colors.GetContainerColor(enabled),
-            // interactionSource: interactionSource,
+        var hovered = interactionSource.CollectIsHoveredAsState().Value && enabled;
+        var pressed = interactionSource.CollectIsPressedAsState().Value && enabled;
+        var targetScale = pressed ? 0.8f : hovered ? 1.2f : 1f;
+        var animatedScale = AnimateFloatAsState(targetScale).Value;
+        var animatedAlpha = AnimateFloatAsState(pressed ? 0.8f : 1f).Value;
+        Surface(
+            onClick: onClick,
+            shape: shape,
+            border: border,
+            enabled: enabled,
+            color: colors.GetContainerColor(enabled),
+            contentColor: colors.GetContentColor(enabled),
+            interactionSource: interactionSource,
+            modifier: modifier,
             content: () =>
             {
-                var isPressed = interactionSource.CollectIsPressedAsState().Value;
-                var pressed = isPressed && enabled;
-                var contentScale = CustomSwitch.Switch()
-                    .Case(pressed, 0.9f)
-                    .Case(hovered, 1.1f)
-                    .Default(1)
-                    .Get();
                 CompositionLocalProvider(
-                    LocalContentColor.Provides(colors.GetContentColor(enabled)),
-                    LocalTextStyle.Provides(Theme.Typography.LabelLarge),
+                    LocalTextStyle.Provides(CurrentTheme.Typography.LabelLarge),
                     content: () =>
                     {
                         Row(
@@ -139,8 +131,8 @@ public static partial class DesignSystemComposeFunctions
                             verticalAlignment: Alignment.CenterVertically,
                             modifier: Modifier
                                 .Padding(contentPadding)
-                                // .Scale(AnimateFloatAsState(contentScale).Value)
-                                .Alpha(AnimateFloatAsState(pressed ? 0.8f : 1f).Value),
+                                .Scale(animatedScale)
+                                .Alpha(animatedAlpha),
                             content: content
                         );
                     }
@@ -155,9 +147,9 @@ public static partial class ButtonDefaults
     [Composable]
     public static BorderStroke OutlineBorder(bool enabled = true)
     {
-        var scheme = DesignSystemComposeFunctions.Theme.ColorScheme;
+        var scheme = WithThemeFunctions.CurrentTheme.ColorScheme;
         return BorderStroke(
-            width: 1.Dp(),
+            width: 2.Dp(),
             color: enabled ? scheme.Outline : scheme.OnSurface with { Alpha = 0.12f }
         );
     }
@@ -170,7 +162,7 @@ public static partial class ButtonDefaults
         Optional<Color> disabledContentColor = default
     ) => Colors(
         containerColor: containerColor.GetOrDefault(Color.Transparent),
-        contentColor: contentColor.GetOrDefault(DesignSystemComposeFunctions.Theme.ColorScheme.Primary),
+        contentColor: contentColor.GetOrDefault(CurrentTheme.ColorScheme.Primary),
         disabledContainerColor: disabledContainerColor.GetOrDefault(Color.Transparent),
         disabledContentColor: disabledContentColor
     );
@@ -185,7 +177,7 @@ public static partial class ButtonDefaults
 
     public static Shape Shape
     {
-        [Composable] get => DesignSystemComposeFunctions.Theme.Shapes.ExtraLarge;
+        [Composable] get => CurrentTheme.Shapes.ExtraLarge;
     }
 
     [Composable]
@@ -196,7 +188,7 @@ public static partial class ButtonDefaults
         Optional<Color> disabledContentColor = default
     )
     {
-        var colorScheme = DesignSystemComposeFunctions.Theme.ColorScheme;
+        var colorScheme = CurrentTheme.ColorScheme;
         var onSurface = colorScheme.OnSurface;
         return new ButtonColors(
             ContainerColor: containerColor.GetOrDefault(colorScheme.Primary),
