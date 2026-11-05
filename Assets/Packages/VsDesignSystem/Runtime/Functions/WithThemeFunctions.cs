@@ -28,17 +28,14 @@ public static partial class WithThemeFunctions
     )
     {
         var parentTheme = theme ?? CurrentTheme;
-        CompositionLocalProvider(
-            LocalTheme.Provides(
-                parentTheme with
-                {
-                    ColorScheme = colorScheme.GetOrDefault(parentTheme.ColorScheme),
-                    Shapes = shapes.GetOrDefault(parentTheme.Shapes),
-                    Typography = typography.GetOrDefault(parentTheme.Typography),
-                    Materials = materials.GetOrDefault(parentTheme.Materials)
-                }
-            ),
-            content: content
-        );
+        var resolved = parentTheme with
+        {
+            ColorScheme = colorScheme.GetOrDefault(parentTheme.ColorScheme),
+            Shapes = shapes.GetOrDefault(parentTheme.Shapes),
+            Typography = typography.GetOrDefault(parentTheme.Typography),
+            Materials = materials.GetOrDefault(parentTheme.Materials)
+        };
+        CompositionLocalProvider(LocalTheme.Provides(resolved),
+            content: () => Compose.Net.Theming.AppTheme.Provide(resolved.ToComposeTheme(), content));
     }
 }

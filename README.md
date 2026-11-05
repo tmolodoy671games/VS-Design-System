@@ -42,3 +42,8 @@ WithTheme(theme: customTheme, content: Content);
 ```
 
 Nested `WithTheme` calls inherit the current theme when `theme` is omitted. The optional `colorScheme`, `shapes`, and `typography` arguments override the selected theme. Use `CurrentTheme` inside the content callback to read the active values.
+
+`WithTheme` also provides the shared `Compose.Net.Theming.AppTheme`. Components
+from `Compose.Net.Material3.MaterialComponents` inherit the VS colors, typography
+and shapes. Use `Theme.ToComposeTheme()` to obtain an immutable shared theme.
+The standalone gallery is available under **Tools > Compose.Net > Material Design**.
