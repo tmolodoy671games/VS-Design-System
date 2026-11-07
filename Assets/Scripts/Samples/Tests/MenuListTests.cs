@@ -76,20 +76,40 @@ public sealed class MenuListTests : EditorWindowUITestFixture<MenuListDemoWindow
     [UnityTest] public IEnumerator BothTabLevelsMoveIndicatorsAndKeepTheirOwnSelection()
     {
         yield return Settle();
-        var primaryX = E("light.primary.indicator").worldBound.x;
-        var secondaryX = E("light.secondary.indicator").worldBound.x;
+        var primaryX = E("light.primary").Q("ds.tabs.indicator").worldBound.x;
+        var secondaryX = E("light.secondary").Q("ds.tabs.indicator").worldBound.x;
         simulate.Click(E("light.primary.tab.1")); yield return Settle();
         Assert.That(window.State.Primary.Value, Is.EqualTo(1));
         Assert.That(window.State.Secondary.Value, Is.Zero);
-        Assert.That(E("light.primary.indicator").worldBound.x, Is.GreaterThan(primaryX + 40));
+        Assert.That(E("light.primary").Q("ds.tabs.indicator").worldBound.x, Is.GreaterThan(primaryX + 40));
         simulate.Click(E("dark.secondary.tab.2")); yield return Settle();
         Assert.That(window.State.Secondary.Value, Is.EqualTo(2));
         Assert.That(window.State.Primary.Value, Is.EqualTo(1));
-        Assert.That(E("light.secondary.indicator").worldBound.x, Is.GreaterThan(secondaryX + 40));
+        Assert.That(E("light.secondary").Q("ds.tabs.indicator").worldBound.x, Is.GreaterThan(secondaryX + 40));
         simulate.Click(E("light.secondary.tab.2")); yield return Settle();
         Assert.That(window.State.Secondary.Value, Is.EqualTo(2));
         var folder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "vs-menu");
         System.IO.Directory.CreateDirectory(folder);
         rootVisualElement.CaptureToPNG(System.IO.Path.Combine(folder, "menu.png"));
     }
+    [UnityTest] public IEnumerator TabLevelsHaveDifferentSizesAndFollowResizeAndInterruptedSelection()
+    {
+        yield return Settle();
+        Assert.That(E("light.primary.tab.0").layout.height, Is.EqualTo(56).Within(1));
+        Assert.That(E("light.secondary.tab.0").layout.height, Is.EqualTo(40).Within(1));
+        simulate.Click(E("light.primary.tab.1"));
+        yield return Settle(.08f);
+        simulate.Click(E("light.primary.tab.0"));
+        yield return Settle();
+        panelSize = new Vector2(1060, 900);
+        yield return Settle();
+        foreach (var theme in new[] { "light", "dark" })
+        {
+            var tab = E(theme + ".primary.tab.0").worldBound;
+            var indicator = E(theme + ".primary").Q("ds.tabs.indicator").worldBound;
+            Assert.That(indicator.x, Is.EqualTo(tab.x).Within(2));
+            Assert.That(indicator.width, Is.EqualTo(tab.width).Within(2));
+        }
+    }
+
 }

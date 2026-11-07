@@ -57,3 +57,36 @@ shares a moving selection indicator across its controlled `MenuItem` rows.
 Surface materials, texture settings and material modifiers have been removed.
 `DsSurface` draws a solid themed background. The former material gallery shows
 surface and accent color roles in both themes.
+
+## DS tabs
+
+`DsTabsRow(content, modifier, level)` moves one indicator between its `DsTab`
+children. Selection is controlled by each tab's `selected` and `onClick`; no row
+selection index is needed. Set exactly one tab selected. `DsTabLevel.High` uses
+56 dp tabs, while `Low` uses compact 40 dp tabs for nested navigation. Each row
+keeps its own selection and measurements. The indicator follows the selected
+child's actual width, including after resizing; use `Modifier.Weight(1)` for
+equal-width tabs.
+
+```csharp
+var selected = Remember(() => MutableStateOf(0));
+DsTabsRow(content: () =>
+{
+    DsTab(selected.Value == 0, () => selected.Value = 0,
+        modifier: Modifier.Weight(1), text: () => Text("Overview"));
+    DsTab(selected.Value == 1, () => selected.Value = 1,
+        modifier: Modifier.Weight(1), text: () => Text("Projects"));
+});
+```
+
+## Unity previews
+
+`Assets/Scripts/Samples/Editor/DesignSystemPreviews.cs` contains **VS / Design system —
+Light & Dark**, a complete overview, plus focused **VS / Colors — Light & Dark**
+and **VS / Components — Light & Dark** previews. Open their UnityPreview
+entry from Unity or the Rider gutter. Both themes appear side by side with
+independent scrolling. Colors are labelled with role names and hex values:
+accent colors sit inside their containers, surface levels nest from lowest to
+highest, and inverse, border, tint and scrim roles are shown in context.
+The component preview includes all DS components, disabled controls, switch
+thumb content, both tab levels and tabs with unequal widths.

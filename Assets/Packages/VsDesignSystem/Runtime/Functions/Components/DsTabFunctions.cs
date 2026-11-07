@@ -14,7 +14,6 @@ public static partial class DsTabFunctions
     private static readonly ICompositionLocal<TabRowScope> LocalTabRow =
         CompositionLocalOf(() => new TabRowScope(null, DsTabLevel.High));
 
-    /// <summary>A controlled tab. Its enclosing DsTabsRow supplies the size and selection indicator.</summary>
     [Composable]
     public static void DsTab(
         bool selected,
@@ -41,15 +40,16 @@ public static partial class DsTabFunctions
         var row = scope.State;
         if (row != null)
         {
-            DisposableEffect((row, selected), () =>
+            if (selected)
+                row.Selection.Value = new TabSelection(owner, bounds);
+            else if (ReferenceEquals(row.Selection.Value?.Owner, owner))
+                row.Selection.Value = null;
+
+            DisposableEffect(row, () => OnDispose(() =>
             {
-                if (selected) row.Selection.Value = new TabSelection(owner, bounds);
-                return OnDispose(() =>
-                {
-                    if (ReferenceEquals(row.Selection.Value?.Owner, owner))
-                        row.Selection.Value = null;
-                });
-            });
+                if (ReferenceEquals(row.Selection.Value?.Owner, owner))
+                    row.Selection.Value = null;
+            }));
         }
 
         CompositionLocalProvider(
@@ -58,20 +58,20 @@ public static partial class DsTabFunctions
             content: () => Row(
                 modifier: modifier.OrEmpty()
                     .Height(high ? 56.Dp() : 40.Dp())
-                    .OnGloballyPositioned(c => bounds.Value = new Compose.Net.Rect(c.LocalToRoot(default), c.Size))
+                    .OnPlaced(c => bounds.Value = new Rect(c.PositionInParent(), c.Size))
                     .Clickable(onClick, LocalIndication.Current, interactionSource, enabled)
                     .Padding(horizontal: high ? 24.Dp() : 16.Dp()),
-                horizontalArrangement: Arrangement.SpacedBy(high ? 8.Dp() : 6.Dp(), Alignment.CenterHorizontally),
+                horizontalArrangement: Arrangement.SpacedBy(high ? 8.Dp() : 6.Dp(), (Arrangement.Horizontal)Arrangement.Center),
                 verticalAlignment: Alignment.CenterVertically,
                 content: () =>
                 {
                     icon?.Invoke();
                     text?.Invoke();
-                }));
+                }
+            )
+        );
     }
 
-    /// <summary>Place DsTab children here, with exactly one selected tab. Each row owns its indicator.</summary>
-    /// <remarks>Use Modifier.Weight(1) on tabs for equal widths, or leave them sized to their content.</remarks>
     [Composable]
     public static void DsTabsRow(
         [Composable, RowScope] Action content,
@@ -80,22 +80,23 @@ public static partial class DsTabFunctions
     )
     {
         var state = Remember(() => new TabRowState());
-        Box(modifier: modifier.OrEmpty().FillMaxWidth()
-                .OnGloballyPositioned(c => state.Origin.Value = c.LocalToRoot(default)),
+        var selection = state.Selection.Value;
+        var bounds = selection?.Bounds.Value ?? default;
+        Box(
+            modifier: modifier.OrEmpty().FillMaxWidth(),
             content: () =>
             {
                 CompositionLocalProvider(LocalTabRow.Provides(new TabRowScope(state, level)),
                     content: () => Row(content: content, modifier: Modifier.FillMaxWidth(),
                         verticalAlignment: Alignment.CenterVertically));
 
-                var selection = state.Selection.Value;
-                if (selection != null && selection.Bounds.Value.Size.Width > 0f)
+                if (selection != null && bounds.Size.Width > 0f)
                 {
-                    var bounds = selection.Bounds.Value;
-                    DsTabSelectionIndicator(bounds.Offset.X - state.Origin.Value.X,
+                    DsTabSelectionIndicator(bounds.Offset.X,
                         bounds.Size.Width, level);
                 }
-            });
+            }
+        );
     }
 
     [Composable, BoxScope]
@@ -105,20 +106,22 @@ public static partial class DsTabFunctions
         var motion = Tween(280, easing: EaseOutEasing);
         var x = AnimateFloatAsState(left, motion).Value;
         var w = AnimateFloatAsState(width, motion).Value;
-        Box(modifier: Modifier.Align(Alignment.BottomStart)
-            .Offset(x: density.ToDp(x))
-            .Width(density.ToDp(w))
-            .Height(level == DsTabLevel.High ? 3.Dp() : 2.Dp())
-            .Background(DsTheme.ColorScheme.Primary, RoundedCornerShape(9999.Dp()))
-            .TestTag("ds.tabs.indicator"));
+        Box(
+            modifier: Modifier.Align(Alignment.BottomStart)
+                .Offset(x: density.ToDp(x))
+                .Width(density.ToDp(w))
+                .Height(level == DsTabLevel.High ? 3.Dp() : 2.Dp())
+                .Background(DsTheme.ColorScheme.Primary, RoundedCornerShape(9999.Dp()))
+                .TestTag("ds.tabs.indicator")
+        );
     }
 
     private readonly record struct TabRowScope(TabRowState? State, DsTabLevel Level);
+
     private sealed record TabSelection(object Owner, IState<Compose.Net.Rect> Bounds);
 
     private sealed class TabRowState
     {
-        public readonly IMutableState<Offset> Origin = MutableStateOf(default(Offset));
         public readonly IMutableState<TabSelection?> Selection = MutableStateOf<TabSelection?>(null);
     }
 }

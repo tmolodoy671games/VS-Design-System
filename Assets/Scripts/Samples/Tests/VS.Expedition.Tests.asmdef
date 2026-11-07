@@ -6,7 +6,8 @@
     "VS.MaterialSamples.Editor",
     "Compose.Net.Unity",
     "Unity.UI.TestFramework.Runtime",
-    "Unity.UI.TestFramework.Editor"
+    "Unity.UI.TestFramework.Editor",
+    "Compose.Net.Unity.Preview.Editor"
   ],
   "includePlatforms": [
     "Editor"

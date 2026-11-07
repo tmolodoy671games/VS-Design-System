@@ -30,13 +30,13 @@ public static partial class DsSwitchFunctions
                 .Clickable(() => onValueChange(!value), null, interactionSource, enabled);
         }
 
-        var track = resolvedColors.GetTrackColor(enabled, value);
-        var thumb = resolvedColors.GetThumbColor(enabled, value);
-        var border = resolvedColors.GetBorderColor(enabled, value);
-        var icon = resolvedColors.GetIconColor(enabled, value);
+        var track = AnimateColorAsState(resolvedColors.GetTrackColor(enabled, value), Tween(180)).Value;
+        var thumb = AnimateColorAsState(resolvedColors.GetThumbColor(enabled, value), Tween(180)).Value;
+        var border = AnimateColorAsState(resolvedColors.GetBorderColor(enabled, value), Tween(180)).Value;
+        var icon = AnimateColorAsState(resolvedColors.GetIconColor(enabled, value), Tween(180)).Value;
         var shape = RoundedCornerShape(9999.Dp());
-        var diameter = value || thumbContent != null ? 24 : 16;
-        var inset = (32 - diameter) / 2;
+        var diameter = AnimateFloatAsState(value || thumbContent != null ? 24f : 16f, Tween(160)).Value;
+        var offset = AnimateFloatAsState(value ? 10f : -10f, DsSwitchDefaults.ThumbMotion).Value;
         var localIndication = LocalIndication.Current;
         var indication = localIndication.RememberUpdatedInstance(interactionSource);
         Box(
@@ -49,12 +49,14 @@ public static partial class DsSwitchFunctions
                         .Size(52.Dp(), 32.Dp())
                         .Background(track, shape)
                         .Border(2.Dp(), SolidColor(border), shape)
-                        .Padding(inset.Dp()),
-                    contentAlignment: value ? Alignment.CenterEnd : Alignment.CenterStart,
+                        .TestTag("ds.switch.track"),
+                    contentAlignment: Alignment.Center,
                     content: () => Box(
                         modifier: Modifier
+                            .Offset(x: offset.Dp())
                             .Size(diameter.Dp())
-                            .Background(thumb, shape),
+                            .Background(thumb, shape)
+                            .TestTag("ds.switch.thumb"),
                         contentAlignment: Alignment.Center,
                         content: () => CompositionLocalProvider(LocalContentColor.Provides(icon),
                             () => thumbContent?.Invoke()
@@ -66,7 +68,7 @@ public static partial class DsSwitchFunctions
                     Box(
                         Modifier
                             .Size(40.Dp())
-                            .Offset(x: (value ? 10 : -10).Dp())
+                            .Offset(x: offset.Dp())
                             .Clip(shape).DrawOnTop(indication.DrawIndication)
                             .TestTag("material.switch.stateLayer")
                     );

@@ -14,23 +14,17 @@ public static partial class NavigationFunctions
     public static void TabRow(string[] labels, int selected, Action<int> onSelect,
         TabLevel level = TabLevel.Primary, string? testTag = null)
     {
-        var width = Remember(() => MutableStateOf(0f));
-        var offset = AnimateFloatAsState(selected * width.Value / labels.Length, NavigationDefaults.Motion).Value;
-        Box(modifier: Modifier.FillMaxWidth().OnSizeChanged(size => width.Value = size.Width), content: () =>
-        {
-            Row(modifier: Modifier.FillMaxWidth(), content: () =>
+        DsTabsRow(level: level == TabLevel.Primary ? DsTabLevel.High : DsTabLevel.Low,
+            modifier: testTag == null ? Modifier : Modifier.TestTag(testTag), content: () =>
             {
                 for (var i = 0; i < labels.Length; i++)
                 {
                     var index = i;
-                    Tab(index == selected, () => onSelect(index), () => Text(labels[index]),
+                    DsTab(selected: index == selected, onClick: () => onSelect(index),
+                        text: () => Text(labels[index]),
                         modifier: Modifier.Weight(1).TestTag(testTag + ".tab." + index));
                 }
             });
-            Box(modifier: Modifier.Offset(x: LocalDensity.Current.ToDp(offset)).Width(LocalDensity.Current.ToDp(width.Value / labels.Length))
-                .Height(level == TabLevel.Primary ? 3.Dp() : 2.Dp()).Align(Alignment.BottomStart)
-                .Background(VS.DesignSystem.DsTheme.ColorScheme.Primary).TestTag(testTag + ".indicator"));
-        });
     }
 
     private static readonly ICompositionLocal<MenuIndicator?> LocalMenuIndicator = CompositionLocalOf<MenuIndicator?>(() => null);
