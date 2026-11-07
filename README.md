@@ -22,28 +22,38 @@ The package appears as **VS Design System** in Package Manager.
 
 ## Themes
 
-Use `LightTheme.Instance` or `DarkTheme.Instance` with `WithTheme` in any `ComposeUI`:
+`ProvideDsTheme` scopes colors, shapes and typography to its content. Omitted values
+inherit the surrounding theme; the root defaults to the dark VS theme.
 
 ```csharp
-WithTheme(theme: LightTheme.Instance, content: () =>
-{
-    Text("Hello", color: CurrentTheme.ColorScheme.OnSurface);
-});
+using static VS.DesignSystem.WithDsThemeFunctions;
+
+ProvideDsTheme(
+    colorScheme: DsLightThemeFunctions.DsLightTheme.ColorScheme,
+    content: () => Text("Hello", color: DsTheme.ColorScheme.OnSurface));
 ```
 
-The default is `DarkTheme.Instance`. Create a custom theme with `new Theme(colorScheme, shapes, typography)` or copy a built-in theme:
+Read current tokens through `DsTheme.ColorScheme`, `DsTheme.Typography` and
+`DsTheme.Shapes`. Customize immutable tokens with `with`:
 
 ```csharp
-var customTheme = DarkTheme.Instance with
-{
-    ColorScheme = DarkTheme.Instance.ColorScheme with { Primary = new Color(0.2f, 0.8f, 0.6f, 1f) }
-};
-WithTheme(theme: customTheme, content: Content);
+ProvideDsTheme(
+    colorScheme: DsTheme.ColorScheme with { Primary = new Color(0.2f, 0.8f, 0.6f, 1f) },
+    content: Content);
 ```
 
-Nested `WithTheme` calls inherit the current theme when `theme` is omitted. The optional `colorScheme`, `shapes`, and `typography` arguments override the selected theme. Use `CurrentTheme` inside the content callback to read the active values.
+`MaterialTheme` in `Compose.Net.Material3` exposes the same three token getters and
+a `MaterialTheme(content, colorScheme, shapes, typography)` composable. Its scope is
+independent of VS themes; configure both explicitly when mixing their components.
+The Material gallery is available under **Tools > Compose.Net > Material Design**.
 
-`WithTheme` also provides the shared `Compose.Net.Theming.AppTheme`. Components
-from `Compose.Net.Material3.MaterialComponents` inherit the VS colors, typography
-and shapes. Use `Theme.ToComposeTheme()` to obtain an immutable shared theme.
-The standalone gallery is available under **Tools > Compose.Net > Material Design**.
+## Samples
+
+Open **Tools > VS Design System > Menu List** for tabs and a navigation menu in
+synchronized light and dark themes. Showcase navigation and dropdown controls live
+in the `Samples` assembly. `TabRow` has primary and secondary levels; `MenuList`
+shares a moving selection indicator across its controlled `MenuItem` rows.
+
+Surface materials, texture settings and material modifiers have been removed.
+`DsSurface` draws a solid themed background. The former material gallery shows
+surface and accent color roles in both themes.

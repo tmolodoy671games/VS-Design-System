@@ -2,7 +2,7 @@ using Compose.Net;
 using Compose.Net.Unity;
 using UnityEngine;
 using static Compose.Net.ComposeFunctions;
-using static VS.DesignSystem.WithThemeFunctions;
+using static VS.DesignSystem.WithDsThemeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -16,9 +16,9 @@ namespace Samples.Samples
             content: () =>
             {
                 var panel = Modifier.Weight(1).FillMaxHeight();
-                WithTheme(theme: VS.DesignSystem.DarkTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsDarkThemeFunctions.DsDarkTheme.ColorScheme,
                     content: () => SampleContent("Dark theme", panel));
-                WithTheme(theme: VS.DesignSystem.LightTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsLightThemeFunctions.DsLightTheme.ColorScheme,
                     content: () => SampleContent("Light theme", panel));
             });
 
@@ -29,9 +29,7 @@ namespace Samples.Samples
         private void SampleContent(string title, IModifier panel)
         {
             Box(
-                modifier: VS.DesignSystem.MaterialModifierExtensions.Surface(panel,
-                    VS.DesignSystem.Materials.Cloth(textureStrength: .16f),
-                    VS.DesignSystem.Depth.Flat, CurrentTheme.ColorScheme.Background, RoundedCornerShape(0.Dp())),
+                modifier: panel.Background(VS.DesignSystem.DsTheme.ColorScheme.Background),
                 contentAlignment: Alignment.Center,
                 content: () =>
                 {
@@ -39,25 +37,25 @@ namespace Samples.Samples
                         horizontalAlignment: Alignment.CenterHorizontally,
                         content: () =>
                         {
-                            Text(title, style: CurrentTheme.Typography.TitleLarge, color: CurrentTheme.ColorScheme.OnBackground);
+                            Text(title, style: VS.DesignSystem.DsTheme.Typography.TitleLarge, color: VS.DesignSystem.DsTheme.ColorScheme.OnBackground);
                             Spacer(Modifier.Height(20.Dp()));
-                            Text("Enabled", color: CurrentTheme.ColorScheme.OnSurface);
+                            Text("Enabled", color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
                             Row(
                                 modifier: Modifier.Padding(16.Dp()),
                                 verticalAlignment: Alignment.CenterVertically,
                                 content: () =>
                                 {
-                                    Button(
+                                    DsButton(
                                         onClick: () => Debug.Log("Button clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("Button")
                                     );
-                                    OutlineButton(
+                                    DsOutlineButton(
                                         onClick: () => Debug.Log("OutlineButton clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("OutlineButton")
                                     );
-                                    TextButton(
+                                    DsTextButton(
                                         onClick: () => Debug.Log("TextButton clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("TextButton")
@@ -65,25 +63,25 @@ namespace Samples.Samples
                                 }
                             );
 
-                            Text("Disabled", color: CurrentTheme.ColorScheme.OnSurface);
+                            Text("Disabled", color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
                             Row(
                                 modifier: Modifier.Padding(16.Dp()),
                                 verticalAlignment: Alignment.CenterVertically,
                                 content: () =>
                                 {
-                                    Button(
+                                    DsButton(
                                         onClick: () => Debug.Log("Disabled Button clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("Button"),
                                         enabled: false
                                     );
-                                    OutlineButton(
+                                    DsOutlineButton(
                                         onClick: () => Debug.Log("Disabled OutlineButton clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("OutlineButton"),
                                         enabled: false
                                     );
-                                    TextButton(
+                                    DsTextButton(
                                         onClick: () => Debug.Log("Disabled TextButton clicked", this),
                                         modifier: Modifier.Padding(8.Dp()),
                                         content: () => Text("TextButton"),

@@ -32,11 +32,11 @@ public static class ColorSchemeExtensions
     }
 }
 
-public static partial class WithThemeFunctions
+public static partial class WithDsThemeFunctions
 {
     [Composable]
     public static Color ContentColorFor(Color backgroundColor) =>
-        ContentColorFor(backgroundColor, CurrentTheme.ColorScheme);
+        ContentColorFor(backgroundColor, DesignSystem.DsTheme.ColorScheme);
 
     [Composable]
     public static Color ContentColorFor(Color backgroundColor, ColorScheme colorScheme)

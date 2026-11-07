@@ -1,9 +1,9 @@
 using Compose.Net;
 using StableCollections;
-using DropdownSelectorDefaults = VS.DesignSystem.DropdownSelectorDefaults;
+using DropdownSelectorDefaults = Samples.DropdownSelectorDefaults;
 using static Compose.Net.ComposeFunctions;
 using static StableCollections.StableCollectionsFactory;
-using static VS.DesignSystem.WithThemeFunctions;
+using static VS.DesignSystem.WithDsThemeFunctions;
 using Compose.Net.Unity;
 
 namespace Samples.Samples
@@ -22,9 +22,9 @@ namespace Samples.Samples
             content: () =>
             {
                 var panel = Modifier.Weight(1).FillMaxHeight();
-                WithTheme(theme: VS.DesignSystem.DarkTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsDarkThemeFunctions.DsDarkTheme.ColorScheme,
                     content: () => SampleContent("Dark theme", panel));
-                WithTheme(theme: VS.DesignSystem.LightTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsLightThemeFunctions.DsLightTheme.ColorScheme,
                     content: () => SampleContent("Light theme", panel));
             });
 
@@ -35,14 +35,14 @@ namespace Samples.Samples
         private static void SampleContent(string title, IModifier panel)
         {
             Box(
-                modifier: panel.Background(CurrentTheme.ColorScheme.Surface),
+                modifier: panel.Background(VS.DesignSystem.DsTheme.ColorScheme.Surface),
                 contentAlignment: Alignment.Center,
                 content: () => Column(
                     modifier: Modifier.Padding(24.Dp()).VerticalScroll(RememberScrollState()),
                     content: () =>
                     {
-                        Text("DropdownSelector / " + title, color: CurrentTheme.ColorScheme.OnSurface,
-                            style: CurrentTheme.Typography.HeadlineSmall);
+                        Text("DropdownSelector / " + title, color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface,
+                            style: VS.DesignSystem.DsTheme.Typography.HeadlineSmall);
                         Example("Default", Options);
                         Example("Custom colors, shape and padding", Options, custom: true);
                         Example("Disabled", Options, enabled: false);
@@ -60,25 +60,43 @@ namespace Samples.Samples
             var expanded = Remember(() => MutableStateOf(false));
             Column(modifier: Modifier.Padding(vertical: 8.Dp()), content: () =>
             {
-                Text(title, color: CurrentTheme.ColorScheme.OnSurface, style: CurrentTheme.Typography.LabelLarge);
+                Text(title, color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface, style: VS.DesignSystem.DsTheme.Typography.LabelLarge);
                 DropdownSelector(
-                    value: value.Value,
                     expanded: expanded.Value,
                     onExpandedChange: next => expanded.Value = next,
-                    onValueChange: next => value.Value = next,
-                    values: options,
-                    content: item => Text(item),
-                    enabled: enabled,
+                    content: () => Text(value.Value),
+                    dropdownContent: () =>
+                    {
+                        foreach (var item in options)
+                        {
+                            global::Samples.NavigationFunctions.MenuItem(
+                                onClick: () =>
+                                {
+                                    if (!expanded.Value) return;
+                                    value.Value = item;
+                                    expanded.Value = false;
+                                },
+                                content: () => Text(item),
+                                selected: value.Value == item,
+                                colors: global::Samples.MenuItemDefaults.Colors(
+                                    selectedContainer: VS.DesignSystem.DsTheme.ColorScheme.PrimaryContainer,
+                                    content: custom ? VS.DesignSystem.DsTheme.ColorScheme.OnPrimaryContainer : VS.DesignSystem.DsTheme.ColorScheme.OnSurface,
+                                    selectedContent: VS.DesignSystem.DsTheme.ColorScheme.OnPrimaryContainer),
+                                modifier: Modifier.FillMaxWidth(),
+                                contentPadding: custom ? PaddingValues(horizontal: 16.Dp(), vertical: 6.Dp()) : DropdownSelectorDefaults.ContentPadding);
+                        }
+                    },
+                    enabled: enabled && options.Size > 0,
                     modifier: Modifier.Width(300.Dp()),
-                    shape: custom ? CurrentTheme.Shapes.ExtraLarge : DropdownSelectorDefaults.Shape,
+                    shape: custom ? VS.DesignSystem.DsTheme.Shapes.ExtraLarge : DropdownSelectorDefaults.Shape,
                     contentPadding: custom ? PaddingValues(horizontal: 16.Dp(), vertical: 6.Dp()) : DropdownSelectorDefaults.ContentPadding,
                     colors: custom ? DropdownSelectorDefaults.Colors(
-                        containerColor: CurrentTheme.ColorScheme.PrimaryContainer,
-                        dropdownColor: CurrentTheme.ColorScheme.SecondaryContainer,
-                        contentColor: CurrentTheme.ColorScheme.OnPrimaryContainer) : DropdownSelectorDefaults.Colors()
+                        containerColor: VS.DesignSystem.DsTheme.ColorScheme.PrimaryContainer,
+                        dropdownColor: VS.DesignSystem.DsTheme.ColorScheme.SecondaryContainer,
+                        contentColor: VS.DesignSystem.DsTheme.ColorScheme.OnPrimaryContainer) : DropdownSelectorDefaults.Colors()
                 );
-                Text("Selected: " + value.Value, color: CurrentTheme.ColorScheme.OnSurface,
-                    style: CurrentTheme.Typography.LabelSmall);
+                Text("Selected: " + value.Value, color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface,
+                    style: VS.DesignSystem.DsTheme.Typography.LabelSmall);
             });
         }
     }

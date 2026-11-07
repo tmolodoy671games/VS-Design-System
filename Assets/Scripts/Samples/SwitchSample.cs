@@ -1,7 +1,7 @@
 using Compose.Net;
 using Compose.Net.Unity;
 using static Compose.Net.ComposeFunctions;
-using static VS.DesignSystem.WithThemeFunctions;
+using static VS.DesignSystem.WithDsThemeFunctions;
 
 // ReSharper disable ArrangeNamespaceBody
 
@@ -15,9 +15,9 @@ namespace Samples.Samples
             content: () =>
             {
                 var panel = Modifier.Weight(1).FillMaxHeight();
-                WithTheme(theme: VS.DesignSystem.DarkTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsDarkThemeFunctions.DsDarkTheme.ColorScheme,
                     content: () => SampleContent("Dark theme", panel));
-                WithTheme(theme: VS.DesignSystem.LightTheme.Instance,
+                ProvideDsTheme(colorScheme: VS.DesignSystem.DsLightThemeFunctions.DsLightTheme.ColorScheme,
                     content: () => SampleContent("Light theme", panel));
             });
 
@@ -28,7 +28,7 @@ namespace Samples.Samples
         private static void SampleContent(string title, IModifier panel)
         {
             Column(
-                modifier: panel.Background(CurrentTheme.ColorScheme.Surface)
+                modifier: panel.Background(VS.DesignSystem.DsTheme.ColorScheme.Surface)
                     .VerticalScroll(RememberScrollState()),
                 content: () => SampleExamples(title));
         }
@@ -39,26 +39,14 @@ namespace Samples.Samples
             // Keep the inset inside the viewport so hover scaling and shadows can
             // draw into it without hitting the scroll view's clipping boundary.
             Column(
-                modifier: Modifier.FillMaxWidth().Background(CurrentTheme.ColorScheme.Surface)
+                modifier: Modifier.FillMaxWidth()
                     .Padding(24.Dp()),
                 verticalArrangement: Arrangement.SpacedBy(12.Dp()),
                 content: () =>
                 {
-                    Text("Switch / " + title, style: CurrentTheme.Typography.HeadlineSmall,
-                        color: CurrentTheme.ColorScheme.OnSurface);
+                    Text("Switch / " + title, style: VS.DesignSystem.DsTheme.Typography.HeadlineSmall,
+                        color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
                     Description("Independent examples. Click to toggle; hover and hold to inspect animations.");
-
-                    Section("Materials", "Material finishes on the thumb and inset track. Each switch is interactive.");
-                    Example("Metal / Matte", initialValue: true,
-                        material: VS.DesignSystem.Materials.Metal(), trackMaterial: VS.DesignSystem.Materials.Matte());
-                    Example("Ceramic", initialValue: true,
-                        material: VS.DesignSystem.Materials.Ceramic(), trackMaterial: VS.DesignSystem.Materials.Ceramic());
-                    Example("Paper", initialValue: false,
-                        material: VS.DesignSystem.Materials.Paper(), trackMaterial: VS.DesignSystem.Materials.Paper());
-                    Example("Cloth / Linen", initialValue: true,
-                        material: VS.DesignSystem.Materials.Cloth(), trackMaterial: VS.DesignSystem.Materials.Cloth());
-                    Example("Disabled metal", initialValue: true, enabled: false,
-                        material: VS.DesignSystem.Materials.Metal());
 
                     Section("1. Default states", "Each switch owns its value and starts in a different state.");
                     Example("Initially off", initialValue: false);
@@ -93,24 +81,23 @@ namespace Samples.Samples
         private static void Section(string title, string description)
         {
             Spacer(Modifier.Height(8.Dp()));
-            Text(title, style: CurrentTheme.Typography.TitleMedium, color: CurrentTheme.ColorScheme.OnSurface);
+            Text(title, style: VS.DesignSystem.DsTheme.Typography.TitleMedium, color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
             Description(description);
         }
 
         [Composable]
         private static void Description(string text) => Text(text,
-            style: CurrentTheme.Typography.BodySmall, color: CurrentTheme.ColorScheme.OnSurfaceVariant);
+            style: VS.DesignSystem.DsTheme.Typography.BodySmall, color: VS.DesignSystem.DsTheme.ColorScheme.OnSurfaceVariant);
 
         [Composable]
         private static void Example(string title, bool initialValue, bool enabled = true,
-            bool showThumb = false, bool customColors = false,
-            VS.DesignSystem.SurfaceMaterial? material = null, VS.DesignSystem.SurfaceMaterial? trackMaterial = null)
+            bool showThumb = false, bool customColors = false)
         {
             // The initial value is used only when this example enters the composition.
             var value = Remember(() => MutableStateOf(initialValue));
-            var scheme = CurrentTheme.ColorScheme;
+            var scheme = VS.DesignSystem.DsTheme.ColorScheme;
             var colors = customColors
-                ? VS.DesignSystem.SwitchDefaults.Colors(
+                ? VS.DesignSystem.DsSwitchDefaults.Colors(
                     checkedTrackColor: scheme.Secondary,
                     checkedBorderColor: scheme.Secondary,
                     checkedThumbColor: scheme.OnSecondary,
@@ -127,7 +114,7 @@ namespace Samples.Samples
                     disabledUncheckedBorderColor: scheme.Tertiary with { Alpha = .12f },
                     disabledUncheckedThumbColor: scheme.OnSurface with { Alpha = .38f },
                     disabledUncheckedIconColor: scheme.Surface)
-                : VS.DesignSystem.SwitchDefaults.Colors();
+                : VS.DesignSystem.DsSwitchDefaults.Colors();
 
             Row(modifier: Modifier.FillMaxWidth().Padding(vertical: 4.Dp()),
                 verticalAlignment: Alignment.CenterVertically,
@@ -136,19 +123,17 @@ namespace Samples.Samples
                 {
                     Column(modifier: Modifier.Weight(1), content: () =>
                     {
-                        Text(title, color: scheme.OnSurface, style: CurrentTheme.Typography.BodyMedium);
+                        Text(title, color: scheme.OnSurface, style: VS.DesignSystem.DsTheme.Typography.BodyMedium);
                         Description((value.Value ? "On" : "Off") + (enabled ? " / Enabled" : " / Disabled"));
                     });
-                    Switch(value: value.Value,
+                    DsSwitch(value: value.Value,
                         onValueChange: next => value.Value = next,
                         enabled: enabled,
                         colors: colors,
-                        material: material,
-                        trackMaterial: trackMaterial,
                         thumbContent: () =>
                         {
                             if (showThumb)
-                                Text(value.Value ? "1" : "0", style: CurrentTheme.Typography.LabelSmall);
+                                Text(value.Value ? "1" : "0", style: VS.DesignSystem.DsTheme.Typography.LabelSmall);
                         });
                 });
         }
@@ -161,15 +146,15 @@ namespace Samples.Samples
             Row(verticalAlignment: Alignment.CenterVertically,
                 horizontalArrangement: Arrangement.SpacedBy(16.Dp()), content: () =>
                 {
-                    Switch(value: notifications.Value, onValueChange: next => notifications.Value = next);
-                    Text("Notifications", color: CurrentTheme.ColorScheme.OnSurface);
+                    DsSwitch(value: notifications.Value, onValueChange: next => notifications.Value = next);
+                    Text("Notifications", color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
                 });
             Row(verticalAlignment: Alignment.CenterVertically,
                 horizontalArrangement: Arrangement.SpacedBy(16.Dp()), content: () =>
                 {
-                    Switch(value: sound.Value, onValueChange: next => sound.Value = next,
+                    DsSwitch(value: sound.Value, onValueChange: next => sound.Value = next,
                         enabled: notifications.Value);
-                    Text("Sound", color: CurrentTheme.ColorScheme.OnSurface);
+                    Text("Sound", color: VS.DesignSystem.DsTheme.ColorScheme.OnSurface);
                 });
             Description(!notifications.Value ? "Notifications are off."
                 : sound.Value ? "Notifications with sound." : "Silent notifications.");
@@ -183,17 +168,17 @@ namespace Samples.Samples
             Row(verticalAlignment: Alignment.CenterVertically,
                 horizontalArrangement: Arrangement.SpacedBy(16.Dp()), content: () =>
                 {
-                    Switch(value: value.Value, onValueChange: next =>
+                    DsSwitch(value: value.Value, onValueChange: next =>
                     {
                         value.Value = next;
                         changes.Value++;
                     });
-                    Switch(value: value.Value, onValueChange: next =>
+                    DsSwitch(value: value.Value, onValueChange: next =>
                     {
                         value.Value = next;
                         changes.Value++;
                     });
-                    TextButton(onClick: () =>
+                    DsTextButton(onClick: () =>
                     {
                         value.Value = !value.Value;
                         changes.Value++;
@@ -213,7 +198,7 @@ namespace Samples.Samples
             Row(verticalAlignment: Alignment.CenterVertically,
                 horizontalArrangement: Arrangement.SpacedBy(16.Dp()), content: () =>
                 {
-                    Switch(value: value.Value, onValueChange: next => value.Value = next,
+                    DsSwitch(value: value.Value, onValueChange: next => value.Value = next,
                         interactionSource: source);
                     Column(content: () =>
                     {

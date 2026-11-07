@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using VS.DesignSystem;
 
-using Materials = VS.DesignSystem.Materials;
+
 
 namespace Samples.Editor;
 
@@ -26,15 +26,6 @@ internal static class MaterialValidation
         _result = result;
         try
         {
-            foreach (var name in new[] { "paper", "metal", "linen", "canvas", "felt", "twill" })
-            {
-                var texture = Resources.Load<Texture2D>("VSMaterials/" + name);
-                if (!texture || !texture.isReadable) throw new Exception("Missing/read-protected texture: " + name);
-            }
-            if (Materials.Cloth().Opacity != -1f || Materials.Cloth(opacity: 0).Opacity != 0)
-                throw new Exception("Opacity factory defaults");
-            try { Materials.Paper(opacity: -0.5f); throw new Exception("Invalid opacity accepted"); }
-            catch (ArgumentOutOfRangeException) { }
             var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             var first = MaterialDemoScene.EnsureInScene(scene);
             if (MaterialDemoScene.EnsureInScene(scene) != first || first.transform.parent.name != "Samples")
@@ -64,7 +55,7 @@ internal static class MaterialValidation
                 var column = root.Q("materials." + tag);
                 if (column == null || column.layout.width <= 0)
                     throw new Exception("Missing theme column: " + tag);
-                var expected = (dark ? DarkTheme.Instance : LightTheme.Instance).ColorScheme.Surface;
+                var expected = (dark ? DsDarkThemeFunctions.DsDarkTheme : DsLightThemeFunctions.DsLightTheme).ColorScheme.Surface;
                 var actual = column.resolvedStyle.backgroundColor;
                 if (Math.Abs(actual.r - expected.Red) > 0.01f || Math.Abs(actual.g - expected.Green) > 0.01f || Math.Abs(actual.b - expected.Blue) > 0.01f)
                     throw new Exception("Incorrect theme surface: " + tag);
@@ -78,7 +69,7 @@ internal static class MaterialValidation
                 }
             }
             EditorApplication.update -= Tick; Application.logMessageReceived -= OnLog;
-            File.WriteAllText(_result, "PASS: six textures; opacity validation; scene idempotence; five materials in both VS Light/Dark theme columns with visible layout.");
+            File.WriteAllText(_result, "PASS: scene idempotence; five color roles in both VS Light/Dark theme columns with visible layout.");
         }
         catch (Exception e) { EditorApplication.update -= Tick; Application.logMessageReceived -= OnLog; File.WriteAllText(_result, e.ToString()); }
     }

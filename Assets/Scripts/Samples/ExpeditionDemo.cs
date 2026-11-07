@@ -4,13 +4,10 @@ using Compose.Net;
 using StableCollections;
 using VS.DesignSystem;
 using static Compose.Net.ComposeFunctions;
-using static VS.DesignSystem.WithThemeFunctions;
-using static VS.DesignSystem.NavigationFunctions;
-using static VS.DesignSystem.DropdownSelectorFunctions;
+using static VS.DesignSystem.WithDsThemeFunctions;
+using static Samples.NavigationFunctions;
+using static Samples.DropdownSelectorFunctions;
 using static StableCollections.StableCollectionsFactory;
-using Materials = VS.DesignSystem.Materials;
-using Depth = VS.DesignSystem.Depth;
-using SurfaceMaterial = VS.DesignSystem.SurfaceMaterial;
 
 namespace Samples;
 
@@ -26,19 +23,18 @@ public static partial class ExpeditionDemo
     private static readonly IStableList<string> Sorts = MutableStableListOf("Recommended", "Name A–Z", "Equipped first");
     private static readonly IStableList<string> Qualities = MutableStableListOf("Low", "Medium", "High", "Ultra");
     private static readonly IStableList<string> Resolutions = MutableStableListOf("1280 × 720", "1920 × 1080", "2560 × 1440");
-    private static ColorScheme C => CurrentTheme.ColorScheme;
+    private static ColorScheme C => VS.DesignSystem.DsTheme.ColorScheme;
     private static Shape Round(float radius = 16) => RoundedCornerShape(radius.Dp());
     private static Color Tint(Color c, float a) => c with { Alpha = a };
     private static Color Accent(int i) => i % 3 == 0 ? C.Primary : i % 3 == 1 ? C.Secondary : C.Tertiary;
-    private static SurfaceMaterial Finish(int i) => i switch { 0 => Materials.Cloth(textureStrength: .24f), 1 => Materials.Matte(textureStrength: .07f), 2 => Materials.Paper(textureStrength: .08f), 3 => Materials.Ceramic(textureStrength: .07f), _ => Materials.Metal(textureStrength: .2f) };
     private static AnimationSpec Motion(ExpeditionState s, int duration = 240) => Tween(s.ReducedMotion.Value ? 0 : duration, easing: EaseOutEasing);
     [Composable] private static void Label(string text, float size = 13, Color? color = null, bool bold = false, IModifier? modifier = null) =>
-        Text(text, style: CurrentTheme.Typography.BodyMedium, fontSize: size.Sp(), color: color ?? C.OnSurface,
+        Text(text, style: VS.DesignSystem.DsTheme.Typography.BodyMedium, fontSize: size.Sp(), color: color ?? C.OnSurface,
             fontWeight: bold ? FontWeight.Bold : FontWeight.Normal, modifier: modifier);
     [Composable] private static void Gap(float size = 16) => Spacer(Modifier.Height(size.Dp()));
     [Composable] private static void Badge(string text, Color color) => Box(modifier: Modifier.Background(Tint(color, .10f), Round(20)).Padding(horizontal: 10.Dp(), vertical: 6.Dp()), content: () => Label(text, 10, color, true));
 
-    [Composable] public static void Content(ExpeditionState s) => WithTheme(theme: s.Light.Value ? LightTheme.Instance : DarkTheme.Instance, content: () => Body(s));
+    [Composable] public static void Content(ExpeditionState s) => ProvideDsTheme(colorScheme: s.Light.Value ? DsLightThemeFunctions.DsLightTheme.ColorScheme : DsDarkThemeFunctions.DsDarkTheme.ColorScheme, content: () => Body(s));
     [Composable] private static void Body(ExpeditionState s)
     {
         LaunchedEffect(s.Travel.Value, async scope =>
@@ -48,11 +44,11 @@ public static partial class ExpeditionDemo
             await scope.Delay(s.ReducedMotion.Value ? 1 : 1400);
             s.Location.Value = destination; s.Travelling.Value = false; s.Notice.Value = "Arrived at " + Places[destination];
         });
-        Column(modifier: Modifier.FillMaxSize().Surface(Materials.Cloth(textureStrength: .16f), Depth.Flat, C.Background, RoundedCornerShape(0.Dp())).OnSizeChanged(size => s.Width.Value = size.Width).TestTag("expedition.root"), content: () =>
+        Column(modifier: Modifier.FillMaxSize().Background(C.Background, RoundedCornerShape(0.Dp())).Clip(RoundedCornerShape(0.Dp())).OnSizeChanged(size => s.Width.Value = size.Width).TestTag("expedition.root"), content: () =>
         {
             Row(modifier: Modifier.FillMaxWidth().Height(84.Dp()).Padding(horizontal: 28.Dp()), verticalAlignment: Alignment.CenterVertically, content: () =>
             {
-                Box(modifier: Modifier.Size(38.Dp()).Surface(Materials.Ceramic(textureStrength: .12f), Depth.Raised(2.Dp()), C.Primary, Round(12)), contentAlignment: Alignment.Center,
+                Box(modifier: Modifier.Size(38.Dp()).Background(C.Primary, Round(12)).Clip(Round(12)), contentAlignment: Alignment.Center,
                     content: () => Label("F", 22, C.OnPrimary, true));
                 Spacer(Modifier.Width(14.Dp()));
                 Column(content: () => { Label("FIELDWORK", 15, bold: true); Label("EXPEDITION  /  007", 9, C.OnSurfaceVariant); });
@@ -63,9 +59,9 @@ public static partial class ExpeditionDemo
             });
             Row(modifier: Modifier.FillMaxWidth().Background(C.SurfaceContainerLow).Padding(horizontal: 28.Dp()), verticalAlignment: Alignment.CenterVertically, content: () =>
             {
-                Tab(s.Page.Value == 0, () => s.SelectPage(0), () => Text("01   Inventory"), Modifier.TestTag("expedition.tab.0"));
-                Tab(s.Page.Value == 1, () => s.SelectPage(1), () => Text("02   Map"), Modifier.TestTag("expedition.tab.1"));
-                Tab(s.Page.Value == 2, () => s.SelectPage(2), () => Text("03   System settings"), Modifier.TestTag("expedition.tab.2"));
+                NavigationFunctions.Tab(s.Page.Value == 0, () => s.SelectPage(0), () => Text("01   Inventory"), Modifier.TestTag("expedition.tab.0"));
+                NavigationFunctions.Tab(s.Page.Value == 1, () => s.SelectPage(1), () => Text("02   Map"), Modifier.TestTag("expedition.tab.1"));
+                NavigationFunctions.Tab(s.Page.Value == 2, () => s.SelectPage(2), () => Text("03   System settings"), Modifier.TestTag("expedition.tab.2"));
                 Spacer(Modifier.Weight(1));
                 if (s.Width.Value > 950) Label("NORTH SECTOR  /  64° 08′", 10, C.OnSurfaceVariant);
             });
@@ -108,7 +104,7 @@ public static partial class ExpeditionDemo
                         selected: s.Category.Value == index, trailingContent: () => Text(index == 0 ? "06" : "02")); Gap(4);
                 }
                 Gap(24);
-                Box(modifier: Modifier.FillMaxWidth().Surface(Materials.Paper(textureStrength: .06f), Depth.Raised(2.Dp()), C.SurfaceContainer, Round()).Padding(18.Dp()), content: () => Column(content: () =>
+                Box(modifier: Modifier.FillMaxWidth().Background(C.SurfaceContainer, Round()).Clip(Round()).Padding(18.Dp()), content: () => Column(content: () =>
                 {
                     Label("YOUR LOADOUT", 9, C.OnSurfaceVariant, true); Gap(12);
                     Label(s.Equipped.Count(e => e.Value) + " / 6", 28, C.Primary, true); Gap(8);
@@ -122,8 +118,16 @@ public static partial class ExpeditionDemo
                 Row(modifier: Modifier.FillMaxWidth(), verticalAlignment: Alignment.CenterVertically, content: () =>
                 {
                     Label("THE ESSENTIALS", 10, C.OnSurfaceVariant, true); Spacer(Modifier.Weight(1));
-                    DropdownSelector(s.Sort.Value, s.SortOpen.Value, v => s.SortOpen.Value = v, Sorts, v => Text(v),
-                        modifier: Modifier.TestTag("expedition.sort"), onValueChange: v => s.Sort.Value = v);
+                    DropdownSelector(s.SortOpen.Value, v => s.SortOpen.Value = v,
+                        content: () => Text(s.Sort.Value),
+                        dropdownContent: () =>
+                        {
+                            foreach (var item in Sorts)
+                                MenuItem(() => { if (!s.SortOpen.Value) return; s.Sort.Value = item; s.SortOpen.Value = false; },
+                                    () => Text(item), selected: s.Sort.Value == item, modifier: Modifier.FillMaxWidth(),
+                                    contentPadding: DropdownSelectorDefaults.ContentPadding);
+                        },
+                        modifier: Modifier.TestTag("expedition.sort"));
                 }); Gap(18);
                 var items = Enumerable.Range(0, 6).Where(i => s.Category.Value == 0 || Categories[i] == s.Category.Value);
                 if (s.Sort.Value == "Name A–Z") items = items.OrderBy(i => Names[i]);
@@ -155,7 +159,7 @@ public static partial class ExpeditionDemo
         var lift = AnimateFloatAsState(pressed ? 1 : hover ? -3 : 0, Motion(s, 180)).Value;
         var edge = AnimateColorAsState(selected ? Accent(id) : hover ? C.Outline : C.OutlineVariant, Motion(s)).Value;
         var accent = Accent(id); var face = Color.Lerp(C.SurfaceContainer, accent, .08f);
-        Box(modifier: modifier.Offset(y: lift.Dp()).Surface(Finish(id), Depth.Raised(2.Dp()), face, Round())
+        Box(modifier: modifier.Offset(y: lift.Dp()).Background(face, Round()).Clip(Round())
             .Border((selected ? 1.5f : .6f).Dp(), SolidColor(edge), Round()), content: () =>
             Column(modifier: Modifier.FillMaxWidth().Clickable(() => s.Selected.Value = id, interactionSource: source, indication: null).TestTag("expedition.item." + id).Padding(16.Dp()), content: () =>
             {
@@ -166,7 +170,7 @@ public static partial class ExpeditionDemo
     [Composable] private static void Details(ExpeditionState s)
     {
         var id = s.Selected.Value; var accent = Accent(id);
-        Column(modifier: Modifier.FillMaxWidth().Surface(Materials.Matte(textureStrength: .06f), Depth.Raised(3.Dp()), C.SurfaceContainer, Round()).Padding(22.Dp()), content: () =>
+        Column(modifier: Modifier.FillMaxWidth().Background(C.SurfaceContainer, Round()).Clip(Round()).Padding(22.Dp()), content: () =>
         {
             Label("A CLOSER LOOK", 9, C.OnSurfaceVariant, true); Gap(10);
             ItemArt(s, id, accent, 160); Badge(Kinds[id], accent); Gap(14); Label(Names[id], 23, bold: true); Gap(12);
@@ -197,7 +201,7 @@ public static partial class ExpeditionDemo
             targetColor = Color.Lerp(targetColor, primary ? C.OnPrimaryContainer : C.OnSurface, .08f);
         var color = AnimateColorAsState(targetColor, Motion(s)).Value;
         Box(modifier: (modifier ?? Modifier).Offset(y: (-lift).Dp()).Alpha(enabled ? 1 : .4f)
-            .Surface(Materials.Metal(), pressed ? Depth.Inset(1.Dp()) : Depth.Raised((2f + lift).Dp()), color, Round(10)),
+            .Background(color, Round(10)).Clip(Round(10)),
             content: () => Box(
                 modifier: (modifier == null ? Modifier : Modifier.FillMaxWidth())
                     .Clickable(action, enabled: enabled, interactionSource: source, indication: null)
@@ -234,7 +238,7 @@ public static partial class ExpeditionDemo
                 var travel = AnimateFloatAsState(s.Travelling.Value ? 1 : 0, Motion(s, 1300));
                 var accent = C.Primary; var line = C.OutlineVariant; var muted = C.OnSurfaceVariant;
                 var from = s.Location.Value; var to = s.Destination.Value;
-                Box(modifier: Modifier.FillMaxWidth().Height(420.Dp()).Surface(Materials.Paper(textureStrength: .13f), Depth.Inset(2.Dp()), C.SurfaceContainerLow, Round())
+                Box(modifier: Modifier.FillMaxWidth().Height(420.Dp()).Background(C.SurfaceContainerLow, Round()).Clip(Round())
                     .Clip(Round()).OnSizeChanged(v => size.Value = v).TestTag("expedition.map"), content: () =>
                 {
                     Box(modifier: Modifier.FillMaxSize().Draw(d =>
@@ -300,7 +304,7 @@ public static partial class ExpeditionDemo
                         supportingContent:()=>Text(index==s.Location.Value ? "You are here" : (2+index*1.4f).ToString("0.0")+" km away")); Gap(6);
                 }
                 Gap(20);
-                Box(modifier:Modifier.FillMaxWidth().Surface(Materials.Cloth(textureStrength:.16f),Depth.Raised(2.Dp()),C.SecondaryContainer,Round()).Padding(20.Dp()),content:()=>Column(content:()=>
+                Box(modifier:Modifier.FillMaxWidth().Background(C.SecondaryContainer, Round()).Clip(Round()).Padding(20.Dp()),content:()=>Column(content:()=>
                 {
                     Label("NEXT STOP",9,C.OnSecondaryContainer,true);Gap(10);Label(Places[s.Destination.Value],20,C.OnSecondaryContainer,true);Gap(12);
                     Label(s.Travelling.Value ? "Following the trail…" : "A clear sky. A fresh perspective.",12,C.OnSecondaryContainer);Gap(22);
@@ -319,9 +323,29 @@ public static partial class ExpeditionDemo
             {
                 SettingsPanel("01 / DISPLAY",()=>
                 {
-                    SettingRow("Render quality","Changes map contours and illustration detail",()=>DropdownSelector(s.Quality.Value,s.QualityOpen.Value,v=>s.QualityOpen.Value=v,Qualities,v=>Text(v),modifier:Modifier.Width(180.Dp()).TestTag("expedition.quality"),onValueChange:v=>{s.Quality.Value=v;s.Notice.Value="Demo quality preset: "+v;}));
+                    SettingRow("Render quality","Changes map contours and illustration detail",()=>DropdownSelector(
+                        s.QualityOpen.Value, v => s.QualityOpen.Value = v,
+                        content: () => Text(s.Quality.Value),
+                        dropdownContent: () =>
+                        {
+                            foreach (var item in Qualities)
+                                MenuItem(() => { if (!s.QualityOpen.Value) return; s.Quality.Value = item; s.QualityOpen.Value = false; s.Notice.Value="Demo quality preset: "+item; },
+                                    () => Text(item), selected: s.Quality.Value == item, modifier: Modifier.FillMaxWidth(),
+                                    contentPadding: DropdownSelectorDefaults.ContentPadding);
+                        },
+                        modifier: Modifier.Width(180.Dp()).TestTag("expedition.quality")));
                     Gap(20);
-                    SettingRow("Resolution","Preview preference · no window resize",()=>DropdownSelector(s.Resolution.Value,s.ResolutionOpen.Value,v=>s.ResolutionOpen.Value=v,Resolutions,v=>Text(v),modifier:Modifier.Width(180.Dp()).TestTag("expedition.resolution"),onValueChange:v=>s.Resolution.Value=v));Gap(20);
+                    SettingRow("Resolution","Preview preference · no window resize",()=>DropdownSelector(
+                        s.ResolutionOpen.Value, v => s.ResolutionOpen.Value = v,
+                        content: () => Text(s.Resolution.Value),
+                        dropdownContent: () =>
+                        {
+                            foreach (var item in Resolutions)
+                                MenuItem(() => { if (!s.ResolutionOpen.Value) return; s.Resolution.Value = item; s.ResolutionOpen.Value = false; },
+                                    () => Text(item), selected: s.Resolution.Value == item, modifier: Modifier.FillMaxWidth(),
+                                    contentPadding: DropdownSelectorDefaults.ContentPadding);
+                        },
+                        modifier: Modifier.Width(180.Dp()).TestTag("expedition.resolution")));Gap(20);
                     SettingRow("Vertical sync","Store this session’s preference",()=>Toggle(s.VSync,"vsync"));
                 });Gap(20);
                 SettingsPanel("02 / SOUND",()=>
@@ -341,7 +365,7 @@ public static partial class ExpeditionDemo
                     SettingRow("Light appearance","Switch the entire design-system theme",()=>Toggle(s.Light,"appearance"));Gap(24);
                     SettingRow("Reduced motion","Shorten page, route and card animations",()=>Toggle(s.ReducedMotion,"motion"));
                 });Gap(20);
-                Box(modifier:Modifier.FillMaxWidth().Surface(Materials.Paper(textureStrength:.16f),Depth.Raised(2.Dp()),C.TertiaryContainer,Round()).Padding(24.Dp()),content:()=>Column(content:()=>
+                Box(modifier:Modifier.FillMaxWidth().Background(C.TertiaryContainer, Round()).Clip(Round()).Padding(24.Dp()),content:()=>Column(content:()=>
                 {
                     Label("YOUR SPACE, YOUR PACE",10,C.OnTertiaryContainer,true);Gap(14);Label("Small details.\nA different feeling.",26,C.OnTertiaryContainer,true);Gap(16);
                     Label("Material surfaces, responsive controls and a palette that follows your theme.",12,C.OnTertiaryContainer);Gap(24);
@@ -351,10 +375,10 @@ public static partial class ExpeditionDemo
         });
     }
     [Composable] private static void SettingsPanel(string title,[Composable] Action content) =>
-        Column(modifier:Modifier.FillMaxWidth().Surface(Materials.Matte(textureStrength:.16f),Depth.Raised(2.Dp()),C.SurfaceContainer,Round()).Padding(24.Dp()),content:()=>{Label(title,10,C.OnSurfaceVariant,true);Gap(24);content();});
+        Column(modifier:Modifier.FillMaxWidth().Background(C.SurfaceContainer, Round()).Clip(Round()).Padding(24.Dp()),content:()=>{Label(title,10,C.OnSurfaceVariant,true);Gap(24);content();});
     [Composable] private static void SettingRow(string title,string subtitle,[Composable] Action control) =>
         Row(modifier:Modifier.FillMaxWidth(),horizontalArrangement:Arrangement.SpacedBy(16.Dp()),verticalAlignment:Alignment.CenterVertically,content:()=>
         {Column(modifier:Modifier.Weight(1),content:()=>{Label(title,14,bold:true);Gap(5);Label(subtitle,10,C.OnSurfaceVariant);});control();});
     [Composable] private static void Toggle(IMutableState<bool> state,string tag) =>
-        VS.DesignSystem.SwitchFunctions.Switch(value:state.Value,onValueChange:v=>state.Value=v,modifier:Modifier.TestTag("expedition."+tag));
+        VS.DesignSystem.DsSwitchFunctions.DsSwitch(value:state.Value,onValueChange:v=>state.Value=v,modifier:Modifier.TestTag("expedition."+tag));
 }

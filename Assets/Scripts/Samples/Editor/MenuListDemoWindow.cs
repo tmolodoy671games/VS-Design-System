@@ -25,7 +25,7 @@ public sealed partial class MenuListDemoWindow : EditorWindow
     {
         var window = GetWindow<MenuListDemoWindow>();
         window.titleContent = new GUIContent("Menu List");
-        window.minSize = new Vector2(780, 680);
+        window.minSize = new Vector2(840, 840);
         window.Show();
     }
     private void CreateGUI()
