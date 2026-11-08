@@ -4,8 +4,10 @@
     "com.unity.ide.rider": "3.1.0",
     "com.unity.inputsystem": "7.0.0",
     "com.unity.render-pipelines.universal": "17.7.0",
+    "com.unity.test-framework": "1.9.0",
     "com.unity.ugui": "7.0.0",
-    "t.molodoy.compose.net.unity": "file:../../Compose.Net.Unity/Assets/Packages/Compose.Net.Unity",
+    "com.unity.ui.test-framework": "7.0.0",
+    "t.molodoy.compose.net.unity": "https://github.com/tmolodoy671games/Unity-Compose.git?path=/Assets/Packages/Compose.Net.Unity",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
@@ -44,8 +46,6 @@
     "com.unity.modules.vehicles": "1.0.0",
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.unity.test-framework": "1.9.0",
-    "com.unity.ui.test-framework": "7.0.0"
+    "com.unity.modules.xr": "1.0.0"
   }
 }

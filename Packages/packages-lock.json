@@ -14,7 +14,7 @@
       "dependencies": {}
     },
     "com.unity.collections": {
-      "version": "7.0.0",
+      "version": "6.7.0",
       "depth": 2,
       "source": "builtin",
       "dependencies": {}
@@ -128,10 +128,11 @@
       }
     },
     "t.molodoy.compose.net.unity": {
-      "version": "file:../../Compose.Net.Unity/Assets/Packages/Compose.Net.Unity",
+      "version": "https://github.com/tmolodoy671games/Unity-Compose.git?path=/Assets/Packages/Compose.Net.Unity",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "21565fbcca1a3c3864207469e2baf2734f2aa3dc"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
@@ -432,8 +433,7 @@
       "dependencies": {
         "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.ui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.imageconversion": "1.0.0"
+        "com.unity.modules.unitywebrequest": "1.0.0"
       }
     },
     "com.unity.modules.wind": {
