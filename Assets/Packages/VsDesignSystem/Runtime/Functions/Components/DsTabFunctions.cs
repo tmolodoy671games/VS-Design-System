@@ -148,13 +148,17 @@ public static partial class DsTabFunctions
                 block: it => computedWidth = it
             );
         });
-        Box(
-            Modifier
-                .Background(DsTheme.ColorScheme.OnPrimary with { Alpha = 0.2f }, RoundedCornerShape(12.Dp()))
-                .FillMaxHeight()
-                .Width(computedWidth.Dp())
-                .Offset(x: AnimateFloatAsState(left).Value.Dp())
-        );
+        // Measure the tabs first; the overlay must not contribute the incoming maximum
+        // height to the row. Its child can then fill the row's actual content height.
+        Box(modifier: Modifier.MatchParentSize(), content: () =>
+            Box(
+                Modifier
+                    .Background(DsTheme.ColorScheme.OnPrimary with { Alpha = 0.2f }, RoundedCornerShape(12.Dp()))
+                    .FillMaxHeight()
+                    .Width(computedWidth.Dp())
+                    .Offset(x: AnimateFloatAsState(left).Value.Dp())
+                    .TestTag("ds.tabs.indicator")
+            ));
     }
 }
 

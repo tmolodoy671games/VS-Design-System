@@ -73,6 +73,41 @@ public sealed class MenuListTests : EditorWindowUITestFixture<MenuListDemoWindow
         }
     }
 
+    [UnityTest] public IEnumerator TabIndicatorFillsContentHeightWithoutStretchingTheRow()
+    {
+        yield return Settle();
+        AssertTabBounds(0, 0);
+        simulate.Click(E("light.primary.tab.1"));
+        yield return Settle();
+        Assert.That(window.State.Primary.Value, Is.EqualTo(1));
+        simulate.Click(E("dark.secondary.tab.2"));
+        yield return Settle();
+        Assert.That(window.State.Secondary.Value, Is.EqualTo(2));
+        AssertTabBounds(1, 2);
+        panelSize = new Vector2(1060, 1000);
+        yield return Settle();
+        AssertTabBounds(1, 2);
+    }
+
+    private void AssertTabBounds(int primary, int secondary)
+    {
+        foreach (var theme in new[] { "light", "dark" })
+        foreach (var level in new[] { "primary", "secondary" })
+        {
+            var row = E(theme + "." + level);
+            var tab = E(theme + "." + level + ".tab." + (level == "primary" ? primary : secondary));
+            var indicator = row.Q("ds.tabs.indicator");
+            Assert.That(tab.layout.height, Is.GreaterThan(0).And.LessThan(80));
+            Assert.That(row.worldBound.height, Is.EqualTo(tab.worldBound.height).Within(1),
+                "The indicator must not contribute the available panel height to the tab row.");
+            Assert.That(indicator, Is.Not.Null);
+            Assert.That(indicator.worldBound.height, Is.EqualTo(row.worldBound.height).Within(1));
+            Assert.That(indicator.worldBound.y, Is.EqualTo(row.worldBound.y).Within(1));
+            Assert.That(indicator.worldBound.width, Is.EqualTo(tab.worldBound.width).Within(2));
+            Assert.That(indicator.worldBound.x, Is.EqualTo(tab.worldBound.x).Within(2));
+        }
+    }
+
     [UnityTest] public IEnumerator BothTabLevelsMoveIndicatorsAndKeepTheirOwnSelection()
     {
         yield return Settle();
