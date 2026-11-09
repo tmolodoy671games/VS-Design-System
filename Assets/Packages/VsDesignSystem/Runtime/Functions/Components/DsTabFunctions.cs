@@ -4,6 +4,7 @@ using System;
 using Compose.Net;
 using SharpExtensions;
 using Unity.Scripting.LifecycleManagement;
+using UnityEngine.UIElements;
 
 namespace VS.DesignSystem;
 
@@ -11,9 +12,11 @@ namespace VS.DesignSystem;
 [NoAutoStaticsCleanup]
 public static partial class DsTabFunctions
 {
-    private static readonly ICompositionLocal<TabRowScope> LocalTabRow =
-        CompositionLocalOf(() => new TabRowScope(null, DsTabLevel.High));
+    private static readonly ICompositionLocal<DsTabLevel> LocalLevel = CompositionLocalOf(() => DsTabLevel.High);
 
+    private static readonly ICompositionLocal<Action<ILayoutCoordinates>> LocalOnGeometryChanged =
+        CompositionLocalOf<Action<ILayoutCoordinates>>(() => _ => { });
+    
     [Composable]
     public static void DsTab(
         bool selected,
@@ -27,48 +30,37 @@ public static partial class DsTabFunctions
         IMutableInteractionSource? interactionSource = null
     )
     {
-        var scope = LocalTabRow.Current;
-        var high = scope.Level == DsTabLevel.High;
-        var colors = DsTheme.ColorScheme;
-        var foreground = selected
-            ? selectedContentColor.GetOrDefault(colors.Primary)
-            : unselectedContentColor.GetOrDefault(colors.OnSurfaceVariant);
-        if (!enabled) foreground = foreground with { Alpha = foreground.Alpha * .38f };
-        var contentColor = AnimateColorAsState(foreground, Tween(180)).Value;
-        var bounds = Remember(() => MutableStateOf(default(Compose.Net.Rect)));
-        var owner = Remember(() => new object());
-        var row = scope.State;
-        if (row != null)
+        var level = LocalLevel.Current;
+        var textStyle = level switch
         {
-            if (selected)
-                row.Selection.Value = new TabSelection(owner, bounds);
-            else if (ReferenceEquals(row.Selection.Value?.Owner, owner))
-                row.Selection.Value = null;
-
-            DisposableEffect(row, () => OnDispose(() =>
-            {
-                if (ReferenceEquals(row.Selection.Value?.Owner, owner))
-                    row.Selection.Value = null;
-            }));
-        }
-
+            DsTabLevel.High => DsTheme.Typography.TitleSmall,
+            DsTabLevel.Low => DsTheme.Typography.LabelLarge,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         CompositionLocalProvider(
-            LocalContentColor.Provides(contentColor),
-            LocalTextStyle.Provides(high ? DsTheme.Typography.TitleSmall : DsTheme.Typography.LabelLarge),
-            content: () => Row(
-                modifier: modifier.OrEmpty()
-                    .Height(high ? 56.Dp() : 40.Dp())
-                    .OnPlaced(c => bounds.Value = new Rect(c.PositionInParent(), c.Size))
-                    .Clickable(onClick, LocalIndication.Current, interactionSource, enabled)
-                    .Padding(horizontal: high ? 24.Dp() : 16.Dp()),
-                horizontalArrangement: Arrangement.SpacedBy(high ? 8.Dp() : 6.Dp(), (Arrangement.Horizontal)Arrangement.Center),
-                verticalAlignment: Alignment.CenterVertically,
-                content: () =>
-                {
-                    icon?.Invoke();
-                    text?.Invoke();
-                }
-            )
+            LocalTextStyle.Provides(textStyle),
+            content: () =>
+            {
+                Row(
+                    modifier: modifier.OrEmpty()
+                        .Clickable(
+                            onClick: onClick,
+                            enabled: enabled,
+                            indication: LocalIndication.Current,
+                            interactionSource: interactionSource
+                        )
+                        .Clip(RoundedCornerShape(12.Dp()))
+                        .Padding(
+                            vertical: 4.Dp(),
+                            horizontal: AnimateFloatAsState(selected ? 40 : 16).Value.Dp()
+                        ),
+                    content: () =>
+                    {
+                        icon?.Invoke();
+                        text?.Invoke();
+                    }
+                );
+            }
         );
     }
 
@@ -79,22 +71,17 @@ public static partial class DsTabFunctions
         DsTabLevel level = DsTabLevel.High
     )
     {
-        var state = Remember(() => new TabRowState());
-        var selection = state.Selection.Value;
-        var bounds = selection?.Bounds.Value ?? default;
-        Box(
-            modifier: modifier.OrEmpty().FillMaxWidth(),
+        CompositionLocalProvider(
+            LocalContentColor.Provides(DsTheme.ColorScheme.OnPrimary),
+            LocalLevel.Provides(level),
             content: () =>
             {
-                CompositionLocalProvider(LocalTabRow.Provides(new TabRowScope(state, level)),
-                    content: () => Row(content: content, modifier: Modifier.FillMaxWidth(),
-                        verticalAlignment: Alignment.CenterVertically));
-
-                if (selection != null && bounds.Size.Width > 0f)
-                {
-                    DsTabSelectionIndicator(bounds.Offset.X,
-                        bounds.Size.Width, level);
-                }
+                Row(
+                    modifier: modifier.OrEmpty()
+                        .Background(DsTheme.ColorScheme.Primary)
+                        .Clip(RoundedCornerShape(16.Dp())),
+                    content: content
+                );
             }
         );
     }
@@ -102,27 +89,12 @@ public static partial class DsTabFunctions
     [Composable, BoxScope]
     private static void DsTabSelectionIndicator(float left, float width, DsTabLevel level)
     {
-        var density = LocalDensity.Current;
-        var motion = Tween(280, easing: EaseOutEasing);
-        var x = AnimateFloatAsState(left, motion).Value;
-        var w = AnimateFloatAsState(width, motion).Value;
         Box(
-            modifier: Modifier.Align(Alignment.BottomStart)
-                .Offset(x: density.ToDp(x))
-                .Width(density.ToDp(w))
-                .Height(level == DsTabLevel.High ? 3.Dp() : 2.Dp())
-                .Background(DsTheme.ColorScheme.Primary, RoundedCornerShape(9999.Dp()))
-                .TestTag("ds.tabs.indicator")
+            Modifier
+                .FillMaxHeight()
+                .Width(width.Dp())
+                .Offset(x: left.Dp())
         );
-    }
-
-    private readonly record struct TabRowScope(TabRowState? State, DsTabLevel Level);
-
-    private sealed record TabSelection(object Owner, IState<Compose.Net.Rect> Bounds);
-
-    private sealed class TabRowState
-    {
-        public readonly IMutableState<TabSelection?> Selection = MutableStateOf<TabSelection?>(null);
     }
 }
 
